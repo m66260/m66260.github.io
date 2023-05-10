@@ -28,7 +28,7 @@ export const WalletConnectButton = memo(() => {
               const api = new TraderInterface(
                 PerpetualDataHandler.readSDKConfig(id)
               );
-              api.createProxyInstance(provider).then(() => {
+              api.createProxyInstance().then(() => {
                 setTraderAPI(api);
                 setAPIConnected(true);
                 console.log("SDK connected", {
