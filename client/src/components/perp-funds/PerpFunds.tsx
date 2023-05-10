@@ -25,13 +25,12 @@ export const PerpFunds = () => {
     () => [
       { label: "Perpetual Id", align: AlignE.Left },
       { label: "Symbol", align: AlignE.Right },
-      { label: "DF Target", align: AlignE.Left },
-      { label: "AMM Target", align: AlignE.Left },
-      { label: "AMM/Target (%)", align: AlignE.Left },
-      { label: "AMM Fund", align: AlignE.Left },
-      { label: "AMM Margin", align: AlignE.Left },
-      { label: "PnL Fund", align: AlignE.Left },
-      { label: "PnL Weight (%)", align: AlignE.Left },
+      { label: "Target DF", align: AlignE.Right },
+      { label: "Target AMM", align: AlignE.Right },
+      { label: "AMM Fund", align: AlignE.Right },
+      { label: "PnL Fund", align: AlignE.Right },
+      { label: "AMM Margin", align: AlignE.Right },
+      { label: "Total", align: AlignE.Right },
     ],
     []
   );

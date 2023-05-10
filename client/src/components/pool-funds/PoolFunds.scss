@@ -1,4 +1,4 @@
-@import 'styles/theme/theme';
+@import "styles/theme/theme";
 
 .root {
   width: 100%;
@@ -33,7 +33,6 @@
 }
 
 @media screen and ($d8x-breakpoint-max-sm) {
-
   .root {
     justify-content: start;
     overflow-x: auto;

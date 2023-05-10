@@ -93,7 +93,7 @@ export const ExchangeStats = () => {
             <TableHead className={styles.tableHead}>
               {
                 <Typography variant="overline" align="inherit">
-                  {"AMMs"}
+                  {"AMM"}
                 </Typography>
               }
             </TableHead>

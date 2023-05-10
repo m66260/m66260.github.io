@@ -18,53 +18,56 @@ export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
       ? ABK64x64ToFloat(perpetual.fFundAllocationWeightCC) /
         ABK64x64ToFloat(pool.fFundAllocationNormalizationCC)
       : 0;
+  const poolCash = pool
+    ? lpWeight * ABK64x64ToFloat(pool.fPnLparticipantsCashCC)
+    : 0;
 
   return (
     <TableRow>
-      <TableCell align="left">
+      <TableCell align="right">
         <Typography variant="cellSmall">{perpetual.id}</Typography>
       </TableCell>
-      <TableCell align="left">
+      <TableCell align="right">
         <Typography variant="cellSmall">{"---"}</Typography>
       </TableCell>
-      <TableCell align="left">
+
+      <TableCell align="right">
         <Typography variant="cellSmall">{`${formatNumber(
           ABK64x64ToFloat(perpetual.fTargetDFSize)
         )}`}</Typography>
       </TableCell>
-      <TableCell align="left">
-        <Typography variant="cellSmall">{`${formatNumber(
-          ABK64x64ToFloat(perpetual.fAMMFundCashCC)
-        )}`}</Typography>
-      </TableCell>
-      <TableCell align="left">
+      <TableCell align="right">
         <Typography variant="cellSmall">{`${formatNumber(
           ABK64x64ToFloat(perpetual.fTargetAMMFundSize)
         )}`}</Typography>
       </TableCell>
-      <TableCell align="left">
+
+      <TableCell align="right">
         <Typography variant="cellSmall">{`${formatNumber(
+          ABK64x64ToFloat(perpetual.fAMMFundCashCC)
+        )} (${formatNumber(
           (100 * ABK64x64ToFloat(perpetual.fAMMFundCashCC)) /
             ABK64x64ToFloat(perpetual.fTargetAMMFundSize)
-        )}`}</Typography>
+        )}%)`}</Typography>
       </TableCell>
-      <TableCell align="left">
+
+      <TableCell align="right">
+        <Typography variant="cellSmall">
+          {pool
+            ? `${formatNumber(poolCash)} (${formatNumber(100 * lpWeight)}%)`
+            : "-"}
+        </Typography>
+      </TableCell>
+      <TableCell align="right">
         <Typography variant="cellSmall">{`${formatNumber(
           ABK64x64ToFloat(account.fCashCC)
         )}`}</Typography>
       </TableCell>
-      <TableCell align="left">
-        <Typography variant="cellSmall">
-          {pool
-            ? formatNumber(
-                lpWeight * ABK64x64ToFloat(pool.fPnLparticipantsCashCC)
-              )
-            : 0}
-        </Typography>
-      </TableCell>
-      <TableCell align="left">
+
+      <TableCell align="right">
         <Typography variant="cellSmall">{`${formatNumber(
-          100 * lpWeight
+          ABK64x64ToFloat(account.fCashCC.add(perpetual.fAMMFundCashCC)) +
+            poolCash
         )}`}</Typography>
       </TableCell>
     </TableRow>
