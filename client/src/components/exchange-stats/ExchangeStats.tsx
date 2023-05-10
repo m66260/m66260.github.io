@@ -28,7 +28,7 @@ export const ExchangeStats = () => {
   const [, setPerpetuals] = useAtom(perpetualsAtom);
   const [, setAMMAccounts] = useAtom(ammAccountAtom);
 
-  const refreshPositions = useCallback(() => {
+  const refreshPools = useCallback(() => {
     console.log("Reading blockchain...");
     if (traderAPI) {
       const proxy = traderAPI.getReadOnlyProxyInstance() as IPerpetualManager;
@@ -61,10 +61,10 @@ export const ExchangeStats = () => {
   return (
     <Box>
       <Box className={styles.refreshHolder}>
-        <RefreshIcon onClick={refreshPositions} className={styles.actionIcon} />
+        <RefreshIcon onClick={refreshPools} className={styles.actionIcon} />
       </Box>
       <Box>
-        <Container className={styles.sidesContainer}>
+        <Container className={styles.columnContainer}>
           <TableContainer>
             <TableHead className={styles.tableHead}>
               {

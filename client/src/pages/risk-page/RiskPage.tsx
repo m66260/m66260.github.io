@@ -7,13 +7,13 @@ import { Header } from "components/header/Header";
 import { Footer } from "components/footer/Footer";
 import { ExchangeStats } from "components/exchange-stats/ExchangeStats";
 
-import styles from "./RiskPage.module.scss";
+// import styles from "./RiskPage.module.scss";
 
 export const RiskPage = memo(() => {
   return (
-    <Box className={styles.root}>
+    <Box>
       <Header />
-      <Container className={styles.sidesContainer}>
+      <Container>
         <ExchangeStats />
       </Container>
       <Footer />
