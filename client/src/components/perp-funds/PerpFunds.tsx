@@ -23,7 +23,7 @@ import { useAtom } from "jotai";
 export const PerpFunds = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
-      { label: "Perpetual Id", align: AlignE.Left },
+      { label: "Id", align: AlignE.Left },
       { label: "Symbol", align: AlignE.Right },
       { label: "Target DF", align: AlignE.Right },
       { label: "Target AMM", align: AlignE.Right },
