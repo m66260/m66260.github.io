@@ -17,10 +17,11 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v2
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@master
         with:
-          node-version: "16.x"
+          node-version: "18.x"
+          registry-url: "https://npm.pkg.github.com"
           cache: "yarn"
           cache-dependency-path: "./client/yarn.lock"
 
@@ -30,6 +31,8 @@ jobs:
 
       - name: Build 🔧
         working-directory: ./client
+        env:
+          CI: false
         run: PUBLIC_URL="." yarn build
 
       - name: Deploy 🚀
