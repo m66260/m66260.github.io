@@ -1,0 +1,32 @@
+:root {
+  --d8x-color-purple: #664ADF;
+  --d8x-color-purple-rgb: 102, 74, 223;
+  --d8x-color-white-rgb: 255, 255, 255;
+  --d8x-color-yellow: #FFDA9F;
+  --d8x-color-rose: #FFBDBD;
+  --d8x-color-black: #333;
+  --d8x-color-black-opac: rgba(3, 3, 3, 0.6);
+  --d8x-color-white: #FFF;
+  --d8x-color-white-opac: rgba(255, 255, 255, 0.6);
+  --d8x-text-color: #111;
+  --d8x-highlight-color: #664ADF;
+  --d8x-background: #F5F5F5;
+  --d8x-background-card-title: rgba(255, 255, 255, 0.4);
+  --d8x-background-card-details: #FFF;
+  --d8x-background-white: #FFF;
+  --d8x-background-purple: rgba(102, 74, 223, 0.1);
+  --d8x-background-inactive-tab: rgba(255, 255, 255, 0.5);
+  --d8x-background-loader: rgba(102, 74, 223, 0.1);
+  --d8x-icon-color: #664ADF;
+  --d8x-social-icon-color: #000;
+  --d8x-social-icon-color-hover: rgba(0, 0, 0, 0.5);
+  --d8x-side-border-color: rgba(102, 74, 223, 0.1);
+  --d8x-separator-border-color: rgba(102, 74, 223, 0.2);
+
+  // Override colors for toastify
+  --toastify-color-progress-success: #664ADF;
+  --toastify-color-progress-error: #FFBDBD;
+  --toastify-color-progress-warning: #FFBDBD;
+  --toastify-color-progress-info: #FFBDBD;
+  --toastify-color-progress-light: linear-gradient(to right, #FFDA9F, #FFBDBD, #000);
+}

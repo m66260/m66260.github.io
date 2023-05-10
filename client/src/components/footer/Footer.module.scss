@@ -1,0 +1,62 @@
+@import 'styles/theme/theme';
+
+.rootBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $d8x-spacing * 5 0;
+}
+
+.footerSocial {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
+
+.iconsHolder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 48px;
+}
+
+.footerSocialLogo {
+  color: var(--d8x-social-icon-color);
+  transition: color 300ms linear;
+  text-decoration: none;
+  margin: 1rem 0;
+
+  &:hover {
+    color: var(--d8x-social-icon-color-hover);
+    text-decoration: none;
+  }
+
+  svg {
+    height: 24px;
+    width: 24px;
+  }
+}
+
+.footerLogo {
+  height: 24px;
+}
+
+@media screen and ($d8x-breakpoint-max-sm) {
+
+  .rootBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .footerLogoWrapper {
+    margin: 0;
+  }
+
+  .footerLogo {
+    display: block;
+    text-align: center;
+    margin-top: 24px;
+  }
+}

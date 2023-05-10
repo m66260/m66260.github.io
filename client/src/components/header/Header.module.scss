@@ -1,0 +1,84 @@
+@import 'styles/theme/theme';
+
+.root {
+  margin-top: $d8x-spacing;
+  margin-bottom: $d8x-spacing * 5;
+
+  :global(.MuiPaper-root) {
+    height: 80px;
+  }
+
+  :global(.MuiOutlinedInput-root) {
+    width: auto;
+    background-color: var(--d8x-color-white);
+  }
+}
+
+.toolbar {
+  align-items: center;
+  min-height: 100px;
+  padding: 0;
+}
+
+.leftSide {
+  display: flex;
+  width: 900px;
+}
+
+.logoLink {
+  display: flex;
+  line-height: 1;
+}
+
+.selectBoxes {
+  display: flex;
+  flex-grow: 2;
+}
+
+.mobileSelectBoxes {
+  display: flex;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  gap: 15px;
+  justify-content: center;
+}
+
+.walletConnect {
+  justify-content: right;
+  display: flex;
+  flex-grow: 1;
+  gap: 15px;
+}
+
+@media screen and ($d8x-breakpoint-max-md) {
+
+  .root {
+
+    :global(.MuiPaper-root) {
+      height: 150px;
+    }
+  }
+
+  .leftSide {
+    width: auto;
+  }
+
+  .toolbar {
+    min-height: 80px;
+  }
+}
+
+@media screen and ($d8x-breakpoint-max-xs) {
+
+  .root {
+
+    :global(.MuiPaper-root) {
+      height: auto;
+    }
+  }
+
+  .mobileSelectBoxes {
+    flex-direction: column;
+  }
+}
