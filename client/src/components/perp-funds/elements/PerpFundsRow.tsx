@@ -1,37 +1,72 @@
+import { ABK64x64ToFloat } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
+import { useAtom } from "jotai";
+import { poolsAtom } from "store/states.store";
+import { PerpStorage } from "types/IPerpetualManager";
+import { formatNumber } from "utils/formatNumber";
 
-interface PerpState {
-  id: number;
-  fAMMFunds: number;
+interface PerpFundsPropI {
+  perpetual: PerpStorage.PerpetualDataStructOutput;
+  account: PerpStorage.MarginAccountStructOutput;
 }
 
-export const PerpFundsRow = (poolState: PerpState) => {
+export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
+  const [pools] = useAtom(poolsAtom);
+  const pool = pools?.find((p) => p.id == perpetual.poolId);
+  const lpWeight =
+    pool && pool.fFundAllocationNormalizationCC.gt(0)
+      ? ABK64x64ToFloat(perpetual.fFundAllocationWeightCC) /
+        ABK64x64ToFloat(pool.fFundAllocationNormalizationCC)
+      : 0;
+
   return (
     <TableRow>
       <TableCell align="left">
-        <Typography variant="cellSmall">{poolState.id}</Typography>
+        <Typography variant="cellSmall">{perpetual.id}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"stMATIC"}</Typography>
+        <Typography variant="cellSmall">{"---"}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"1,000,000 (df target)"}</Typography>
+        <Typography variant="cellSmall">{`${formatNumber(
+          ABK64x64ToFloat(perpetual.fTargetDFSize)
+        )}`}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"10,000 (amm size)"}</Typography>
+        <Typography variant="cellSmall">{`${formatNumber(
+          ABK64x64ToFloat(perpetual.fAMMFundCashCC)
+        )}`}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"amm target"}</Typography>
+        <Typography variant="cellSmall">{`${formatNumber(
+          ABK64x64ToFloat(perpetual.fTargetAMMFundSize)
+        )}`}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"amm target %"}</Typography>
+        <Typography variant="cellSmall">{`${formatNumber(
+          (100 * ABK64x64ToFloat(perpetual.fAMMFundCashCC)) /
+            ABK64x64ToFloat(perpetual.fTargetAMMFundSize)
+        )}`}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"amm margin"}</Typography>
+        <Typography variant="cellSmall">{`${formatNumber(
+          ABK64x64ToFloat(account.fCashCC)
+        )}`}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{"PnL"}</Typography>
+        <Typography variant="cellSmall">
+          {pool
+            ? formatNumber(
+                lpWeight * ABK64x64ToFloat(pool.fPnLparticipantsCashCC)
+              )
+            : 0}
+        </Typography>
+      </TableCell>
+      <TableCell align="left">
+        <Typography variant="cellSmall">{`${formatNumber(
+          100 * lpWeight
+        )}`}</Typography>
       </TableCell>
     </TableRow>
   );
-};
+}

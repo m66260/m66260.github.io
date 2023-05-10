@@ -1,13 +1,57 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { memo } from "react";
+import { memo, useRef, useState } from "react";
 
 import { Button } from "@mui/material";
 
 import { cutAddressName } from "utils/cutAddressName";
 
 import styles from "./WalletConnectButton.module.scss";
+import { traderAPIAtom, chainIdAtom } from "store/states.store";
+import { useAtom } from "jotai";
+import { useAccount, useChainId, useConnect, useProvider } from "wagmi";
+import { PerpetualDataHandler, TraderInterface } from "@d8x/perpetuals-sdk";
 
 export const WalletConnectButton = memo(() => {
+  const [, setChainId] = useAtom(chainIdAtom);
+  const [traderAPI, setTraderAPI] = useAtom(traderAPIAtom);
+  const [isAPIConnected, setAPIConnected] = useState(false);
+
+  const account = useAccount({
+    onConnect({ address, connector, isReconnected }) {
+      if (connector && (!isAPIConnected || isReconnected)) {
+        console.log("Wallet connected", { address, connector, isReconnected });
+        connector
+          .getChainId()
+          .then((id) => {
+            setChainId(id);
+            connector.getProvider().then((provider) => {
+              const api = new TraderInterface(
+                PerpetualDataHandler.readSDKConfig(id)
+              );
+              api.createProxyInstance().then(() => {
+                setTraderAPI(api);
+                setAPIConnected(true);
+                console.log("SDK connected", {
+                  address,
+                  connector,
+                  isReconnected,
+                });
+              });
+            });
+          })
+          .catch((err) => {
+            setAPIConnected(false);
+            console.log("Error connecting SDK");
+          });
+      }
+    },
+    onDisconnect() {
+      console.log("Disconnected");
+      setAPIConnected(false);
+      setTraderAPI(null);
+    },
+  });
+
   return (
     <ConnectButton.Custom>
       {({

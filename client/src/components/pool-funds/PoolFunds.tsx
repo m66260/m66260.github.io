@@ -15,6 +15,8 @@ import { TableHeaderI } from "types/types";
 import { AlignE } from "types/enums";
 import { EmptyTableRow } from "components/empty-table-row/EmptyTableRow";
 import { PoolFundsRow } from "./elements/PoolFundsRow";
+import { useAtom } from "jotai";
+import { poolsAtom } from "store/states.store";
 
 export const PoolFunds = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
@@ -27,16 +29,13 @@ export const PoolFunds = () => {
       { label: "AMM Size", align: AlignE.Left },
       { label: "AMM Target", align: AlignE.Left },
       { label: "AMM/Target (%)", align: AlignE.Left },
-      { label: "AMM Margin", align: AlignE.Left },
+      // { label: "AMM Margin", align: AlignE.Left },
       { label: "LP", align: AlignE.Left },
     ],
     []
   );
 
-  const poolStates = [
-    { id: 1, fAMMFunds: 1000 },
-    { id: 2, fAMMFunds: 2000 },
-  ];
+  const [pools] = useAtom(poolsAtom);
 
   return (
     <Box className={styles.root}>
@@ -52,10 +51,10 @@ export const PoolFunds = () => {
             </TableRow>
           </TableHead>
           <TableBody className={styles.tableBody}>
-            {poolStates.map((poolState) => (
-              <PoolFundsRow key={poolState.id} {...poolState} />
-            ))}
-            {poolStates.length === 0 && (
+            {pools &&
+              pools.length > 0 &&
+              pools.map((pool) => <PoolFundsRow key={pool.id} {...pool} />)}
+            {(!pools || pools.length === 0) && (
               <EmptyTableRow colSpan={tableHeaders.length} text="No pools" />
             )}
           </TableBody>
