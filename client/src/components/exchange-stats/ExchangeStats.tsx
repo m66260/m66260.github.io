@@ -20,6 +20,7 @@ import {
   traderAPIAtom,
 } from "store/states.store";
 import { IPerpetualManager } from "types";
+import { AMM } from "components/amm/AMM";
 
 export const ExchangeStats = () => {
   const [traderAPI] = useAtom(traderAPIAtom);
@@ -68,7 +69,7 @@ export const ExchangeStats = () => {
             <TableHead className={styles.tableHead}>
               {
                 <Typography variant="overline" align="inherit">
-                  {"Pool Funds"}
+                  {"Liquidity Pools"}
                 </Typography>
               }
             </TableHead>
@@ -80,12 +81,24 @@ export const ExchangeStats = () => {
             <TableHead className={styles.tableHead}>
               {
                 <Typography variant="overline" align="inherit">
-                  {"Perpetual Funds"}
+                  {"Perpetuals"}
                 </Typography>
               }
             </TableHead>
             <TableBody>
               <PerpFunds />
+            </TableBody>
+          </TableContainer>
+          <TableContainer>
+            <TableHead className={styles.tableHead}>
+              {
+                <Typography variant="overline" align="inherit">
+                  {"AMMs"}
+                </Typography>
+              }
+            </TableHead>
+            <TableBody>
+              <AMM />
             </TableBody>
           </TableContainer>
           {/* <TableContainer>

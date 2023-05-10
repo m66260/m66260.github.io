@@ -23,14 +23,14 @@ export const PoolFunds = () => {
     () => [
       { label: "Pool Id", align: AlignE.Left },
       { label: "Token", align: AlignE.Right },
-      { label: "DF Size", align: AlignE.Left },
       { label: "DF Target", align: AlignE.Left },
       { label: "DF/Target (%)", align: AlignE.Left },
-      { label: "AMM Size", align: AlignE.Left },
       { label: "AMM Target", align: AlignE.Left },
       { label: "AMM/Target (%)", align: AlignE.Left },
-      // { label: "AMM Margin", align: AlignE.Left },
-      { label: "LP", align: AlignE.Left },
+      { label: "DF", align: AlignE.Left },
+      { label: "AMM Fund", align: AlignE.Left },
+      { label: "PnL Fund", align: AlignE.Left },
+      { label: "Total", align: AlignE.Left },
     ],
     []
   );

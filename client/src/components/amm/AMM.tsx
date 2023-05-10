@@ -15,23 +15,24 @@ import { EmptyTableRow } from "components/empty-table-row/EmptyTableRow";
 import { useMemo } from "react";
 import { AlignE } from "types/enums";
 import { TableHeaderI } from "types/types";
-import styles from "./PerpFunds.module.scss";
-import { PerpFundsRow } from "./elements/PerpFundsRow";
+import styles from "./AMM.module.scss";
+import { AMMRow } from "./elements/AMMRow";
 import { ammAccountAtom, perpetualsAtom } from "store/states.store";
 import { useAtom } from "jotai";
 
-export const PerpFunds = () => {
+export const AMM = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
       { label: "Perpetual Id", align: AlignE.Left },
-      { label: "Symbol", align: AlignE.Right },
-      { label: "DF Target", align: AlignE.Left },
-      { label: "AMM Target", align: AlignE.Left },
-      { label: "AMM/Target (%)", align: AlignE.Left },
-      { label: "AMM Fund", align: AlignE.Left },
-      { label: "AMM Margin", align: AlignE.Left },
-      { label: "PnL Fund", align: AlignE.Left },
-      { label: "PnL Weight (%)", align: AlignE.Left },
+      { label: "S2", align: AlignE.Left },
+      { label: "Sm", align: AlignE.Left },
+      { label: "S3", align: AlignE.Left },
+      { label: "Margin", align: AlignE.Left },
+      { label: "Position", align: AlignE.Left },
+      { label: "Locked-In", align: AlignE.Left },
+      { label: "Unpaid Funding", align: AlignE.Left },
+      { label: "OI (long)", align: AlignE.Left },
+      { label: "OI (short)", align: AlignE.Left },
     ],
     []
   );
@@ -57,11 +58,7 @@ export const PerpFunds = () => {
               amms &&
               perpetuals.length > 0 &&
               perpetuals.map((perp, idx) => (
-                <PerpFundsRow
-                  key={perp.id}
-                  perpetual={perp}
-                  account={amms[idx]}
-                />
+                <AMMRow key={perp.id} perpetual={perp} account={amms[idx]} />
               ))}
             {(!perpetuals || perpetuals.length === 0) && (
               <EmptyTableRow

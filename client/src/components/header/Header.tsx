@@ -23,7 +23,7 @@ export const Header = memo(() => {
             </Box>
             <Box className={styles.leftSide}>
               <Typography variant="h5" component="div">
-                {"Monitoring"}
+                {"Risk Monitoring"}
               </Typography>
             </Box>
             <Typography
