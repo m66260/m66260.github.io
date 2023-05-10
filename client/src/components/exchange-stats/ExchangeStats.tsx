@@ -1,9 +1,5 @@
-// import { useAtom } from 'jotai';
-
 import {
-  Box,
   Container,
-  Stack,
   TableBody,
   TableContainer,
   TableHead,
@@ -13,7 +9,6 @@ import {
 import { PerpFunds } from "components/perp-funds/PerpFunds";
 import { PoolFunds } from "components/pool-funds/PoolFunds";
 import styles from "./ExchangeStats.module.scss";
-import { AlignE } from "types/enums";
 
 export const ExchangeStats = () => {
   return (
