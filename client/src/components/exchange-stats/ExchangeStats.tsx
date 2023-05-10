@@ -11,7 +11,7 @@ import { PerpFunds } from "components/perp-funds/PerpFunds";
 import { PoolFunds } from "components/pool-funds/PoolFunds";
 import { ReactComponent as RefreshIcon } from "assets/icons/refreshIcon.svg";
 import styles from "./ExchangeStats.module.scss";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import { useAtom } from "jotai";
 import {
   ammAccountAtom,
@@ -26,8 +26,6 @@ export const ExchangeStats = () => {
   const [, setPools] = useAtom(poolsAtom);
   const [, setPerpetuals] = useAtom(perpetualsAtom);
   const [, setAMMAccounts] = useAtom(ammAccountAtom);
-
-  const traderAPIRef = useRef(traderAPI);
 
   const refreshPositions = useCallback(() => {
     console.log("Reading blockchain...");
@@ -57,7 +55,7 @@ export const ExchangeStats = () => {
           });
         });
     }
-  }, [traderAPI]);
+  }, [traderAPI, setAMMAccounts, setPerpetuals, setPools]);
 
   return (
     <Box>

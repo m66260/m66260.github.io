@@ -1,5 +1,5 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import { memo, useRef, useState } from "react";
+import { memo, useState } from "react";
 
 import { Button } from "@mui/material";
 
@@ -8,15 +8,15 @@ import { cutAddressName } from "utils/cutAddressName";
 import styles from "./WalletConnectButton.module.scss";
 import { traderAPIAtom, chainIdAtom } from "store/states.store";
 import { useAtom } from "jotai";
-import { useAccount, useChainId, useConnect, useProvider } from "wagmi";
+import { useAccount } from "wagmi";
 import { PerpetualDataHandler, TraderInterface } from "@d8x/perpetuals-sdk";
 
 export const WalletConnectButton = memo(() => {
   const [, setChainId] = useAtom(chainIdAtom);
-  const [traderAPI, setTraderAPI] = useAtom(traderAPIAtom);
+  const [, setTraderAPI] = useAtom(traderAPIAtom);
   const [isAPIConnected, setAPIConnected] = useState(false);
 
-  const account = useAccount({
+  useAccount({
     onConnect({ address, connector, isReconnected }) {
       if (connector && (!isAPIConnected || isReconnected)) {
         console.log("Wallet connected", { address, connector, isReconnected });
@@ -28,7 +28,7 @@ export const WalletConnectButton = memo(() => {
               const api = new TraderInterface(
                 PerpetualDataHandler.readSDKConfig(id)
               );
-              api.createProxyInstance().then(() => {
+              api.createProxyInstance(provider).then(() => {
                 setTraderAPI(api);
                 setAPIConnected(true);
                 console.log("SDK connected", {

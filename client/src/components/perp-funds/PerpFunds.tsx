@@ -17,7 +17,7 @@ import { AlignE } from "types/enums";
 import { TableHeaderI } from "types/types";
 import styles from "./PerpFunds.module.scss";
 import { PerpFundsRow } from "./elements/PerpFundsRow";
-import { ammAccountAtom, perpetualsAtom, poolsAtom } from "store/states.store";
+import { ammAccountAtom, perpetualsAtom } from "store/states.store";
 import { useAtom } from "jotai";
 
 export const PerpFunds = () => {

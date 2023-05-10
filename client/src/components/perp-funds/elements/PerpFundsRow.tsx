@@ -12,7 +12,7 @@ interface PerpFundsPropI {
 
 export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
   const [pools] = useAtom(poolsAtom);
-  const pool = pools?.find((p) => p.id == perpetual.poolId);
+  const pool = pools?.find((p) => p.id === perpetual.poolId);
   const lpWeight =
     pool && pool.fFundAllocationNormalizationCC.gt(0)
       ? ABK64x64ToFloat(perpetual.fFundAllocationWeightCC) /
