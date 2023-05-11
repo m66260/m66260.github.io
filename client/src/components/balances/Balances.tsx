@@ -8,7 +8,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-
+import { fetchBalance } from "@wagmi/core";
 import styles from "./Balances.module.scss";
 import { useEffect, useMemo } from "react";
 import { TableHeaderI } from "types/types";
@@ -19,6 +19,7 @@ import { useAtom } from "jotai";
 import {
   allServicesAtom,
   marginTokensAtom,
+  tokenBalancesAtom,
   tokenSymbolsAtom,
   userAddressAtom,
 } from "store/states.store";
@@ -29,6 +30,8 @@ export const Balances = () => {
   const [tokenSymbols] = useAtom(tokenSymbolsAtom);
   const [userAddress] = useAtom(userAddressAtom);
   const [allServices, setAllServices] = useAtom(allServicesAtom);
+  const [, setTokenBalances] = useAtom(tokenBalancesAtom);
+  const [, setTokenSymbols] = useAtom(tokenSymbolsAtom);
 
   const tableHeaders: TableHeaderI[] = useMemo(
     () =>
@@ -52,6 +55,35 @@ export const Balances = () => {
       setAllServices(null);
     }
   }, [userAddress, setAllServices]);
+
+  const tokenBalances = useMemo(() => {
+    if (marginTokens && allServices) {
+      return Promise.all(
+        marginTokens.map((token) => {
+          return Promise.all(
+            allServices.map((s) => {
+              return fetchBalance({
+                address: s.address as `0x${string}`,
+                token: token.length > 0 ? (token as `0x${string}`) : undefined,
+              }).then((balance) => {
+                console.log(balance);
+                return balance;
+              });
+            })
+          );
+        })
+      );
+    }
+  }, [marginTokens, allServices]);
+
+  useEffect(() => {
+    if (tokenBalances) {
+      tokenBalances.then((balances) => {
+        setTokenBalances(balances.map((t) => t.map((ta) => ta.formatted)));
+        setTokenSymbols(balances.map((t) => t[0].symbol));
+      });
+    }
+  }, [tokenBalances, setTokenBalances, setTokenSymbols]);
 
   return (
     <TableContainer>
@@ -85,6 +117,7 @@ export const Balances = () => {
                   allServices &&
                   allServices.map((service, idx) => (
                     <BalancesRow
+                      key={service.address}
                       idx={idx}
                       name={service.service}
                       addr={service.address}
