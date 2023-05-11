@@ -29,14 +29,17 @@ export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
       <TableCell align="right">
         <Typography variant="cellSmall">{perpetual.id}</Typography>
       </TableCell>
-      <TableCell align="right">
+      <TableCell align="left">
+        <Typography variant="cellSmall">
+          {pool ? `${tokenSymbols?.[pool?.id]}` : "-"}
+        </Typography>
+      </TableCell>
+      <TableCell align="left">
         <Typography variant="cellSmall">
           {pool && tokenSymbols
             ? `${fromBytes4HexString(
                 perpetual.S2BaseCCY
-              )}-${fromBytes4HexString(perpetual.S2QuoteCCY)}-${
-                tokenSymbols?.[pool?.id]
-              }`
+              )}/${fromBytes4HexString(perpetual.S2QuoteCCY)}`
             : "-"}
         </Typography>
       </TableCell>

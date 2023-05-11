@@ -54,37 +54,53 @@ export const Balances = () => {
   }, [userAddress, setAllServices]);
 
   return (
-    <Box className={styles.root}>
-      <TableContainer className={styles.root}>
-        <MuiTable>
-          <TableHead className={styles.tableHead}>
-            <TableRow>
-              {tableHeaders.map((header) => (
-                <TableCell key={header.label.toString()} align={header.align}>
-                  <Typography variant="bodySmall">{header.label}</Typography>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody className={styles.tableBody}>
-            {marginTokens &&
-              allServices &&
-              allServices.map((service, idx) => (
-                <BalancesRow
-                  idx={idx}
-                  name={service.service}
-                  addr={service.address}
-                />
-              ))}
-            {(!marginTokens || marginTokens.length === 0) && (
-              <EmptyTableRow
-                colSpan={tableHeaders.length}
-                text="No services running"
-              />
-            )}
-          </TableBody>
-        </MuiTable>
-      </TableContainer>
-    </Box>
+    <TableContainer>
+      <TableHead className={styles.root}>
+        {
+          <Typography variant="overline" align="inherit">
+            {"Services"}
+          </Typography>
+        }
+      </TableHead>
+      <TableBody>
+        <Box className={styles.root}>
+          <TableContainer className={styles.root}>
+            <MuiTable>
+              <TableHead className={styles.tableHead}>
+                <TableRow>
+                  {tableHeaders.map((header) => (
+                    <TableCell
+                      key={header.label.toString()}
+                      align={header.align}
+                    >
+                      <Typography variant="bodySmall">
+                        {header.label}
+                      </Typography>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody className={styles.tableBody}>
+                {marginTokens &&
+                  allServices &&
+                  allServices.map((service, idx) => (
+                    <BalancesRow
+                      idx={idx}
+                      name={service.service}
+                      addr={service.address}
+                    />
+                  ))}
+                {(!marginTokens || marginTokens.length === 0) && (
+                  <EmptyTableRow
+                    colSpan={tableHeaders.length}
+                    text="No services"
+                  />
+                )}
+              </TableBody>
+            </MuiTable>
+          </TableContainer>
+        </Box>
+      </TableBody>
+    </TableContainer>
   );
 };

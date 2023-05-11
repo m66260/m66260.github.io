@@ -17,7 +17,7 @@ export const PoolFundsRow = (
       <TableCell align="right">
         <Typography variant="cellSmall">{pool.id}</Typography>
       </TableCell>
-      <TableCell align="right">
+      <TableCell align="left">
         <Typography variant="cellSmall">
           {tokenSymbols && marginTokens
             ? `${tokenSymbols[pool.id]} (${cutAddressName(

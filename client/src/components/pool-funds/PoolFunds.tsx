@@ -22,7 +22,7 @@ export const PoolFunds = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
       { label: "Id", align: AlignE.Left },
-      { label: "Token", align: AlignE.Right },
+      { label: "Token", align: AlignE.Left },
       { label: "Target DF", align: AlignE.Right },
       { label: "Target AMM", align: AlignE.Right },
       { label: "Default Fund", align: AlignE.Right },
@@ -36,28 +36,47 @@ export const PoolFunds = () => {
   const [pools] = useAtom(poolsAtom);
 
   return (
-    <Box className={styles.root}>
-      <TableContainer className={styles.root}>
-        <MuiTable>
-          <TableHead className={styles.tableHead}>
-            <TableRow>
-              {tableHeaders.map((header) => (
-                <TableCell key={header.label.toString()} align={header.align}>
-                  <Typography variant="bodySmall">{header.label}</Typography>
-                </TableCell>
-              ))}
-            </TableRow>
-          </TableHead>
-          <TableBody className={styles.tableBody}>
-            {pools &&
-              pools.length > 0 &&
-              pools.map((pool) => <PoolFundsRow key={pool.id} {...pool} />)}
-            {(!pools || pools.length === 0) && (
-              <EmptyTableRow colSpan={tableHeaders.length} text="No pools" />
-            )}
-          </TableBody>
-        </MuiTable>
-      </TableContainer>
-    </Box>
+    <TableContainer>
+      <TableHead className={styles.root}>
+        {
+          <Typography variant="overline" align="inherit">
+            Liquidity Pools
+          </Typography>
+        }
+      </TableHead>
+      <TableBody>
+        <Box className={styles.root}>
+          <TableContainer className={styles.root}>
+            <MuiTable>
+              <TableHead className={styles.tableHead}>
+                <TableRow>
+                  {tableHeaders.map((header) => (
+                    <TableCell
+                      key={header.label.toString()}
+                      align={header.align}
+                    >
+                      <Typography variant="bodySmall">
+                        {header.label}
+                      </Typography>
+                    </TableCell>
+                  ))}
+                </TableRow>
+              </TableHead>
+              <TableBody className={styles.tableBody}>
+                {pools &&
+                  pools.length > 0 &&
+                  pools.map((pool) => <PoolFundsRow key={pool.id} {...pool} />)}
+                {(!pools || pools.length === 0) && (
+                  <EmptyTableRow
+                    colSpan={tableHeaders.length}
+                    text="No pools"
+                  />
+                )}
+              </TableBody>
+            </MuiTable>
+          </TableContainer>
+        </Box>
+      </TableBody>
+    </TableContainer>
   );
 };

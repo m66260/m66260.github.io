@@ -27,12 +27,12 @@
   display: flex;
   flex-direction: column;
   gap: $d8x-spacing * 2.5;
-  max-width: 900px;
+  max-width: 1200px;
 }
 
 .rightBlock {
   flex: 1;
-  max-width: 600px;
+  max-width: 300px;
   margin-left: $d8x-spacing * 2.5;
 }
 
