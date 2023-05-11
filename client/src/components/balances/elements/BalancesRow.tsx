@@ -1,13 +1,6 @@
-import { ABK64x64ToFloat } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import {
-  marginTokensAtom,
-  tokenBalancesAtom,
-  tokenSymbolsAtom,
-} from "store/states.store";
-import { PerpStorage } from "types/IPerpetualManager";
-import { formatNumber } from "utils/formatNumber";
+import { marginTokensAtom, tokenBalancesAtom } from "store/states.store";
 
 interface BalanceProp {
   idx: number;

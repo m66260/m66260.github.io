@@ -66,7 +66,7 @@ export const ExchangeStats = () => {
           });
         });
     }
-  }, [traderAPI, setAMMAccounts, setPerpetuals, setPools]);
+  }, [traderAPI, setAMMAccounts, setPerpetuals, setMarginTokens, setPools]);
 
   const tokenBalances = useMemo(() => {
     if (marginTokens) {
