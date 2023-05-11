@@ -23,3 +23,9 @@ export const marginTokensAtom = atom<string[] | null>(null);
 export const tokenBalancesAtom = atom<string[][] | null>(null);
 
 export const tokenSymbolsAtom = atom<string[] | null>(null);
+
+export const userAddressAtom = atom<string | undefined>(undefined);
+
+export const allServicesAtom = atom<
+  { service: string; address: string }[] | null
+>(null);

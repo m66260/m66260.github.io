@@ -1,7 +1,7 @@
-import { ABK64x64ToFloat } from "@d8x/perpetuals-sdk";
+import { ABK64x64ToFloat, fromBytes4HexString } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
-import { poolsAtom } from "store/states.store";
+import { poolsAtom, tokenSymbolsAtom } from "store/states.store";
 import { PerpStorage } from "types/IPerpetualManager";
 import { formatNumber } from "utils/formatNumber";
 
@@ -12,6 +12,8 @@ interface PerpFundsPropI {
 
 export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
   const [pools] = useAtom(poolsAtom);
+  const [tokenSymbols] = useAtom(tokenSymbolsAtom);
+
   const pool = pools?.find((p) => p.id === perpetual.poolId);
   const lpWeight =
     pool && pool.fFundAllocationNormalizationCC.gt(0)
@@ -28,7 +30,15 @@ export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
         <Typography variant="cellSmall">{perpetual.id}</Typography>
       </TableCell>
       <TableCell align="right">
-        <Typography variant="cellSmall">{"---"}</Typography>
+        <Typography variant="cellSmall">
+          {pool && tokenSymbols
+            ? `${fromBytes4HexString(
+                perpetual.S2BaseCCY
+              )}-${fromBytes4HexString(perpetual.S2QuoteCCY)}-${
+                tokenSymbols?.[pool?.id]
+              }`
+            : "-"}
+        </Typography>
       </TableCell>
 
       <TableCell align="right">

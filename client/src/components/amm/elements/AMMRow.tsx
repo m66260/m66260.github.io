@@ -11,6 +11,9 @@ interface AMMPropI {
 
 export function AMMRow({ perpetual, account }: AMMPropI) {
   const OI1 = perpetual.fOpenInterest;
+  if (OI1.eq(0)) {
+    return null;
+  }
   const OI2 = perpetual.fOpenInterest.sub(account.fPositionBC.abs());
   const OILong = account.fPositionBC.gt(0) ? OI2 : OI1;
   const OIShort = account.fPositionBC.gt(0) ? OI1 : OI2;

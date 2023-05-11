@@ -10,18 +10,25 @@ import {
 } from "@mui/material";
 
 import styles from "./Balances.module.scss";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { TableHeaderI } from "types/types";
 import { AlignE } from "types/enums";
 import { EmptyTableRow } from "components/empty-table-row/EmptyTableRow";
 import { BalancesRow } from "./elements/BalancesRow";
 import { useAtom } from "jotai";
-import { marginTokensAtom, tokenSymbolsAtom } from "store/states.store";
-import { WALLETS } from "assets/wallets/wallets";
+import {
+  allServicesAtom,
+  marginTokensAtom,
+  tokenSymbolsAtom,
+  userAddressAtom,
+} from "store/states.store";
+import { Services } from "assets/blockchain-services/services";
 
 export const Balances = () => {
   const [marginTokens] = useAtom(marginTokensAtom);
   const [tokenSymbols] = useAtom(tokenSymbolsAtom);
+  const [userAddress] = useAtom(userAddressAtom);
+  const [allServices, setAllServices] = useAtom(allServicesAtom);
 
   const tableHeaders: TableHeaderI[] = useMemo(
     () =>
@@ -35,6 +42,16 @@ export const Balances = () => {
       ),
     [tokenSymbols]
   );
+
+  useEffect(() => {
+    if (userAddress) {
+      setAllServices(
+        [{ service: "You", address: userAddress }].concat(Services)
+      );
+    } else {
+      setAllServices(null);
+    }
+  }, [userAddress, setAllServices]);
 
   return (
     <Box className={styles.root}>
@@ -51,8 +68,8 @@ export const Balances = () => {
           </TableHead>
           <TableBody className={styles.tableBody}>
             {marginTokens &&
-              marginTokens.length > 0 &&
-              WALLETS.map((service, idx) => (
+              allServices &&
+              allServices.map((service, idx) => (
                 <BalancesRow
                   idx={idx}
                   name={service.service}
@@ -60,7 +77,10 @@ export const Balances = () => {
                 />
               ))}
             {(!marginTokens || marginTokens.length === 0) && (
-              <EmptyTableRow colSpan={tableHeaders.length} text="No pools" />
+              <EmptyTableRow
+                colSpan={tableHeaders.length}
+                text="No services running"
+              />
             )}
           </TableBody>
         </MuiTable>

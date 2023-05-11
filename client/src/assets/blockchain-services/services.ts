@@ -1,4 +1,4 @@
-export const WALLETS = [
+export const Services = [
   {
     service: "relayer",
     address: "0xD2F341f4FB908985d9E0e22129734c16f79AE558",

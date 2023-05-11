@@ -1,18 +1,30 @@
 import { ABK64x64ToFloat } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
+import { useAtom } from "jotai";
+import { marginTokensAtom, tokenSymbolsAtom } from "store/states.store";
 import { PerpStorage } from "types/IPerpetualManager";
+import { cutAddressName } from "utils/cutAddressName";
 import { formatNumber } from "utils/formatNumber";
 
 export const PoolFundsRow = (
   pool: PerpStorage.LiquidityPoolDataStructOutput
 ) => {
+  const [tokenSymbols] = useAtom(tokenSymbolsAtom);
+  const [marginTokens] = useAtom(marginTokensAtom);
+
   return (
     <TableRow>
       <TableCell align="right">
         <Typography variant="cellSmall">{pool.id}</Typography>
       </TableCell>
       <TableCell align="right">
-        <Typography variant="cellSmall">{"---"}</Typography>
+        <Typography variant="cellSmall">
+          {tokenSymbols && marginTokens
+            ? `${tokenSymbols[pool.id]} (${cutAddressName(
+                marginTokens[pool.id]
+              )})`
+            : "-"}
+        </Typography>
       </TableCell>
       <TableCell align="right">
         <Typography variant="cellSmall">{`${formatNumber(

@@ -1,6 +1,8 @@
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { marginTokensAtom, tokenBalancesAtom } from "store/states.store";
+import { cutAddressName } from "utils/cutAddressName";
+import { formatNumber } from "utils/formatNumber";
 
 interface BalanceProp {
   idx: number;
@@ -14,11 +16,11 @@ export function BalancesRow({ idx, name, addr }: BalanceProp) {
 
   return (
     <TableRow>
-      <TableCell align="right">
+      <TableCell align="left">
         <Typography variant="cellSmall">{name}</Typography>
       </TableCell>
-      <TableCell align="right">
-        <Typography variant="cellSmall">{addr}</Typography>
+      <TableCell align="left">
+        <Typography variant="cellSmall">{cutAddressName(addr)}</Typography>
       </TableCell>
       {/* <TableRow> */}
       {marginTokens &&
@@ -27,7 +29,7 @@ export function BalancesRow({ idx, name, addr }: BalanceProp) {
           <TableCell align="right">
             <Typography variant="cellSmall">
               {" "}
-              {`${tokenBalances[jdx][idx]}`}{" "}
+              {`${formatNumber(Number(tokenBalances[jdx][idx]), 3)}`}{" "}
             </Typography>
           </TableCell>
         ))}

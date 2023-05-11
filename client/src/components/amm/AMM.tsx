@@ -65,7 +65,7 @@ export const AMM = () => {
             {(!perpetuals || perpetuals.length === 0) && (
               <EmptyTableRow
                 colSpan={tableHeaders.length}
-                text="No perpetuals"
+                text="No active AMMs"
               />
             )}
           </TableBody>

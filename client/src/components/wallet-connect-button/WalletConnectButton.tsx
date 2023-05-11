@@ -6,7 +6,11 @@ import { Button } from "@mui/material";
 import { cutAddressName } from "utils/cutAddressName";
 
 import styles from "./WalletConnectButton.module.scss";
-import { traderAPIAtom, chainIdAtom } from "store/states.store";
+import {
+  traderAPIAtom,
+  chainIdAtom,
+  userAddressAtom,
+} from "store/states.store";
 import { useAtom } from "jotai";
 import { useAccount } from "wagmi";
 import { PerpetualDataHandler, TraderInterface } from "@d8x/perpetuals-sdk";
@@ -14,10 +18,13 @@ import { PerpetualDataHandler, TraderInterface } from "@d8x/perpetuals-sdk";
 export const WalletConnectButton = memo(() => {
   const [, setChainId] = useAtom(chainIdAtom);
   const [, setTraderAPI] = useAtom(traderAPIAtom);
+  const [, setUserAddress] = useAtom(userAddressAtom);
+
   const [isAPIConnected, setAPIConnected] = useState(false);
 
   useAccount({
     onConnect({ address, connector, isReconnected }) {
+      setUserAddress(address);
       if (connector && (!isAPIConnected || isReconnected)) {
         console.log("Wallet connected", { address, connector, isReconnected });
         connector
@@ -47,6 +54,7 @@ export const WalletConnectButton = memo(() => {
     },
     onDisconnect() {
       console.log("Disconnected");
+      setUserAddress(undefined);
       setAPIConnected(false);
       setTraderAPI(null);
     },
