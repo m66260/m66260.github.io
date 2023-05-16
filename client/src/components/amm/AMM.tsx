@@ -74,7 +74,7 @@ export const AMM = () => {
       { label: "Locked-In", align: AlignE.Left },
       { label: "Funding", align: AlignE.Left },
       { label: "Balance", align: AlignE.Left },
-      { label: "Leverage", align: AlignE.Left },
+      { label: "Locked liquidity", align: AlignE.Left },
       { label: "Long OI", align: AlignE.Left },
       { label: "Short OI", align: AlignE.Left },
     ],

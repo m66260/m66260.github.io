@@ -20,11 +20,18 @@ import { PerpFundsRow } from "./elements/PerpFundsRow";
 import { ammAccountAtom, perpetualsAtom } from "store/states.store";
 import { useAtom } from "jotai";
 
-export const PerpFunds = () => {
+interface PerpRowPropsI {
+  poolId: number;
+}
+
+export const PerpFunds = ({ poolId }: PerpRowPropsI) => {
+  const [perpetuals] = useAtom(perpetualsAtom);
+  const [amms] = useAtom(ammAccountAtom);
+
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
-      { label: "Id", align: AlignE.Left },
-      { label: "Pool", align: AlignE.Left },
+      { label: "Perpetual", align: AlignE.Left },
+      // { label: "Collateral", align: AlignE.Left },
       { label: "Index", align: AlignE.Left },
       { label: "Target DF", align: AlignE.Right },
       { label: "Target AMM", align: AlignE.Right },
@@ -36,18 +43,15 @@ export const PerpFunds = () => {
     []
   );
 
-  const [perpetuals] = useAtom(perpetualsAtom);
-  const [amms] = useAtom(ammAccountAtom);
-
   return (
     <TableContainer>
-      <TableHead className={styles.root}>
+      {/* <TableHead className={styles.root}>
         {
           <Typography variant="overline" align="inherit">
             {"Perpetuals"}
           </Typography>
         }
-      </TableHead>
+      </TableHead> */}
       <TableBody>
         <Box className={styles.root}>
           <TableContainer className={styles.root}>
@@ -70,13 +74,15 @@ export const PerpFunds = () => {
                 {perpetuals &&
                   amms &&
                   perpetuals.length > 0 &&
-                  perpetuals.map((perp, idx) => (
-                    <PerpFundsRow
-                      key={perp.id}
-                      perpetual={perp}
-                      account={amms[idx]}
-                    />
-                  ))}
+                  perpetuals
+                    .filter((perp) => perp.poolId === poolId)
+                    .map((perp, idx) => (
+                      <PerpFundsRow
+                        key={perp.id}
+                        perpetual={perp}
+                        account={amms[idx]}
+                      />
+                    ))}
                 {(!perpetuals || perpetuals.length === 0) && (
                   <EmptyTableRow
                     colSpan={tableHeaders.length}

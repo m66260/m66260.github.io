@@ -47,6 +47,28 @@ export interface ValidatedResponseI<T> {
   data: T;
 }
 
+export interface BinanceDepthI {
+  lastUpdateId: number;
+  bids: [string, string][];
+  asks: [string, string][];
+}
+
+export interface KuCoinDepthI {
+  sequence: string;
+  time: number;
+  bids: [string, string][];
+  asks: [string, string][];
+}
+
+export interface KuCoinResponseI {
+  code: string;
+  data: KuCoinDepthI;
+}
+export interface OrderBookI {
+  bids: [string, string][];
+  asks: [string, string][];
+}
+
 export interface ExchangeInfoI {
   pools: PoolI[];
   oracleFactoryAddr: string;

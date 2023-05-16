@@ -10,6 +10,9 @@ import { traderAPIAtom } from "store/states.store";
 
 import { IPerpetualManager, PerpStorage } from "types/IPerpetualManager";
 import { formatNumber } from "utils/formatNumber";
+import { getDepth as getBinanceDepth } from "cex-api/binance";
+import { getDepth as getKuCoinDepth } from "cex-api/kucoin";
+import { BinanceDepthI, KuCoinDepthI, OrderBookI } from "types/types";
 
 interface ExposurePropI {
   perpetual: PerpStorage.PerpetualDataStructOutput;
@@ -19,7 +22,12 @@ interface ExposurePropI {
 
 export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
   const [traderAPI] = useAtom(traderAPIAtom);
+
   const [numAccounts, setNumAccounts] = useState<number | undefined>(undefined);
+  const [binanceOB, setBinanceOB] = useState<BinanceDepthI | undefined>(
+    undefined
+  );
+  const [kuCoinOB, setKuCoinOB] = useState<KuCoinDepthI | undefined>(undefined);
 
   useEffect(() => {
     if (traderAPI) {
@@ -31,8 +39,18 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
     }
   }, [traderAPI, perpetual.id, setNumAccounts]);
 
+  // AMM_position + OI_long - OI_short = 0, OI = max(OI_long, OI_short)
+  // const OILong = useMemo(() => {
+  //   return amm.fPositionBC.lt(0)
+  //   ? perpetual.fOpenInterest
+  //   : perpetual.fOpenInterest.sub(amm.fPositionBC.abs())
+  // }, [perpetual]);
+
+  // const OIShort = amm.fPositionBC.add(OILong);
+
   const avgPosition = useMemo(() => {
     if (numAccounts && numAccounts > 0) {
+      // (OI_long + OI_short) / 2
       return (
         ABK64x64ToFloat(
           perpetual.fOpenInterest.mul(2).sub(amm.fPositionBC.abs())
@@ -41,15 +59,40 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
     }
   }, [numAccounts, amm.fPositionBC, perpetual.fOpenInterest]);
 
+  // const numLong = useMemo(() => {
+  //   if (numAccounts && numAccounts > 0) {
+  //     // n_long = OI_long / (OI_long + OI_short) * n
+  //     let num = Math.round(
+  //       (ABK64x64ToFloat(OILong) / ABK64x64ToFloat(OILong.add(OIShort))) *
+  //         numAccounts
+  //     );
+  //     return num > numAccounts ? numAccounts : num;
+  //   }
+  // }, [numAccounts, OILong, OIShort]);
+
+  // const numShort = useMemo(() => {
+  //   if (numAccounts && numLong && numAccounts > 0) {
+  //     return numAccounts - numLong;
+  //   }
+  // }, [numAccounts, numLong]);
+
+  const accumulatedFunding =
+    (((ABK64x64ToFloat(perpetual.fCurrentFundingRate) *
+      (Date.now() / 1000 - Number(perpetual.iLastFundingTime))) /
+      (8 * 60 * 60)) *
+      pxS2S3[0]) /
+    pxS2S3[1];
+
   const staleOracleLoss = useMemo(() => {
     const S20 = ABK64x64ToFloat(perpetual.fSettlementS2PriceData);
     const S30 = ABK64x64ToFloat(perpetual.fSettlementS3PriceData);
     const pos = ABK64x64ToFloat(amm.fPositionBC);
     const cash =
       ABK64x64ToFloat(amm.fCashCC) -
-      ABK64x64ToFloat(
+      (ABK64x64ToFloat(
         perpetual.fUnitAccumulatedFunding.sub(amm.fUnitAccumulatedFundingStart)
-      ) *
+      ) +
+        accumulatedFunding) *
         pos;
     const bal0 =
       cash + (pos * S20 - ABK64x64ToFloat(amm.fLockedInValueQC)) / S30;
@@ -57,7 +100,7 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
       cash +
       (pos * pxS2S3[0] - ABK64x64ToFloat(amm.fLockedInValueQC)) / pxS2S3[1];
     return bal1 - bal0;
-  }, [pxS2S3, perpetual, amm]);
+  }, [pxS2S3, perpetual, amm, accumulatedFunding]);
 
   const pctPnL = useCallback(
     (pct: number) => {
@@ -96,11 +139,80 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
     [pxS2S3, perpetual, amm]
   );
 
+  useEffect(() => {
+    if (traderAPI) {
+      getBinanceDepth(traderAPI.getSymbolFromPerpId(perpetual.id)!).then(
+        (depth) => {
+          if (depth) {
+            setBinanceOB(depth);
+          }
+        }
+      );
+    }
+  }, [traderAPI, perpetual.id, setBinanceOB]);
+
+  useEffect(() => {
+    if (traderAPI) {
+      getKuCoinDepth(traderAPI.getSymbolFromPerpId(perpetual.id)!).then(
+        (depth) => {
+          if (depth) {
+            console.log(depth);
+            setKuCoinOB(depth.data);
+          }
+        }
+      );
+    }
+  }, [traderAPI, perpetual.id, setKuCoinOB]);
+
+  const priceMoveCost = useCallback(
+    (pct: number, ob: OrderBookI | undefined) => {
+      if (traderAPI && ob && ob.bids && ob.asks) {
+        let costBuy = 0;
+        let costSell = 0;
+        const midPrice = 0.5 * (+ob.bids[0][0] + +ob.asks[0][0]);
+        // long
+        let found = false;
+        for (let i = 0; i < ob.asks.length; i++) {
+          costBuy += +ob.asks[i][0] * +ob.asks[i][1];
+          if (+ob.asks[i][0] / midPrice >= 1 + pct) {
+            found = true;
+            break;
+          }
+        }
+        costBuy = found ? costBuy : NaN;
+        // short
+        found = false;
+        for (let i = 0; i < ob.bids.length; i++) {
+          costSell += +ob.bids[i][0] * +ob.bids[i][1];
+          if (+ob.bids[i][0] / midPrice <= 1 - pct) {
+            found = true;
+            break;
+          }
+        }
+        costSell = found ? costSell : NaN;
+        return [costBuy, costSell];
+      }
+    },
+    [traderAPI]
+  );
+
   const onePctPnL = pctPnL(0.01);
 
-  const fivePctPnL = pctPnL(0.05);
+  // const fivePctPnL = pctPnL(0.05);
 
-  const tenPctPnL = pctPnL(0.1);
+  // const tenPctPnL = pctPnL(0.1);
+
+  const onePctBinance = useMemo(() => {
+    if (binanceOB) {
+      return priceMoveCost(0.01, binanceOB as OrderBookI);
+    }
+  }, [binanceOB, priceMoveCost]);
+
+  const onePctKuCoin = useMemo(() => {
+    if (kuCoinOB) {
+      return priceMoveCost(0.01, kuCoinOB as OrderBookI);
+    }
+  }, [kuCoinOB, priceMoveCost]);
 
   return (
     (numAccounts && numAccounts > 0 && (
@@ -130,6 +242,25 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">
+            {onePctBinance
+              ? `${formatNumber(onePctBinance[0])} / ${formatNumber(
+                  onePctBinance[1]
+                )}`
+              : "-"}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">
+            {onePctKuCoin
+              ? `${formatNumber(onePctKuCoin[0])} / ${formatNumber(
+                  onePctKuCoin[1]
+                )}`
+              : "-"}
+          </Typography>
+        </TableCell>
+
+        {/* <TableCell align="right">
+          <Typography variant="cellSmall">
             {`${formatNumber(fivePctPnL[0])} / ${formatNumber(fivePctPnL[1])}`}
           </Typography>
         </TableCell>
@@ -137,7 +268,7 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
           <Typography variant="cellSmall">
             {`${formatNumber(tenPctPnL[0])} / ${formatNumber(tenPctPnL[1])}`}
           </Typography>
-        </TableCell>
+        </TableCell> */}
       </TableRow>
     )) ||
     null

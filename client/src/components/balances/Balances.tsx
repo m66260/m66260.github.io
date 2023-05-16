@@ -66,7 +66,6 @@ export const Balances = () => {
                 address: s.address as `0x${string}`,
                 token: token.length > 0 ? (token as `0x${string}`) : undefined,
               }).then((balance) => {
-                console.log(balance);
                 return balance;
               });
             })
@@ -100,11 +99,8 @@ export const Balances = () => {
             <MuiTable>
               <TableHead className={styles.tableHead}>
                 <TableRow>
-                  {tableHeaders.map((header) => (
-                    <TableCell
-                      key={header.label.toString()}
-                      align={header.align}
-                    >
+                  {tableHeaders.map((header, idx) => (
+                    <TableCell key={idx} align={header.align}>
                       <Typography variant="bodySmall">
                         {header.label}
                       </Typography>

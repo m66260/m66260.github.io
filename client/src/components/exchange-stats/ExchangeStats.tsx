@@ -1,6 +1,6 @@
 import { Box, Container } from "@mui/material";
 
-import { PerpFunds } from "components/perp-funds/PerpFunds";
+// import { PerpFunds } from "components/perp-funds/PerpFunds";
 import { PoolFunds } from "components/pool-funds/PoolFunds";
 import { ReactComponent as RefreshIcon } from "assets/icons/refreshIcon.svg";
 import styles from "./ExchangeStats.module.scss";
@@ -29,6 +29,8 @@ export const ExchangeStats = () => {
     console.log("Reading blockchain...");
     if (traderAPI) {
       const proxy = traderAPI.getReadOnlyProxyInstance() as IPerpetualManager;
+      const proxyAddr = traderAPI.getProxyAddress();
+      console.log(`proxyAddr: ${proxyAddr}`);
       proxy
         .getLiquidityPools(1, 255)
         .then((pools) => {
@@ -43,10 +45,7 @@ export const ExchangeStats = () => {
             setMarginTokens([""].concat(res[2]));
             Promise.all(
               perpIds.map((perpId) => {
-                return proxy.getMarginAccount(
-                  perpId,
-                  traderAPI.getProxyAddress()
-                );
+                return proxy.getMarginAccount(perpId, proxyAddr);
               })
             ).then((accounts) => {
               setAMMAccounts(accounts);
@@ -64,7 +63,7 @@ export const ExchangeStats = () => {
       <Box>
         <Container className={styles.columnContainer}>
           <PoolFunds />
-          <PerpFunds />
+          {/* <PerpFunds /> */}
           <AMM />
           <Exposure />
           <Balances />

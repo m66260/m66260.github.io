@@ -21,12 +21,12 @@ import { poolsAtom } from "store/states.store";
 export const PoolFunds = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
-      { label: "Id", align: AlignE.Left },
+      { label: "Pool", align: AlignE.Left },
       { label: "Token", align: AlignE.Left },
       { label: "Target DF", align: AlignE.Right },
       { label: "Target AMM", align: AlignE.Right },
       { label: "Default Fund", align: AlignE.Right },
-      { label: "AMM Fund", align: AlignE.Right },
+      { label: "AMM Funds", align: AlignE.Right },
       { label: "PnL Fund", align: AlignE.Right },
       { label: "Total", align: AlignE.Right },
     ],
@@ -40,7 +40,7 @@ export const PoolFunds = () => {
       <TableHead className={styles.root}>
         {
           <Typography variant="overline" align="inherit">
-            Liquidity Pools
+            Liquidity
           </Typography>
         }
       </TableHead>
@@ -50,6 +50,7 @@ export const PoolFunds = () => {
             <MuiTable>
               <TableHead className={styles.tableHead}>
                 <TableRow>
+                  <TableCell />
                   {tableHeaders.map((header) => (
                     <TableCell
                       key={header.label.toString()}

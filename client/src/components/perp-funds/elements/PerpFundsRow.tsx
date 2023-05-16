@@ -26,14 +26,14 @@ export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
 
   return (
     <TableRow>
-      <TableCell align="right">
+      <TableCell align="left">
         <Typography variant="cellSmall">{perpetual.id}</Typography>
       </TableCell>
-      <TableCell align="left">
+      {/* <TableCell align="left">
         <Typography variant="cellSmall">
           {pool ? `${tokenSymbols?.[pool?.id]}` : "-"}
         </Typography>
-      </TableCell>
+      </TableCell> */}
       <TableCell align="left">
         <Typography variant="cellSmall">
           {pool && tokenSymbols
@@ -72,9 +72,11 @@ export function PerpFundsRow({ perpetual, account }: PerpFundsPropI) {
         </Typography>
       </TableCell>
       <TableCell align="right">
-        <Typography variant="cellSmall">{`${formatNumber(
-          ABK64x64ToFloat(account.fCashCC)
-        )}`}</Typography>
+        <Typography variant="cellSmall">
+          {account.fCashCC.gt(0)
+            ? `${formatNumber(ABK64x64ToFloat(account.fCashCC))}`
+            : "0"}
+        </Typography>
       </TableCell>
 
       <TableCell align="right">
