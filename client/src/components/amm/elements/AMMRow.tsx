@@ -173,7 +173,7 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
           </TableCell>
           <TableCell align="right">
             <Typography variant="cellSmall">{`${formatNumber(
-              ABDK29ToFloat(perpetual.fCurrentTraderExposureEMA)
+              ABK64x64ToFloat(perpetual.fCurrentTraderExposureEMA)
             )}`}</Typography>
           </TableCell>
         </TableRow>
