@@ -29,6 +29,7 @@ export const Exposure = () => {
     () => [
       { label: "Perpetual", align: AlignE.Left },
       { label: "Traders", align: AlignE.Left },
+      { label: "Max Long/Short", align: AlignE.Left },
       { label: "Avg Position", align: AlignE.Left },
       { label: "Stale Oracle PnL", align: AlignE.Left },
       { label: "Price move: ±1%", align: AlignE.Left },

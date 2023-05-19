@@ -66,6 +66,7 @@ export const AMM = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
       { label: "Perpetual", align: AlignE.Left },
+      { label: "Status", align: AlignE.Left },
       { label: "S2", align: AlignE.Left },
       { label: "Sm", align: AlignE.Left },
       { label: "S3", align: AlignE.Left },
@@ -77,6 +78,8 @@ export const AMM = () => {
       { label: "Locked liquidity", align: AlignE.Left },
       { label: "Long OI", align: AlignE.Left },
       { label: "Short OI", align: AlignE.Left },
+      { label: "k*", align: AlignE.Left },
+      { label: "k EWMA", align: AlignE.Left },
     ],
     []
   );

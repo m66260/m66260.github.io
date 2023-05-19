@@ -28,6 +28,8 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
     undefined
   );
   const [kuCoinOB, setKuCoinOB] = useState<KuCoinDepthI | undefined>(undefined);
+  const [maxLong, setMaxLong] = useState<number | undefined>(undefined);
+  const [maxShort, setMaxShort] = useState<number | undefined>(undefined);
 
   useEffect(() => {
     if (traderAPI) {
@@ -39,6 +41,20 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
     }
   }, [traderAPI, perpetual.id, setNumAccounts]);
 
+  useEffect(() => {
+    if (traderAPI) {
+      setMaxLong(undefined);
+      setMaxShort(undefined);
+      const proxy = traderAPI.getReadOnlyProxyInstance() as IPerpetualManager;
+      proxy
+        .getMaxSignedOpenTradeSizeForPos(perpetual.id, 0, true)
+        .then((long) => setMaxLong(ABK64x64ToFloat(long)));
+      proxy
+        .getMaxSignedOpenTradeSizeForPos(perpetual.id, 0, false)
+        .then((short) => setMaxShort(ABK64x64ToFloat(short)));
+    }
+  }, [traderAPI, perpetual.id, setMaxLong, setMaxShort]);
+
   // AMM_position + OI_long - OI_short = 0, OI = max(OI_long, OI_short)
   // const OILong = useMemo(() => {
   //   return amm.fPositionBC.lt(0)
@@ -49,13 +65,13 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
   // const OIShort = amm.fPositionBC.add(OILong);
 
   const avgPosition = useMemo(() => {
-    if (numAccounts && numAccounts > 0) {
+    if (numAccounts) {
       // (OI_long + OI_short) / 2
-      return (
-        ABK64x64ToFloat(
-          perpetual.fOpenInterest.mul(2).sub(amm.fPositionBC.abs())
-        ) / numAccounts
-      );
+      return numAccounts > 0
+        ? ABK64x64ToFloat(
+            perpetual.fOpenInterest.mul(2).sub(amm.fPositionBC.abs())
+          ) / numAccounts
+        : 0;
     }
   }, [numAccounts, amm.fPositionBC, perpetual.fOpenInterest]);
 
@@ -76,12 +92,15 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
   //   }
   // }, [numAccounts, numLong]);
 
-  const accumulatedFunding =
-    (((ABK64x64ToFloat(perpetual.fCurrentFundingRate) *
-      (Date.now() / 1000 - Number(perpetual.iLastFundingTime))) /
-      (8 * 60 * 60)) *
-      pxS2S3[0]) /
-    pxS2S3[1];
+  const accumulatedFunding = useMemo(() => {
+    return (
+      (((ABK64x64ToFloat(perpetual.fCurrentFundingRate) *
+        (Date.now() / 1000 - Number(perpetual.iLastFundingTime))) /
+        (8 * 60 * 60)) *
+        pxS2S3[0]) /
+      pxS2S3[1]
+    );
+  }, [perpetual.fCurrentFundingRate, perpetual.iLastFundingTime, pxS2S3]);
 
   const staleOracleLoss = useMemo(() => {
     const S20 = ABK64x64ToFloat(perpetual.fSettlementS2PriceData);
@@ -141,26 +160,34 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
 
   useEffect(() => {
     if (traderAPI) {
-      getBinanceDepth(traderAPI.getSymbolFromPerpId(perpetual.id)!).then(
-        (depth) => {
+      setBinanceOB(undefined);
+      getBinanceDepth(traderAPI.getSymbolFromPerpId(perpetual.id)!)
+        .then((depth) => {
           if (depth) {
             setBinanceOB(depth);
           }
-        }
-      );
+        })
+        .catch((err) => {
+          console.log(err);
+          setBinanceOB(undefined);
+        });
     }
   }, [traderAPI, perpetual.id, setBinanceOB]);
 
   useEffect(() => {
     if (traderAPI) {
-      getKuCoinDepth(traderAPI.getSymbolFromPerpId(perpetual.id)!).then(
-        (depth) => {
+      setKuCoinOB(undefined);
+      getKuCoinDepth(traderAPI.getSymbolFromPerpId(perpetual.id)!)
+        .then((depth) => {
           if (depth) {
             console.log(depth);
             setKuCoinOB(depth.data);
           }
-        }
-      );
+        })
+        .catch((err) => {
+          console.log(err);
+          setKuCoinOB(undefined);
+        });
     }
   }, [traderAPI, perpetual.id, setKuCoinOB]);
 
@@ -215,24 +242,33 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
   }, [kuCoinOB, priceMoveCost]);
 
   return (
-    (numAccounts && numAccounts > 0 && (
+    (numAccounts !== undefined && (
       <TableRow>
         <TableCell align="right">
           <Typography variant="cellSmall">{perpetual.id}</Typography>
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">
-            {numAccounts ? numAccounts : "-"}
+            {numAccounts !== undefined ? numAccounts : "-"}
           </Typography>
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">
-            {avgPosition ? `${formatNumber(avgPosition)}` : "-"}
+            {maxLong !== undefined && maxShort !== undefined
+              ? `${formatNumber(maxLong)}/${formatNumber(maxShort)}`
+              : "-"}
           </Typography>
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">
-            {staleOracleLoss ? `${formatNumber(staleOracleLoss)}` : "-"}
+            {avgPosition !== undefined ? `${formatNumber(avgPosition)}` : "-"}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">
+            {staleOracleLoss !== undefined
+              ? `${formatNumber(staleOracleLoss)}`
+              : "-"}
           </Typography>
         </TableCell>
         <TableCell align="right">
