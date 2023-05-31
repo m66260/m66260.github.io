@@ -10,6 +10,7 @@ import {
   ammAccountAtom,
   marginTokensAtom,
   perpetualsAtom,
+  poolStaticInfosAtom,
   poolsAtom,
   traderAPIAtom,
 } from "store/states.store";
@@ -24,6 +25,7 @@ export const ExchangeStats = () => {
   const [, setPerpetuals] = useAtom(perpetualsAtom);
   const [, setAMMAccounts] = useAtom(ammAccountAtom);
   const [, setMarginTokens] = useAtom(marginTokensAtom);
+  const [, setPoolStaticInfos] = useAtom(poolStaticInfosAtom);
 
   const refreshPools = useCallback(() => {
     console.log("Reading blockchain...");
@@ -38,6 +40,7 @@ export const ExchangeStats = () => {
         })
         .then(() => {
           proxy.getPoolStaticInfo(1, 255).then((res) => {
+            setPoolStaticInfos(res);
             const perpIds = res[0].flat();
             proxy.getPerpetuals(perpIds).then((perps) => {
               setPerpetuals(perps);

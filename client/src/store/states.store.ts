@@ -46,3 +46,7 @@ export const numAccountsAtom = atom(
 );
 
 export const pxS2S3Atom = atom<[number, number][] | null>(null);
+
+export const poolStaticInfosAtom = atom<
+  [number[][], string[], string[], string] | null
+>(null);
