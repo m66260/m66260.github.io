@@ -47,12 +47,11 @@ export const Balances = () => {
   );
 
   useEffect(() => {
+    setAllServices(null);
     if (userAddress) {
       setAllServices(
         [{ service: "You", address: userAddress }].concat(Services)
       );
-    } else {
-      setAllServices(null);
     }
   }, [userAddress, setAllServices]);
 

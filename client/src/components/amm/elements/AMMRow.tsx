@@ -1,10 +1,7 @@
-import {
-  ABDK29ToFloat,
-  ABK64x64ToFloat,
-  PERP_STATE_STR,
-} from "@d8x/perpetuals-sdk";
+import { ABK64x64ToFloat, PERP_STATE_STR } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
+import { useMemo } from "react";
 import { poolsAtom } from "store/states.store";
 
 import { PerpStorage } from "types/IPerpetualManager";
@@ -19,83 +16,106 @@ interface AMMPropI {
 export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
   const [pools] = useAtom(poolsAtom);
 
-  const OI1 = perpetual.fOpenInterest;
-  // if (OI1.eq(0)) {
-  //   return null;
-  // }
-  const OI2 = perpetual.fOpenInterest.sub(account.fPositionBC.abs());
-  const OILong = account.fPositionBC.gt(0) ? OI2 : OI1;
-  const OIShort = account.fPositionBC.gt(0) ? OI1 : OI2;
+  const [OIMax, OIMin] = useMemo(() => {
+    return [
+      perpetual.fOpenInterest,
+      perpetual.fOpenInterest.sub(account.fPositionBC.abs()),
+    ];
+  }, [perpetual, account]);
 
-  const S2OnChain = ABK64x64ToFloat(perpetual.fSettlementS2PriceData);
-  const S2 = pxS2S3[0]; //
-  const Sm =
-    pxS2S3[0] * (1 + ABK64x64ToFloat(perpetual.currentMarkPremiumRate.fPrice));
+  const [OILong, OIShort] = useMemo(() => {
+    return account.fPositionBC.gt(0) ? [OIMin, OIMax] : [OIMax, OIMin];
+  }, [OIMax, OIMin, account]);
 
-  const S3OnChain = ABK64x64ToFloat(perpetual.fSettlementS3PriceData);
-  const S3 = pxS2S3[1];
+  const [S2OnChain, S2, Sm] = useMemo(() => {
+    return [
+      ABK64x64ToFloat(perpetual.fSettlementS2PriceData),
+      pxS2S3[0],
+      pxS2S3[0] *
+        (1 + ABK64x64ToFloat(perpetual.currentMarkPremiumRate.fPrice)),
+    ];
+  }, [perpetual, pxS2S3]);
 
-  const accumulatedFunding =
-    (((ABK64x64ToFloat(perpetual.fCurrentFundingRate) *
-      (Date.now() / 1000 - Number(perpetual.iLastFundingTime))) /
-      (8 * 60 * 60)) *
-      S2) /
-    S3;
+  const [S3OnChain, S3] = useMemo(() => {
+    return [ABK64x64ToFloat(perpetual.fSettlementS3PriceData), pxS2S3[1]];
+  }, [perpetual, pxS2S3]);
 
-  const balance =
-    ABK64x64ToFloat(account.fCashCC) -
-    (ABK64x64ToFloat(
-      perpetual.fUnitAccumulatedFunding.sub(
-        account.fUnitAccumulatedFundingStart
-      )
-    ) +
-      accumulatedFunding) *
-      ABK64x64ToFloat(account.fPositionBC) +
-    (ABK64x64ToFloat(account.fPositionBC) * S2 -
-      ABK64x64ToFloat(account.fLockedInValueQC)) /
-      S3;
+  const accumulatedFunding = useMemo(() => {
+    return (
+      (((ABK64x64ToFloat(perpetual.fCurrentFundingRate) *
+        (Date.now() / 1000 - Number(perpetual.iLastFundingTime))) /
+        (8 * 60 * 60)) *
+        S2) /
+      S3
+    );
+  }, [perpetual, S2, S3]);
 
-  const pool = pools?.find((p) => p.id === perpetual.poolId);
-  const lpWeight =
-    pool && pool.fFundAllocationNormalizationCC.gt(0)
-      ? ABK64x64ToFloat(perpetual.fFundAllocationWeightCC) /
-        ABK64x64ToFloat(pool.fFundAllocationNormalizationCC)
-      : 0;
-  // const poolCash = pool
-  //   ? lpWeight * ABK64x64ToFloat(pool.fPnLparticipantsCashCC)
-  //   : 0;
+  const balance = useMemo(() => {
+    return (
+      ABK64x64ToFloat(account.fCashCC) -
+      (ABK64x64ToFloat(
+        perpetual.fUnitAccumulatedFunding.sub(
+          account.fUnitAccumulatedFundingStart
+        )
+      ) +
+        accumulatedFunding) *
+        ABK64x64ToFloat(account.fPositionBC) +
+      (ABK64x64ToFloat(account.fPositionBC) * S2 -
+        ABK64x64ToFloat(account.fLockedInValueQC)) /
+        S3
+    );
+  }, [S2, S3, accumulatedFunding, perpetual, account]);
 
-  // const totalBalance =
-  //   balance + ABK64x64ToFloat(perpetual.fAMMFundCashCC) + poolCash;
+  const pool = useMemo(() => {
+    if (pools) {
+      return pools.find((p) => p.id === perpetual.poolId);
+    }
+  }, [pools, perpetual.poolId]);
 
-  let poolUtilization: number;
+  let poolCash = useMemo(() => {
+    if (!pool || !perpetual) {
+      return;
+    }
+    return pool.fTargetAMMFundSize.lte(pool.fPnLparticipantsCashCC)
+      ? ABK64x64ToFloat(perpetual.fTargetAMMFundSize)
+      : (ABK64x64ToFloat(perpetual.fTargetAMMFundSize) *
+          ABK64x64ToFloat(pool.fPnLparticipantsCashCC)) /
+          ABK64x64ToFloat(pool.fTargetAMMFundSize);
+  }, [pool, perpetual]);
 
   const posValue = ABK64x64ToFloat(account.fPositionBC.abs()) * (Sm / S3);
 
   // cash locked because AMM made a loss
-  let lockedCash =
-    ABK64x64ToFloat(perpetual.fInitialMarginRate) * posValue - balance; // (balance + x) / posValue = m_r -> x = m_r * posValue - balance
-  // cash locked because the AMM account needs positive cash
-  lockedCash = account.fCashCC.gt(0)
-    ? Math.max(lockedCash, ABK64x64ToFloat(account.fCashCC))
-    : lockedCash;
+  const lockedCash = useMemo(() => {
+    if (!poolCash) {
+      return;
+    }
+    let cash =
+      ABK64x64ToFloat(perpetual.fInitialMarginRate) * posValue - balance; // (balance + x) / posValue = m_r -> x = m_r * posValue - balance
+    // cash locked because the AMM account needs positive cash
+    return account.fCashCC.gt(0)
+      ? Math.max(cash, ABK64x64ToFloat(account.fCashCC))
+      : cash;
+  }, [poolCash, posValue, balance, perpetual, account]);
 
-  if (lockedCash <= 0) {
-    poolUtilization = 0;
-    lockedCash = 0;
-  } else {
-    const poolCash = pool
-      ? lpWeight * ABK64x64ToFloat(pool.fPnLparticipantsCashCC)
-      : 0;
-    poolUtilization =
-      lockedCash / (ABK64x64ToFloat(perpetual.fAMMFundCashCC) + poolCash);
-  }
+  const poolUtilization = useMemo(() => {
+    if (!lockedCash || !poolCash) {
+      return;
+    }
+    if (lockedCash <= 0) {
+      return 0;
+    } else {
+      return lockedCash / poolCash;
+    }
+  }, [lockedCash, poolCash]);
 
   return (
     (account &&
       OILong !== undefined &&
       OIShort !== undefined &&
-      balance !== undefined && (
+      balance !== undefined &&
+      lockedCash !== undefined &&
+      poolUtilization !== undefined && (
         <TableRow>
           <TableCell align="right">
             <Typography variant="cellSmall">{perpetual.id}</Typography>

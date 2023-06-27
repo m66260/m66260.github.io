@@ -35,7 +35,6 @@ export const PerpFunds = ({ poolId }: PerpRowPropsI) => {
       { label: "Index", align: AlignE.Left },
       { label: "Target DF", align: AlignE.Right },
       { label: "Target AMM", align: AlignE.Right },
-      { label: "AMM Fund", align: AlignE.Right },
       { label: "PnL Fund", align: AlignE.Right },
       { label: "AMM Margin", align: AlignE.Right },
       { label: "Total", align: AlignE.Right },

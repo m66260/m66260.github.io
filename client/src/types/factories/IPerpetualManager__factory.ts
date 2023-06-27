@@ -250,12 +250,6 @@ const _abi = [
       {
         indexed: false,
         internalType: "int128",
-        name: "fMaxTransferPerConvergencePeriod",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
         name: "fBrokerCollateralLotSize",
         type: "int128",
       },
@@ -367,9 +361,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int128[13]",
+        internalType: "int128[12]",
         name: "defaultFundRiskParams",
-        type: "int128[13]",
+        type: "int128[12]",
       },
       {
         indexed: false,
@@ -657,9 +651,9 @@ const _abi = [
       },
       {
         indexed: false,
-        internalType: "int128[13]",
+        internalType: "int128[12]",
         name: "defaultFundRiskParams",
-        type: "int128[13]",
+        type: "int128[12]",
       },
     ],
     name: "SetPerpetualRiskParameters",
@@ -958,6 +952,12 @@ const _abi = [
         name: "fPnlCC",
         type: "int128",
       },
+      {
+        indexed: false,
+        internalType: "int128",
+        name: "fB2C",
+        type: "int128",
+      },
     ],
     name: "Trade",
     type: "event",
@@ -1078,31 +1078,6 @@ const _abi = [
         type: "uint24",
       },
       {
-        indexed: false,
-        internalType: "int128",
-        name: "fNewAMMFundCash",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fNewLiqPoolTotalAMMFundsCash",
-        type: "int128",
-      },
-    ],
-    name: "UpdateAMMFundCash",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint24",
-        name: "perpetualId",
-        type: "uint24",
-      },
-      {
         indexed: true,
         internalType: "uint8",
         name: "liquidityPoolId",
@@ -1111,19 +1086,7 @@ const _abi = [
       {
         indexed: false,
         internalType: "int128",
-        name: "fAMMFundCashCCInPerpetual",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
         name: "fTargetAMMFundSizeInPerpetual",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fAMMFundCashCCInPool",
         type: "int128",
       },
       {
@@ -1400,24 +1363,6 @@ const _abi = [
       },
     ],
     name: "activatePerpetual",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint24",
-        name: "_iPerpetualId",
-        type: "uint24",
-      },
-      {
-        internalType: "int128",
-        name: "_fTokenAmount",
-        type: "int128",
-      },
-    ],
-    name: "addAMMLiquidityToPerpetual",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1905,12 +1850,12 @@ const _abi = [
       },
       {
         internalType: "int128",
-        name: "_fMaxTransferPerConvergencePeriod",
+        name: "_fBrokerCollateralLotSize",
         type: "int128",
       },
       {
         internalType: "int128",
-        name: "_fBrokerCollateralLotSize",
+        name: "_fCeilPnLShare",
         type: "int128",
       },
     ],
@@ -1953,9 +1898,9 @@ const _abi = [
         type: "int128[5]",
       },
       {
-        internalType: "int128[13]",
+        internalType: "int128[12]",
         name: "_defaultFundRiskParams",
-        type: "int128[13]",
+        type: "int128[12]",
       },
       {
         internalType: "uint256",
@@ -2854,6 +2799,16 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "int32",
+            name: "fCeilPnLShare",
+            type: "int32",
+          },
+          {
+            internalType: "uint8",
+            name: "marginTokenDecimals",
+            type: "uint8",
+          },
+          {
             internalType: "uint16",
             name: "iTargetPoolSizeUpdateTime",
             type: "uint16",
@@ -2862,16 +2817,6 @@ const _abi = [
             internalType: "address",
             name: "marginTokenAddress",
             type: "address",
-          },
-          {
-            internalType: "int128",
-            name: "fFundAllocationNormalizationCC",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fDefaultFundCashCC",
-            type: "int128",
           },
           {
             internalType: "uint64",
@@ -2895,22 +2840,17 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fAMMFundCashCC",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
             name: "fTargetAMMFundSize",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fTargetDFSize",
+            name: "fDefaultFundCashCC",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fMaxTransferPerConvergencePeriod",
+            name: "fTargetDFSize",
             type: "int128",
           },
           {
@@ -2975,6 +2915,16 @@ const _abi = [
             type: "uint8",
           },
           {
+            internalType: "int32",
+            name: "fCeilPnLShare",
+            type: "int32",
+          },
+          {
+            internalType: "uint8",
+            name: "marginTokenDecimals",
+            type: "uint8",
+          },
+          {
             internalType: "uint16",
             name: "iTargetPoolSizeUpdateTime",
             type: "uint16",
@@ -2983,16 +2933,6 @@ const _abi = [
             internalType: "address",
             name: "marginTokenAddress",
             type: "address",
-          },
-          {
-            internalType: "int128",
-            name: "fFundAllocationNormalizationCC",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fDefaultFundCashCC",
-            type: "int128",
           },
           {
             internalType: "uint64",
@@ -3016,22 +2956,17 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fAMMFundCashCC",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
             name: "fTargetAMMFundSize",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fTargetDFSize",
+            name: "fDefaultFundCashCC",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fMaxTransferPerConvergencePeriod",
+            name: "fTargetDFSize",
             type: "int128",
           },
           {
@@ -3294,11 +3229,6 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint32",
-            name: "iLastDefaultFundTransfer",
-            type: "uint32",
-          },
-          {
             internalType: "int32",
             name: "fMaintenanceMarginRate",
             type: "int32",
@@ -3324,14 +3254,14 @@ const _abi = [
             type: "bytes4",
           },
           {
-            internalType: "uint16",
-            name: "incentiveSpreadTbps",
-            type: "uint16",
-          },
-          {
             internalType: "bytes4",
             name: "S2QuoteCCY",
             type: "bytes4",
+          },
+          {
+            internalType: "uint16",
+            name: "incentiveSpreadTbps",
+            type: "uint16",
           },
           {
             internalType: "uint16",
@@ -3344,11 +3274,6 @@ const _abi = [
             type: "bytes4",
           },
           {
-            internalType: "uint16",
-            name: "liquidationPenaltyRateTbps",
-            type: "uint16",
-          },
-          {
             internalType: "bytes4",
             name: "S3QuoteCCY",
             type: "bytes4",
@@ -3357,6 +3282,16 @@ const _abi = [
             internalType: "int32",
             name: "fSigma3",
             type: "int32",
+          },
+          {
+            internalType: "int32",
+            name: "fRho23",
+            type: "int32",
+          },
+          {
+            internalType: "uint16",
+            name: "liquidationPenaltyRateTbps",
+            type: "uint16",
           },
           {
             components: [
@@ -3376,43 +3311,13 @@ const _abi = [
             type: "tuple",
           },
           {
-            internalType: "int128[2]",
-            name: "fStressReturnS3",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fDFLambda",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fCurrentAMMExposureEMA",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fAMMTargetDD",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fStressReturnS2",
-            type: "int128[2]",
-          },
-          {
             internalType: "int128",
             name: "premiumRatesEMA",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fTargetDFSize",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fFundAllocationWeightCC",
+            name: "fUnitAccumulatedFunding",
             type: "int128",
           },
           {
@@ -3437,12 +3342,17 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fUnitAccumulatedFunding",
+            name: "fLotSizeBC",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fLotSizeBC",
+            name: "fReferralRebateCC",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "fTargetDFSize",
             type: "int128",
           },
           {
@@ -3452,12 +3362,12 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fAMMFundCashCC",
+            name: "fAMMTargetDD",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fSettlementS3PriceData",
+            name: "fAMMMinSizeCC",
             type: "int128",
           },
           {
@@ -3472,17 +3382,7 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fAMMMinSizeCC",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fTotalMarginBalance",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fReferralRebateCC",
+            name: "fSettlementS3PriceData",
             type: "int128",
           },
           {
@@ -3491,9 +3391,9 @@ const _abi = [
             type: "int128",
           },
           {
-            internalType: "uint32",
-            name: "iLastTargetPoolSizeTime",
-            type: "uint32",
+            internalType: "int128",
+            name: "fTotalMarginBalance",
+            type: "int128",
           },
           {
             internalType: "int32",
@@ -3511,14 +3411,34 @@ const _abi = [
             type: "int32",
           },
           {
-            internalType: "int32",
-            name: "fRho23",
-            type: "int32",
+            internalType: "uint32",
+            name: "iLastTargetPoolSizeTime",
+            type: "uint32",
           },
           {
             internalType: "int32",
             name: "fDFCoverNRate",
             type: "int32",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fStressReturnS3",
+            type: "int128[2]",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fDFLambda",
+            type: "int128[2]",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fCurrentAMMExposureEMA",
+            type: "int128[2]",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fStressReturnS2",
+            type: "int128[2]",
           },
         ],
         internalType: "struct PerpStorage.PerpetualData",
@@ -3711,11 +3631,6 @@ const _abi = [
             type: "uint32",
           },
           {
-            internalType: "uint32",
-            name: "iLastDefaultFundTransfer",
-            type: "uint32",
-          },
-          {
             internalType: "int32",
             name: "fMaintenanceMarginRate",
             type: "int32",
@@ -3741,14 +3656,14 @@ const _abi = [
             type: "bytes4",
           },
           {
-            internalType: "uint16",
-            name: "incentiveSpreadTbps",
-            type: "uint16",
-          },
-          {
             internalType: "bytes4",
             name: "S2QuoteCCY",
             type: "bytes4",
+          },
+          {
+            internalType: "uint16",
+            name: "incentiveSpreadTbps",
+            type: "uint16",
           },
           {
             internalType: "uint16",
@@ -3761,11 +3676,6 @@ const _abi = [
             type: "bytes4",
           },
           {
-            internalType: "uint16",
-            name: "liquidationPenaltyRateTbps",
-            type: "uint16",
-          },
-          {
             internalType: "bytes4",
             name: "S3QuoteCCY",
             type: "bytes4",
@@ -3774,6 +3684,16 @@ const _abi = [
             internalType: "int32",
             name: "fSigma3",
             type: "int32",
+          },
+          {
+            internalType: "int32",
+            name: "fRho23",
+            type: "int32",
+          },
+          {
+            internalType: "uint16",
+            name: "liquidationPenaltyRateTbps",
+            type: "uint16",
           },
           {
             components: [
@@ -3793,43 +3713,13 @@ const _abi = [
             type: "tuple",
           },
           {
-            internalType: "int128[2]",
-            name: "fStressReturnS3",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fDFLambda",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fCurrentAMMExposureEMA",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fAMMTargetDD",
-            type: "int128[2]",
-          },
-          {
-            internalType: "int128[2]",
-            name: "fStressReturnS2",
-            type: "int128[2]",
-          },
-          {
             internalType: "int128",
             name: "premiumRatesEMA",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fTargetDFSize",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fFundAllocationWeightCC",
+            name: "fUnitAccumulatedFunding",
             type: "int128",
           },
           {
@@ -3854,12 +3744,17 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fUnitAccumulatedFunding",
+            name: "fLotSizeBC",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fLotSizeBC",
+            name: "fReferralRebateCC",
+            type: "int128",
+          },
+          {
+            internalType: "int128",
+            name: "fTargetDFSize",
             type: "int128",
           },
           {
@@ -3869,12 +3764,12 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fAMMFundCashCC",
+            name: "fAMMTargetDD",
             type: "int128",
           },
           {
             internalType: "int128",
-            name: "fSettlementS3PriceData",
+            name: "fAMMMinSizeCC",
             type: "int128",
           },
           {
@@ -3889,17 +3784,7 @@ const _abi = [
           },
           {
             internalType: "int128",
-            name: "fAMMMinSizeCC",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fTotalMarginBalance",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fReferralRebateCC",
+            name: "fSettlementS3PriceData",
             type: "int128",
           },
           {
@@ -3908,9 +3793,9 @@ const _abi = [
             type: "int128",
           },
           {
-            internalType: "uint32",
-            name: "iLastTargetPoolSizeTime",
-            type: "uint32",
+            internalType: "int128",
+            name: "fTotalMarginBalance",
+            type: "int128",
           },
           {
             internalType: "int32",
@@ -3928,14 +3813,34 @@ const _abi = [
             type: "int32",
           },
           {
-            internalType: "int32",
-            name: "fRho23",
-            type: "int32",
+            internalType: "uint32",
+            name: "iLastTargetPoolSizeTime",
+            type: "uint32",
           },
           {
             internalType: "int32",
             name: "fDFCoverNRate",
             type: "int32",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fStressReturnS3",
+            type: "int128[2]",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fDFLambda",
+            type: "int128[2]",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fCurrentAMMExposureEMA",
+            type: "int128[2]",
+          },
+          {
+            internalType: "int128[2]",
+            name: "fStressReturnS2",
+            type: "int128[2]",
           },
         ],
         internalType: "struct PerpStorage.PerpetualData[]",
@@ -5058,19 +4963,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint24",
-        name: "_iPerpetualId",
-        type: "uint24",
-      },
-    ],
-    name: "setInitialFundAllocationWeight",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint8",
         name: "_poolId",
         type: "uint8",
@@ -5266,9 +5158,9 @@ const _abi = [
         type: "int128[5]",
       },
       {
-        internalType: "int128[13]",
+        internalType: "int128[12]",
         name: "_defaultFundRiskParams",
-        type: "int128[13]",
+        type: "int128[12]",
       },
     ],
     name: "setPerpetualRiskParams",
@@ -5514,6 +5406,11 @@ const _abi = [
         name: "_order",
         type: "tuple",
       },
+      {
+        internalType: "bool",
+        name: "_isApprovedExecutor",
+        type: "bool",
+      },
     ],
     name: "tradeViaOrderBook",
     outputs: [
@@ -5604,11 +5501,6 @@ const _abi = [
         internalType: "uint24",
         name: "_iPerpetualId",
         type: "uint24",
-      },
-      {
-        internalType: "int128",
-        name: "fTargetFundSize",
-        type: "int128",
       },
     ],
     name: "updateAMMTargetFundSize",

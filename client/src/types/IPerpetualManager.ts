@@ -133,18 +133,17 @@ export declare namespace PerpStorage {
     isRunning: PromiseOrValue<boolean>;
     iPerpetualCount: PromiseOrValue<BigNumberish>;
     id: PromiseOrValue<BigNumberish>;
+    fCeilPnLShare: PromiseOrValue<BigNumberish>;
+    marginTokenDecimals: PromiseOrValue<BigNumberish>;
     iTargetPoolSizeUpdateTime: PromiseOrValue<BigNumberish>;
     marginTokenAddress: PromiseOrValue<string>;
-    fFundAllocationNormalizationCC: PromiseOrValue<BigNumberish>;
-    fDefaultFundCashCC: PromiseOrValue<BigNumberish>;
     prevAnchor: PromiseOrValue<BigNumberish>;
     fRedemptionRate: PromiseOrValue<BigNumberish>;
     shareTokenAddress: PromiseOrValue<string>;
     fPnLparticipantsCashCC: PromiseOrValue<BigNumberish>;
-    fAMMFundCashCC: PromiseOrValue<BigNumberish>;
     fTargetAMMFundSize: PromiseOrValue<BigNumberish>;
+    fDefaultFundCashCC: PromiseOrValue<BigNumberish>;
     fTargetDFSize: PromiseOrValue<BigNumberish>;
-    fMaxTransferPerConvergencePeriod: PromiseOrValue<BigNumberish>;
     fBrokerCollateralLotSize: PromiseOrValue<BigNumberish>;
     prevTokenAmount: PromiseOrValue<BigNumberish>;
     nextTokenAmount: PromiseOrValue<BigNumberish>;
@@ -156,13 +155,12 @@ export declare namespace PerpStorage {
     number,
     number,
     number,
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
+    number,
     number,
     string,
     BigNumber,
+    number,
+    string,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -175,18 +173,17 @@ export declare namespace PerpStorage {
     isRunning: boolean;
     iPerpetualCount: number;
     id: number;
+    fCeilPnLShare: number;
+    marginTokenDecimals: number;
     iTargetPoolSizeUpdateTime: number;
     marginTokenAddress: string;
-    fFundAllocationNormalizationCC: BigNumber;
-    fDefaultFundCashCC: BigNumber;
     prevAnchor: BigNumber;
     fRedemptionRate: number;
     shareTokenAddress: string;
     fPnLparticipantsCashCC: BigNumber;
-    fAMMFundCashCC: BigNumber;
     fTargetAMMFundSize: BigNumber;
+    fDefaultFundCashCC: BigNumber;
     fTargetDFSize: BigNumber;
-    fMaxTransferPerConvergencePeriod: BigNumber;
     fBrokerCollateralLotSize: BigNumber;
     prevTokenAmount: BigNumber;
     nextTokenAmount: BigNumber;
@@ -242,20 +239,42 @@ export declare namespace PerpStorage {
     iLastFundingTime: PromiseOrValue<BigNumberish>;
     iLastSettlementPriceUpdateTimestamp: PromiseOrValue<BigNumberish>;
     iLastPriceJumpTimestamp: PromiseOrValue<BigNumberish>;
-    iLastDefaultFundTransfer: PromiseOrValue<BigNumberish>;
     fMaintenanceMarginRate: PromiseOrValue<BigNumberish>;
     state: PromiseOrValue<BigNumberish>;
     eCollateralCurrency: PromiseOrValue<BigNumberish>;
     minimalSpreadTbps: PromiseOrValue<BigNumberish>;
     S2BaseCCY: PromiseOrValue<BytesLike>;
-    incentiveSpreadTbps: PromiseOrValue<BigNumberish>;
     S2QuoteCCY: PromiseOrValue<BytesLike>;
+    incentiveSpreadTbps: PromiseOrValue<BigNumberish>;
     jumpSpreadTbps: PromiseOrValue<BigNumberish>;
     S3BaseCCY: PromiseOrValue<BytesLike>;
-    liquidationPenaltyRateTbps: PromiseOrValue<BigNumberish>;
     S3QuoteCCY: PromiseOrValue<BytesLike>;
     fSigma3: PromiseOrValue<BigNumberish>;
+    fRho23: PromiseOrValue<BigNumberish>;
+    liquidationPenaltyRateTbps: PromiseOrValue<BigNumberish>;
     currentMarkPremiumRate: PerpStorage.PriceTimeDataStruct;
+    premiumRatesEMA: PromiseOrValue<BigNumberish>;
+    fUnitAccumulatedFunding: PromiseOrValue<BigNumberish>;
+    fOpenInterest: PromiseOrValue<BigNumberish>;
+    fTargetAMMFundSize: PromiseOrValue<BigNumberish>;
+    fCurrentTraderExposureEMA: PromiseOrValue<BigNumberish>;
+    fCurrentFundingRate: PromiseOrValue<BigNumberish>;
+    fLotSizeBC: PromiseOrValue<BigNumberish>;
+    fReferralRebateCC: PromiseOrValue<BigNumberish>;
+    fTargetDFSize: PromiseOrValue<BigNumberish>;
+    fkStar: PromiseOrValue<BigNumberish>;
+    fAMMTargetDD: PromiseOrValue<BigNumberish>;
+    fAMMMinSizeCC: PromiseOrValue<BigNumberish>;
+    fMinimalTraderExposureEMA: PromiseOrValue<BigNumberish>;
+    fMinimalAMMExposureEMA: PromiseOrValue<BigNumberish>;
+    fSettlementS3PriceData: PromiseOrValue<BigNumberish>;
+    fSettlementS2PriceData: PromiseOrValue<BigNumberish>;
+    fTotalMarginBalance: PromiseOrValue<BigNumberish>;
+    fMarkPriceEMALambda: PromiseOrValue<BigNumberish>;
+    fFundingRateClamp: PromiseOrValue<BigNumberish>;
+    fMaximalTradeSizeBumpUp: PromiseOrValue<BigNumberish>;
+    iLastTargetPoolSizeTime: PromiseOrValue<BigNumberish>;
+    fDFCoverNRate: PromiseOrValue<BigNumberish>;
     fStressReturnS3: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
@@ -265,35 +284,10 @@ export declare namespace PerpStorage {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ];
-    fAMMTargetDD: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>];
     fStressReturnS2: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ];
-    premiumRatesEMA: PromiseOrValue<BigNumberish>;
-    fTargetDFSize: PromiseOrValue<BigNumberish>;
-    fFundAllocationWeightCC: PromiseOrValue<BigNumberish>;
-    fOpenInterest: PromiseOrValue<BigNumberish>;
-    fTargetAMMFundSize: PromiseOrValue<BigNumberish>;
-    fCurrentTraderExposureEMA: PromiseOrValue<BigNumberish>;
-    fCurrentFundingRate: PromiseOrValue<BigNumberish>;
-    fUnitAccumulatedFunding: PromiseOrValue<BigNumberish>;
-    fLotSizeBC: PromiseOrValue<BigNumberish>;
-    fkStar: PromiseOrValue<BigNumberish>;
-    fAMMFundCashCC: PromiseOrValue<BigNumberish>;
-    fSettlementS3PriceData: PromiseOrValue<BigNumberish>;
-    fMinimalTraderExposureEMA: PromiseOrValue<BigNumberish>;
-    fMinimalAMMExposureEMA: PromiseOrValue<BigNumberish>;
-    fAMMMinSizeCC: PromiseOrValue<BigNumberish>;
-    fTotalMarginBalance: PromiseOrValue<BigNumberish>;
-    fReferralRebateCC: PromiseOrValue<BigNumberish>;
-    fSettlementS2PriceData: PromiseOrValue<BigNumberish>;
-    iLastTargetPoolSizeTime: PromiseOrValue<BigNumberish>;
-    fMarkPriceEMALambda: PromiseOrValue<BigNumberish>;
-    fFundingRateClamp: PromiseOrValue<BigNumberish>;
-    fMaximalTradeSizeBumpUp: PromiseOrValue<BigNumberish>;
-    fRho23: PromiseOrValue<BigNumberish>;
-    fDFCoverNRate: PromiseOrValue<BigNumberish>;
   };
 
   export type PerpetualDataStructOutput = [
@@ -308,22 +302,16 @@ export declare namespace PerpStorage {
     number,
     number,
     number,
-    number,
+    string,
     string,
     number,
-    string,
     number,
     string,
-    number,
     string,
+    number,
+    number,
     number,
     PerpStorage.PriceTimeDataStructOutput,
-    [BigNumber, BigNumber],
-    [BigNumber, BigNumber],
-    [BigNumber, BigNumber],
-    [BigNumber, BigNumber],
-    [BigNumber, BigNumber],
-    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -346,7 +334,10 @@ export declare namespace PerpStorage {
     number,
     number,
     number,
-    number
+    [BigNumber, BigNumber],
+    [BigNumber, BigNumber],
+    [BigNumber, BigNumber],
+    [BigNumber, BigNumber]
   ] & {
     poolId: number;
     id: number;
@@ -355,49 +346,46 @@ export declare namespace PerpStorage {
     iLastFundingTime: number;
     iLastSettlementPriceUpdateTimestamp: number;
     iLastPriceJumpTimestamp: number;
-    iLastDefaultFundTransfer: number;
     fMaintenanceMarginRate: number;
     state: number;
     eCollateralCurrency: number;
     minimalSpreadTbps: number;
     S2BaseCCY: string;
-    incentiveSpreadTbps: number;
     S2QuoteCCY: string;
+    incentiveSpreadTbps: number;
     jumpSpreadTbps: number;
     S3BaseCCY: string;
-    liquidationPenaltyRateTbps: number;
     S3QuoteCCY: string;
     fSigma3: number;
+    fRho23: number;
+    liquidationPenaltyRateTbps: number;
     currentMarkPremiumRate: PerpStorage.PriceTimeDataStructOutput;
-    fStressReturnS3: [BigNumber, BigNumber];
-    fDFLambda: [BigNumber, BigNumber];
-    fCurrentAMMExposureEMA: [BigNumber, BigNumber];
-    fAMMTargetDD: [BigNumber, BigNumber];
-    fStressReturnS2: [BigNumber, BigNumber];
     premiumRatesEMA: BigNumber;
-    fTargetDFSize: BigNumber;
-    fFundAllocationWeightCC: BigNumber;
+    fUnitAccumulatedFunding: BigNumber;
     fOpenInterest: BigNumber;
     fTargetAMMFundSize: BigNumber;
     fCurrentTraderExposureEMA: BigNumber;
     fCurrentFundingRate: BigNumber;
-    fUnitAccumulatedFunding: BigNumber;
     fLotSizeBC: BigNumber;
+    fReferralRebateCC: BigNumber;
+    fTargetDFSize: BigNumber;
     fkStar: BigNumber;
-    fAMMFundCashCC: BigNumber;
-    fSettlementS3PriceData: BigNumber;
+    fAMMTargetDD: BigNumber;
+    fAMMMinSizeCC: BigNumber;
     fMinimalTraderExposureEMA: BigNumber;
     fMinimalAMMExposureEMA: BigNumber;
-    fAMMMinSizeCC: BigNumber;
-    fTotalMarginBalance: BigNumber;
-    fReferralRebateCC: BigNumber;
+    fSettlementS3PriceData: BigNumber;
     fSettlementS2PriceData: BigNumber;
-    iLastTargetPoolSizeTime: number;
+    fTotalMarginBalance: BigNumber;
     fMarkPriceEMALambda: number;
     fFundingRateClamp: number;
     fMaximalTradeSizeBumpUp: number;
-    fRho23: number;
+    iLastTargetPoolSizeTime: number;
     fDFCoverNRate: number;
+    fStressReturnS3: [BigNumber, BigNumber];
+    fDFLambda: [BigNumber, BigNumber];
+    fCurrentAMMExposureEMA: [BigNumber, BigNumber];
+    fStressReturnS2: [BigNumber, BigNumber];
   };
 }
 
@@ -469,7 +457,6 @@ export declare namespace IPerpetualTreasury {
 export interface IPerpetualManagerInterface extends utils.Interface {
   functions: {
     "activatePerpetual(uint24)": FunctionFragment;
-    "addAMMLiquidityToPerpetual(uint24,int128)": FunctionFragment;
     "addLiquidity(uint8,uint256)": FunctionFragment;
     "adjustSettlementPrice(uint24,int128,int128)": FunctionFragment;
     "brokerDepositToDefaultFund(uint8,uint32)": FunctionFragment;
@@ -480,7 +467,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "chargePostingFee((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),uint16)": FunctionFragment;
     "countActivePerpAccounts(uint24)": FunctionFragment;
     "createLiquidityPool(address,uint16,int128,int128)": FunctionFragment;
-    "createPerpetual(uint8,bytes4[2],bytes4[2],int128[7],int128[5],int128[13],uint256)": FunctionFragment;
+    "createPerpetual(uint8,bytes4[2],bytes4[2],int128[7],int128[5],int128[12],uint256)": FunctionFragment;
     "decreasePoolCash(uint8,int128)": FunctionFragment;
     "deposit(uint24,int128,bytes[],uint64[])": FunctionFragment;
     "depositMarginForOpeningTrade(uint24,int128,(uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
@@ -560,7 +547,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "setBrokerVolumeTiers(uint256[],uint16[])": FunctionFragment;
     "setEmergencyState(uint24)": FunctionFragment;
     "setFeesForDesignation(uint32[],uint16[])": FunctionFragment;
-    "setInitialFundAllocationWeight(uint24)": FunctionFragment;
     "setInitialVolumeForFee(uint8,address,uint16)": FunctionFragment;
     "setNormalState(uint24)": FunctionFragment;
     "setOracleFactory(address)": FunctionFragment;
@@ -571,7 +557,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "setPerpetualParam(uint24,string,int128)": FunctionFragment;
     "setPerpetualParamPair(uint24,string,int128,int128)": FunctionFragment;
     "setPerpetualPoolFactory(address)": FunctionFragment;
-    "setPerpetualRiskParams(uint24,int128[5],int128[13])": FunctionFragment;
+    "setPerpetualRiskParams(uint24,int128[5],int128[12])": FunctionFragment;
     "setPoolParam(uint8,string,int128)": FunctionFragment;
     "setTraderTiers(uint256[],uint16[])": FunctionFragment;
     "setTraderVolumeTiers(uint256[],uint16[])": FunctionFragment;
@@ -581,12 +567,12 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "settleNextTraderInPool(uint8)": FunctionFragment;
     "splitProtocolFee(uint16)": FunctionFragment;
     "togglePerpEmergencyState(uint24)": FunctionFragment;
-    "tradeViaOrderBook((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
+    "tradeViaOrderBook((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),bool)": FunctionFragment;
     "transferBrokerLots(uint8,address,uint32)": FunctionFragment;
     "transferBrokerOwnership(uint8,address)": FunctionFragment;
     "transferEarningsToTreasury(uint8,int128)": FunctionFragment;
     "transferValueToTreasury()": FunctionFragment;
-    "updateAMMTargetFundSize(uint24,int128)": FunctionFragment;
+    "updateAMMTargetFundSize(uint24)": FunctionFragment;
     "updateDefaultFundTargetSize(uint24)": FunctionFragment;
     "updateDefaultFundTargetSizeRandom(uint8)": FunctionFragment;
     "updateFundingAndPricesAfter(uint24,uint24)": FunctionFragment;
@@ -605,7 +591,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "activatePerpetual"
-      | "addAMMLiquidityToPerpetual"
       | "addLiquidity"
       | "adjustSettlementPrice"
       | "brokerDepositToDefaultFund"
@@ -696,7 +681,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "setBrokerVolumeTiers"
       | "setEmergencyState"
       | "setFeesForDesignation"
-      | "setInitialFundAllocationWeight"
       | "setInitialVolumeForFee"
       | "setNormalState"
       | "setOracleFactory"
@@ -741,10 +725,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "activatePerpetual",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "addAMMLiquidityToPerpetual",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "addLiquidity",
@@ -1241,10 +1221,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "setInitialFundAllocationWeight",
-    values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "setInitialVolumeForFee",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -1357,7 +1333,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "tradeViaOrderBook",
-    values: [IPerpetualOrder.OrderStruct]
+    values: [IPerpetualOrder.OrderStruct, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "transferBrokerLots",
@@ -1381,7 +1357,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateAMMTargetFundSize",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "updateDefaultFundTargetSize",
@@ -1466,10 +1442,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
 
   decodeFunctionResult(
     functionFragment: "activatePerpetual",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "addAMMLiquidityToPerpetual",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1824,10 +1796,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "setInitialFundAllocationWeight",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "setInitialVolumeForFee",
     data: BytesLike
   ): Result;
@@ -1985,11 +1953,11 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "DistributeFees(uint8,uint24,address,int128,int128)": EventFragment;
     "Liquidate(uint24,address,address,bytes16,int128,int128,int128,int128,int128)": EventFragment;
     "LiquidityAdded(uint64,address,uint256,uint256)": EventFragment;
-    "LiquidityPoolCreated(uint8,address,address,uint16,int128,int128)": EventFragment;
+    "LiquidityPoolCreated(uint8,address,address,uint16,int128)": EventFragment;
     "LiquidityProvisionPaused(bool,uint8)": EventFragment;
     "LiquidityRemoved(uint64,address,uint256,uint256)": EventFragment;
     "LiquidityWithdrawalInitiated(uint64,address,uint256)": EventFragment;
-    "PerpetualCreated(uint8,uint24,int128[7],int128[5],int128[13],uint256)": EventFragment;
+    "PerpetualCreated(uint8,uint24,int128[7],int128[5],int128[12],uint256)": EventFragment;
     "PerpetualLimitOrderCancelled(uint24,bytes32)": EventFragment;
     "RunLiquidityPool(uint8)": EventFragment;
     "SetBlockDelay(uint8)": EventFragment;
@@ -2003,7 +1971,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "SetParameter(uint24,string,int128)": EventFragment;
     "SetParameterPair(uint24,string,int128,int128)": EventFragment;
     "SetPerpetualBaseParameters(uint24,int128[7])": EventFragment;
-    "SetPerpetualRiskParameters(uint24,int128[5],int128[13])": EventFragment;
+    "SetPerpetualRiskParameters(uint24,int128[5],int128[12])": EventFragment;
     "SetPoolParameter(uint8,string,int128)": EventFragment;
     "SetTraderTiers(uint256[],uint16[])": EventFragment;
     "SetTraderVolumeTiers(uint256[],uint16[])": EventFragment;
@@ -2012,13 +1980,12 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "SettleState(uint24)": EventFragment;
     "TokensDeposited(uint24,address,int128)": EventFragment;
     "TokensWithdrawn(uint24,address,int128)": EventFragment;
-    "Trade(uint24,address,bytes16,tuple,bytes32,int128,int128,int128,int128)": EventFragment;
+    "Trade(uint24,address,bytes16,tuple,bytes32,int128,int128,int128,int128,int128)": EventFragment;
     "TransferAddressTo(string,address,address)": EventFragment;
     "TransferEarningsToTreasury(uint8,int128,int128)": EventFragment;
     "TransferFeeToBroker(uint24,address,int128)": EventFragment;
     "TransferFeeToReferrer(uint24,address,address,int128)": EventFragment;
-    "UpdateAMMFundCash(uint24,int128,int128)": EventFragment;
-    "UpdateAMMFundTargetSize(uint24,uint8,int128,int128,int128,int128)": EventFragment;
+    "UpdateAMMFundTargetSize(uint24,uint8,int128,int128)": EventFragment;
     "UpdateBrokerAddedCash(uint8,uint32,uint32)": EventFragment;
     "UpdateDefaultFundCash(uint8,int128,int128)": EventFragment;
     "UpdateDefaultFundTargetSize(uint8,int128,int128)": EventFragment;
@@ -2072,7 +2039,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "TransferEarningsToTreasury"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferFeeToBroker"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferFeeToReferrer"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateAMMFundCash"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateAMMFundTargetSize"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateBrokerAddedCash"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateDefaultFundCash"): EventFragment;
@@ -2187,11 +2153,10 @@ export interface LiquidityPoolCreatedEventObject {
   marginTokenAddress: string;
   shareTokenAddress: string;
   iTargetPoolSizeUpdateTime: number;
-  fMaxTransferPerConvergencePeriod: BigNumber;
   fBrokerCollateralLotSize: BigNumber;
 }
 export type LiquidityPoolCreatedEvent = TypedEvent<
-  [number, string, string, number, BigNumber, BigNumber],
+  [number, string, string, number, BigNumber],
   LiquidityPoolCreatedEventObject
 >;
 
@@ -2525,6 +2490,7 @@ export interface TradeEventObject {
   price: BigNumber;
   fFeeCC: BigNumber;
   fPnlCC: BigNumber;
+  fB2C: BigNumber;
 }
 export type TradeEvent = TypedEvent<
   [
@@ -2533,6 +2499,7 @@ export type TradeEvent = TypedEvent<
     string,
     IPerpetualOrder.OrderStructOutput,
     string,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -2596,29 +2563,14 @@ export type TransferFeeToReferrerEvent = TypedEvent<
 export type TransferFeeToReferrerEventFilter =
   TypedEventFilter<TransferFeeToReferrerEvent>;
 
-export interface UpdateAMMFundCashEventObject {
-  perpetualId: number;
-  fNewAMMFundCash: BigNumber;
-  fNewLiqPoolTotalAMMFundsCash: BigNumber;
-}
-export type UpdateAMMFundCashEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
-  UpdateAMMFundCashEventObject
->;
-
-export type UpdateAMMFundCashEventFilter =
-  TypedEventFilter<UpdateAMMFundCashEvent>;
-
 export interface UpdateAMMFundTargetSizeEventObject {
   perpetualId: number;
   liquidityPoolId: number;
-  fAMMFundCashCCInPerpetual: BigNumber;
   fTargetAMMFundSizeInPerpetual: BigNumber;
-  fAMMFundCashCCInPool: BigNumber;
   fTargetAMMFundSizeInPool: BigNumber;
 }
 export type UpdateAMMFundTargetSizeEvent = TypedEvent<
-  [number, number, BigNumber, BigNumber, BigNumber, BigNumber],
+  [number, number, BigNumber, BigNumber],
   UpdateAMMFundTargetSizeEventObject
 >;
 
@@ -2787,12 +2739,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    addAMMLiquidityToPerpetual(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      _fTokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     addLiquidity(
       _iPoolIndex: PromiseOrValue<BigNumberish>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
@@ -2863,8 +2809,8 @@ export interface IPerpetualManager extends BaseContract {
     createLiquidityPool(
       _marginTokenAddress: PromiseOrValue<string>,
       _iTargetPoolSizeUpdateTime: PromiseOrValue<BigNumberish>,
-      _fMaxTransferPerConvergencePeriod: PromiseOrValue<BigNumberish>,
       _fBrokerCollateralLotSize: PromiseOrValue<BigNumberish>,
+      _fCeilPnLShare: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -3360,11 +3306,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    setInitialFundAllocationWeight(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     setInitialVolumeForFee(
       _poolId: PromiseOrValue<BigNumberish>,
       _brokerAddr: PromiseOrValue<string>,
@@ -3491,6 +3432,7 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
+      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -3519,7 +3461,6 @@ export interface IPerpetualManager extends BaseContract {
 
     updateAMMTargetFundSize(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
-      fTargetFundSize: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -3615,12 +3556,6 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  addAMMLiquidityToPerpetual(
-    _iPerpetualId: PromiseOrValue<BigNumberish>,
-    _fTokenAmount: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   addLiquidity(
     _iPoolIndex: PromiseOrValue<BigNumberish>,
     _tokenAmount: PromiseOrValue<BigNumberish>,
@@ -3688,8 +3623,8 @@ export interface IPerpetualManager extends BaseContract {
   createLiquidityPool(
     _marginTokenAddress: PromiseOrValue<string>,
     _iTargetPoolSizeUpdateTime: PromiseOrValue<BigNumberish>,
-    _fMaxTransferPerConvergencePeriod: PromiseOrValue<BigNumberish>,
     _fBrokerCollateralLotSize: PromiseOrValue<BigNumberish>,
+    _fCeilPnLShare: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -4168,11 +4103,6 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  setInitialFundAllocationWeight(
-    _iPerpetualId: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   setInitialVolumeForFee(
     _poolId: PromiseOrValue<BigNumberish>,
     _brokerAddr: PromiseOrValue<string>,
@@ -4299,6 +4229,7 @@ export interface IPerpetualManager extends BaseContract {
 
   tradeViaOrderBook(
     _order: IPerpetualOrder.OrderStruct,
+    _isApprovedExecutor: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -4327,7 +4258,6 @@ export interface IPerpetualManager extends BaseContract {
 
   updateAMMTargetFundSize(
     _iPerpetualId: PromiseOrValue<BigNumberish>,
-    fTargetFundSize: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -4423,12 +4353,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    addAMMLiquidityToPerpetual(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      _fTokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     addLiquidity(
       _iPoolIndex: PromiseOrValue<BigNumberish>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
@@ -4499,8 +4423,8 @@ export interface IPerpetualManager extends BaseContract {
     createLiquidityPool(
       _marginTokenAddress: PromiseOrValue<string>,
       _iTargetPoolSizeUpdateTime: PromiseOrValue<BigNumberish>,
-      _fMaxTransferPerConvergencePeriod: PromiseOrValue<BigNumberish>,
       _fBrokerCollateralLotSize: PromiseOrValue<BigNumberish>,
+      _fCeilPnLShare: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<number>;
 
@@ -4996,11 +4920,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    setInitialFundAllocationWeight(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     setInitialVolumeForFee(
       _poolId: PromiseOrValue<BigNumberish>,
       _brokerAddr: PromiseOrValue<string>,
@@ -5127,6 +5046,7 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
+      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -5153,7 +5073,6 @@ export interface IPerpetualManager extends BaseContract {
 
     updateAMMTargetFundSize(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
-      fTargetFundSize: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -5331,12 +5250,11 @@ export interface IPerpetualManager extends BaseContract {
       shareAmount?: null
     ): LiquidityAddedEventFilter;
 
-    "LiquidityPoolCreated(uint8,address,address,uint16,int128,int128)"(
+    "LiquidityPoolCreated(uint8,address,address,uint16,int128)"(
       id?: null,
       marginTokenAddress?: null,
       shareTokenAddress?: null,
       iTargetPoolSizeUpdateTime?: null,
-      fMaxTransferPerConvergencePeriod?: null,
       fBrokerCollateralLotSize?: null
     ): LiquidityPoolCreatedEventFilter;
     LiquidityPoolCreated(
@@ -5344,7 +5262,6 @@ export interface IPerpetualManager extends BaseContract {
       marginTokenAddress?: null,
       shareTokenAddress?: null,
       iTargetPoolSizeUpdateTime?: null,
-      fMaxTransferPerConvergencePeriod?: null,
       fBrokerCollateralLotSize?: null
     ): LiquidityPoolCreatedEventFilter;
 
@@ -5381,7 +5298,7 @@ export interface IPerpetualManager extends BaseContract {
       shareAmount?: null
     ): LiquidityWithdrawalInitiatedEventFilter;
 
-    "PerpetualCreated(uint8,uint24,int128[7],int128[5],int128[13],uint256)"(
+    "PerpetualCreated(uint8,uint24,int128[7],int128[5],int128[12],uint256)"(
       poolId?: null,
       id?: null,
       baseParams?: null,
@@ -5508,7 +5425,7 @@ export interface IPerpetualManager extends BaseContract {
       baseParams?: null
     ): SetPerpetualBaseParametersEventFilter;
 
-    "SetPerpetualRiskParameters(uint24,int128[5],int128[13])"(
+    "SetPerpetualRiskParameters(uint24,int128[5],int128[12])"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       underlyingRiskParams?: null,
       defaultFundRiskParams?: null
@@ -5588,7 +5505,7 @@ export interface IPerpetualManager extends BaseContract {
       amount?: null
     ): TokensWithdrawnEventFilter;
 
-    "Trade(uint24,address,bytes16,tuple,bytes32,int128,int128,int128,int128)"(
+    "Trade(uint24,address,bytes16,tuple,bytes32,int128,int128,int128,int128,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
       positionId?: PromiseOrValue<BytesLike> | null,
@@ -5597,7 +5514,8 @@ export interface IPerpetualManager extends BaseContract {
       newPositionSizeBC?: null,
       price?: null,
       fFeeCC?: null,
-      fPnlCC?: null
+      fPnlCC?: null,
+      fB2C?: null
     ): TradeEventFilter;
     Trade(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
@@ -5608,7 +5526,8 @@ export interface IPerpetualManager extends BaseContract {
       newPositionSizeBC?: null,
       price?: null,
       fFeeCC?: null,
-      fPnlCC?: null
+      fPnlCC?: null,
+      fB2C?: null
     ): TradeEventFilter;
 
     "TransferAddressTo(string,address,address)"(
@@ -5657,31 +5576,16 @@ export interface IPerpetualManager extends BaseContract {
       referralRebate?: null
     ): TransferFeeToReferrerEventFilter;
 
-    "UpdateAMMFundCash(uint24,int128,int128)"(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      fNewAMMFundCash?: null,
-      fNewLiqPoolTotalAMMFundsCash?: null
-    ): UpdateAMMFundCashEventFilter;
-    UpdateAMMFundCash(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      fNewAMMFundCash?: null,
-      fNewLiqPoolTotalAMMFundsCash?: null
-    ): UpdateAMMFundCashEventFilter;
-
-    "UpdateAMMFundTargetSize(uint24,uint8,int128,int128,int128,int128)"(
+    "UpdateAMMFundTargetSize(uint24,uint8,int128,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       liquidityPoolId?: PromiseOrValue<BigNumberish> | null,
-      fAMMFundCashCCInPerpetual?: null,
       fTargetAMMFundSizeInPerpetual?: null,
-      fAMMFundCashCCInPool?: null,
       fTargetAMMFundSizeInPool?: null
     ): UpdateAMMFundTargetSizeEventFilter;
     UpdateAMMFundTargetSize(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       liquidityPoolId?: PromiseOrValue<BigNumberish> | null,
-      fAMMFundCashCCInPerpetual?: null,
       fTargetAMMFundSizeInPerpetual?: null,
-      fAMMFundCashCCInPool?: null,
       fTargetAMMFundSizeInPool?: null
     ): UpdateAMMFundTargetSizeEventFilter;
 
@@ -5801,12 +5705,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    addAMMLiquidityToPerpetual(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      _fTokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     addLiquidity(
       _iPoolIndex: PromiseOrValue<BigNumberish>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
@@ -5877,8 +5775,8 @@ export interface IPerpetualManager extends BaseContract {
     createLiquidityPool(
       _marginTokenAddress: PromiseOrValue<string>,
       _iTargetPoolSizeUpdateTime: PromiseOrValue<BigNumberish>,
-      _fMaxTransferPerConvergencePeriod: PromiseOrValue<BigNumberish>,
       _fBrokerCollateralLotSize: PromiseOrValue<BigNumberish>,
+      _fCeilPnLShare: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -6370,11 +6268,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    setInitialFundAllocationWeight(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     setInitialVolumeForFee(
       _poolId: PromiseOrValue<BigNumberish>,
       _brokerAddr: PromiseOrValue<string>,
@@ -6501,6 +6394,7 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
+      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -6529,7 +6423,6 @@ export interface IPerpetualManager extends BaseContract {
 
     updateAMMTargetFundSize(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
-      fTargetFundSize: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -6626,12 +6519,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    addAMMLiquidityToPerpetual(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      _fTokenAmount: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     addLiquidity(
       _iPoolIndex: PromiseOrValue<BigNumberish>,
       _tokenAmount: PromiseOrValue<BigNumberish>,
@@ -6702,8 +6589,8 @@ export interface IPerpetualManager extends BaseContract {
     createLiquidityPool(
       _marginTokenAddress: PromiseOrValue<string>,
       _iTargetPoolSizeUpdateTime: PromiseOrValue<BigNumberish>,
-      _fMaxTransferPerConvergencePeriod: PromiseOrValue<BigNumberish>,
       _fBrokerCollateralLotSize: PromiseOrValue<BigNumberish>,
+      _fCeilPnLShare: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -7201,11 +7088,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    setInitialFundAllocationWeight(
-      _iPerpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     setInitialVolumeForFee(
       _poolId: PromiseOrValue<BigNumberish>,
       _brokerAddr: PromiseOrValue<string>,
@@ -7332,6 +7214,7 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
+      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -7360,7 +7243,6 @@ export interface IPerpetualManager extends BaseContract {
 
     updateAMMTargetFundSize(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
-      fTargetFundSize: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
