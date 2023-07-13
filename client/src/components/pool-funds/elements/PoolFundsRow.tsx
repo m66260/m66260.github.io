@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useAtom } from "jotai";
-import { Fragment, useState } from "react";
+import { Fragment, useMemo, useState } from "react";
 import { tokenSymbolsAtom } from "store/states.store";
 import { PerpStorage } from "types/IPerpetualManager";
 // import { cutAddressName } from "utils/cutAddressName";
@@ -24,6 +24,17 @@ export const PoolFundsRow = (
   // const [marginTokens] = useAtom(marginTokensAtom);
 
   const [isOpen, setOpen] = useState(false);
+
+  const fDFTarget = useMemo(() => {
+    let fDFTarget = pool.fTargetDFSize;
+    if (pool.fPnLparticipantsCashCC.gt(pool.fTargetAMMFundSize)) {
+      fDFTarget = fDFTarget.sub(
+        pool.fPnLparticipantsCashCC.sub(pool.fTargetAMMFundSize)
+      );
+      fDFTarget = fDFTarget.gt(0) ? fDFTarget : fDFTarget.mul(0);
+    }
+    return fDFTarget;
+  }, [pool]);
 
   return (
     <Fragment>
@@ -49,7 +60,7 @@ export const PoolFundsRow = (
         <TableCell align="right">
           <Typography variant="cellSmall">{`${formatNumber(
             ABK64x64ToFloat(pool.fTargetDFSize)
-          )}`}</Typography>
+          )} (${formatNumber(ABK64x64ToFloat(fDFTarget))})`}</Typography>
         </TableCell>
 
         <TableCell align="right">
@@ -62,7 +73,7 @@ export const PoolFundsRow = (
             ABK64x64ToFloat(pool.fDefaultFundCashCC)
           )} (${formatNumber(
             (100 * ABK64x64ToFloat(pool.fDefaultFundCashCC)) /
-              ABK64x64ToFloat(pool.fTargetDFSize)
+              ABK64x64ToFloat(fDFTarget)
           )}%)`}</Typography>
         </TableCell>
 
@@ -88,7 +99,7 @@ export const PoolFundsRow = (
       </TableRow>
 
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={9}>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={10}>
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
               {/* perp funds table */}
