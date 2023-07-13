@@ -73,14 +73,16 @@ export const PoolFundsRow = (
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">{`${formatNumber(
-            ABK64x64ToFloat(
-              pool.fPnLparticipantsCashCC.add(pool.fDefaultFundCashCC)
-            )
+            ABK64x64ToFloat(pool.fBrokerFundCashCC)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">{`${formatNumber(
-            ABK64x64ToFloat(pool.fBrokerFundCashCC)
+            ABK64x64ToFloat(
+              pool.fPnLparticipantsCashCC
+                .add(pool.fDefaultFundCashCC)
+                .add(pool.fBrokerFundCashCC)
+            )
           )}`}</Typography>
         </TableCell>
       </TableRow>

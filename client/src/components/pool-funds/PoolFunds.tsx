@@ -27,6 +27,7 @@ export const PoolFunds = () => {
       { label: "Target AMM", align: AlignE.Right },
       { label: "Default Fund", align: AlignE.Right },
       { label: "PnL Fund", align: AlignE.Right },
+      { label: "Broker Fund", align: AlignE.Right },
       { label: "Total", align: AlignE.Right },
     ],
     []
