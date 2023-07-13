@@ -39,7 +39,7 @@ export declare namespace IPerpetualOrder {
     submittedTimestamp: PromiseOrValue<BigNumberish>;
     flags: PromiseOrValue<BigNumberish>;
     iDeadline: PromiseOrValue<BigNumberish>;
-    referrerAddr: PromiseOrValue<string>;
+    executorAddr: PromiseOrValue<string>;
     fAmount: PromiseOrValue<BigNumberish>;
     fLimitPrice: PromiseOrValue<BigNumberish>;
     fTriggerPrice: PromiseOrValue<BigNumberish>;
@@ -71,7 +71,7 @@ export declare namespace IPerpetualOrder {
     submittedTimestamp: number;
     flags: number;
     iDeadline: number;
-    referrerAddr: string;
+    executorAddr: string;
     fAmount: BigNumber;
     fLimitPrice: BigNumber;
     fTriggerPrice: BigNumber;
@@ -148,6 +148,7 @@ export declare namespace PerpStorage {
     prevTokenAmount: PromiseOrValue<BigNumberish>;
     nextTokenAmount: PromiseOrValue<BigNumberish>;
     totalSupplyShareToken: PromiseOrValue<BigNumberish>;
+    fBrokerFundCashCC: PromiseOrValue<BigNumberish>;
   };
 
   export type LiquidityPoolDataStructOutput = [
@@ -159,8 +160,9 @@ export declare namespace PerpStorage {
     number,
     string,
     BigNumber,
-    number,
+    BigNumber,
     string,
+    BigNumber,
     BigNumber,
     BigNumber,
     BigNumber,
@@ -178,7 +180,7 @@ export declare namespace PerpStorage {
     iTargetPoolSizeUpdateTime: number;
     marginTokenAddress: string;
     prevAnchor: BigNumber;
-    fRedemptionRate: number;
+    fRedemptionRate: BigNumber;
     shareTokenAddress: string;
     fPnLparticipantsCashCC: BigNumber;
     fTargetAMMFundSize: BigNumber;
@@ -188,6 +190,7 @@ export declare namespace PerpStorage {
     prevTokenAmount: BigNumber;
     nextTokenAmount: BigNumber;
     totalSupplyShareToken: BigNumber;
+    fBrokerFundCashCC: BigNumber;
   };
 
   export type MarginAccountStruct = {
@@ -459,7 +462,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "activatePerpetual(uint24)": FunctionFragment;
     "addLiquidity(uint8,uint256)": FunctionFragment;
     "adjustSettlementPrice(uint24,int128,int128)": FunctionFragment;
-    "brokerDepositToDefaultFund(uint8,uint32)": FunctionFragment;
     "calculateBoundedSlippage((int128,int128,int128,int128,int128,int128),int128)": FunctionFragment;
     "calculateDefaultFundSize(int128[2],int128,int128,int128[2],int128[2],int128[2],uint8)": FunctionFragment;
     "calculatePerpetualPrice((int128,int128,int128,int128,int128,int128),(int128,int128,int128,int128,int128),int128,int128,int128)": FunctionFragment;
@@ -470,6 +472,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "createPerpetual(uint8,bytes4[2],bytes4[2],int128[7],int128[5],int128[12],uint256)": FunctionFragment;
     "decreasePoolCash(uint8,int128)": FunctionFragment;
     "deposit(uint24,int128,bytes[],uint64[])": FunctionFragment;
+    "depositBrokerLots(uint8,uint32)": FunctionFragment;
     "depositMarginForOpeningTrade(uint24,int128,(uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
     "depositToDefaultFund(uint8,int128)": FunctionFragment;
     "determineExchangeFee((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
@@ -593,7 +596,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "activatePerpetual"
       | "addLiquidity"
       | "adjustSettlementPrice"
-      | "brokerDepositToDefaultFund"
       | "calculateBoundedSlippage"
       | "calculateDefaultFundSize"
       | "calculatePerpetualPrice"
@@ -604,6 +606,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "createPerpetual"
       | "decreasePoolCash"
       | "deposit"
+      | "depositBrokerLots"
       | "depositMarginForOpeningTrade"
       | "depositToDefaultFund"
       | "determineExchangeFee"
@@ -739,10 +742,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "brokerDepositToDefaultFund",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "calculateBoundedSlippage",
     values: [AMMPerpLogic.AMMVariablesStruct, PromiseOrValue<BigNumberish>]
   ): string;
@@ -824,6 +823,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       PromiseOrValue<BytesLike>[],
       PromiseOrValue<BigNumberish>[]
     ]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "depositBrokerLots",
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "depositMarginForOpeningTrade",
@@ -1453,10 +1456,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "brokerDepositToDefaultFund",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "calculateBoundedSlippage",
     data: BytesLike
   ): Result;
@@ -1493,6 +1492,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "depositBrokerLots",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "depositMarginForOpeningTrade",
     data: BytesLike
@@ -1984,9 +1987,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "TransferAddressTo(string,address,address)": EventFragment;
     "TransferEarningsToTreasury(uint8,int128,int128)": EventFragment;
     "TransferFeeToBroker(uint24,address,int128)": EventFragment;
-    "TransferFeeToReferrer(uint24,address,address,int128)": EventFragment;
+    "TransferFeeToexecutor(uint24,address,address,int128)": EventFragment;
     "UpdateAMMFundTargetSize(uint24,uint8,int128,int128)": EventFragment;
     "UpdateBrokerAddedCash(uint8,uint32,uint32)": EventFragment;
+    "UpdateBrokerFundCash(uint8,int128,int128)": EventFragment;
     "UpdateDefaultFundCash(uint8,int128,int128)": EventFragment;
     "UpdateDefaultFundTargetSize(uint8,int128,int128)": EventFragment;
     "UpdateFundingRate(uint24,int128)": EventFragment;
@@ -2038,9 +2042,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "TransferAddressTo"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferEarningsToTreasury"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferFeeToBroker"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TransferFeeToReferrer"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "TransferFeeToexecutor"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateAMMFundTargetSize"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateBrokerAddedCash"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "UpdateBrokerFundCash"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateDefaultFundCash"): EventFragment;
   getEvent(
     nameOrSignatureOrTopic: "UpdateDefaultFundTargetSize"
@@ -2549,19 +2554,19 @@ export type TransferFeeToBrokerEvent = TypedEvent<
 export type TransferFeeToBrokerEventFilter =
   TypedEventFilter<TransferFeeToBrokerEvent>;
 
-export interface TransferFeeToReferrerEventObject {
+export interface TransferFeeToexecutorEventObject {
   perpetualId: number;
   trader: string;
-  referrer: string;
+  executor: string;
   referralRebate: BigNumber;
 }
-export type TransferFeeToReferrerEvent = TypedEvent<
+export type TransferFeeToexecutorEvent = TypedEvent<
   [number, string, string, BigNumber],
-  TransferFeeToReferrerEventObject
+  TransferFeeToexecutorEventObject
 >;
 
-export type TransferFeeToReferrerEventFilter =
-  TypedEventFilter<TransferFeeToReferrerEvent>;
+export type TransferFeeToexecutorEventFilter =
+  TypedEventFilter<TransferFeeToexecutorEvent>;
 
 export interface UpdateAMMFundTargetSizeEventObject {
   perpetualId: number;
@@ -2589,6 +2594,19 @@ export type UpdateBrokerAddedCashEvent = TypedEvent<
 
 export type UpdateBrokerAddedCashEventFilter =
   TypedEventFilter<UpdateBrokerAddedCashEvent>;
+
+export interface UpdateBrokerFundCashEventObject {
+  poolId: number;
+  fDeltaAmountCC: BigNumber;
+  fNewFundCash: BigNumber;
+}
+export type UpdateBrokerFundCashEvent = TypedEvent<
+  [number, BigNumber, BigNumber],
+  UpdateBrokerFundCashEventObject
+>;
+
+export type UpdateBrokerFundCashEventFilter =
+  TypedEventFilter<UpdateBrokerFundCashEvent>;
 
 export interface UpdateDefaultFundCashEventObject {
   poolId: number;
@@ -2752,12 +2770,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    brokerDepositToDefaultFund(
-      _poolId: PromiseOrValue<BigNumberish>,
-      _iLots: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     calculateBoundedSlippage(
       _ammVars: AMMPerpLogic.AMMVariablesStruct,
       _fTradeAmount: PromiseOrValue<BigNumberish>,
@@ -2843,6 +2855,12 @@ export interface IPerpetualManager extends BaseContract {
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    depositBrokerLots(
+      _poolId: PromiseOrValue<BigNumberish>,
+      _iLots: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     depositMarginForOpeningTrade(
@@ -3264,7 +3282,7 @@ export interface IPerpetualManager extends BaseContract {
       _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
       _fPnLPartRate: PromiseOrValue<BigNumberish>,
       _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _referrerAddr: PromiseOrValue<string>,
+      _executorAddr: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
@@ -3569,12 +3587,6 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  brokerDepositToDefaultFund(
-    _poolId: PromiseOrValue<BigNumberish>,
-    _iLots: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   calculateBoundedSlippage(
     _ammVars: AMMPerpLogic.AMMVariablesStruct,
     _fTradeAmount: PromiseOrValue<BigNumberish>,
@@ -3657,6 +3669,12 @@ export interface IPerpetualManager extends BaseContract {
     _updateData: PromiseOrValue<BytesLike>[],
     _publishTimes: PromiseOrValue<BigNumberish>[],
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  depositBrokerLots(
+    _poolId: PromiseOrValue<BigNumberish>,
+    _iLots: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   depositMarginForOpeningTrade(
@@ -4061,7 +4079,7 @@ export interface IPerpetualManager extends BaseContract {
     _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
     _fPnLPartRate: PromiseOrValue<BigNumberish>,
     _fReferralRebate: PromiseOrValue<BigNumberish>,
-    _referrerAddr: PromiseOrValue<string>,
+    _executorAddr: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
@@ -4366,12 +4384,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    brokerDepositToDefaultFund(
-      _poolId: PromiseOrValue<BigNumberish>,
-      _iLots: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     calculateBoundedSlippage(
       _ammVars: AMMPerpLogic.AMMVariablesStruct,
       _fTradeAmount: PromiseOrValue<BigNumberish>,
@@ -4456,6 +4468,12 @@ export interface IPerpetualManager extends BaseContract {
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    depositBrokerLots(
+      _poolId: PromiseOrValue<BigNumberish>,
+      _iLots: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -4878,7 +4896,7 @@ export interface IPerpetualManager extends BaseContract {
       _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
       _fPnLPartRate: PromiseOrValue<BigNumberish>,
       _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _referrerAddr: PromiseOrValue<string>,
+      _executorAddr: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber, BigNumber]>;
 
@@ -5563,18 +5581,18 @@ export interface IPerpetualManager extends BaseContract {
       feeCC?: null
     ): TransferFeeToBrokerEventFilter;
 
-    "TransferFeeToReferrer(uint24,address,address,int128)"(
+    "TransferFeeToexecutor(uint24,address,address,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
-      referrer?: PromiseOrValue<string> | null,
+      executor?: PromiseOrValue<string> | null,
       referralRebate?: null
-    ): TransferFeeToReferrerEventFilter;
-    TransferFeeToReferrer(
+    ): TransferFeeToexecutorEventFilter;
+    TransferFeeToexecutor(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
-      referrer?: PromiseOrValue<string> | null,
+      executor?: PromiseOrValue<string> | null,
       referralRebate?: null
-    ): TransferFeeToReferrerEventFilter;
+    ): TransferFeeToexecutorEventFilter;
 
     "UpdateAMMFundTargetSize(uint24,uint8,int128,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
@@ -5599,6 +5617,17 @@ export interface IPerpetualManager extends BaseContract {
       iLots?: null,
       iNewBrokerLots?: null
     ): UpdateBrokerAddedCashEventFilter;
+
+    "UpdateBrokerFundCash(uint8,int128,int128)"(
+      poolId?: PromiseOrValue<BigNumberish> | null,
+      fDeltaAmountCC?: null,
+      fNewFundCash?: null
+    ): UpdateBrokerFundCashEventFilter;
+    UpdateBrokerFundCash(
+      poolId?: PromiseOrValue<BigNumberish> | null,
+      fDeltaAmountCC?: null,
+      fNewFundCash?: null
+    ): UpdateBrokerFundCashEventFilter;
 
     "UpdateDefaultFundCash(uint8,int128,int128)"(
       poolId?: PromiseOrValue<BigNumberish> | null,
@@ -5718,12 +5747,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    brokerDepositToDefaultFund(
-      _poolId: PromiseOrValue<BigNumberish>,
-      _iLots: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     calculateBoundedSlippage(
       _ammVars: AMMPerpLogic.AMMVariablesStruct,
       _fTradeAmount: PromiseOrValue<BigNumberish>,
@@ -5809,6 +5832,12 @@ export interface IPerpetualManager extends BaseContract {
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    depositBrokerLots(
+      _poolId: PromiseOrValue<BigNumberish>,
+      _iLots: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     depositMarginForOpeningTrade(
@@ -6226,7 +6255,7 @@ export interface IPerpetualManager extends BaseContract {
       _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
       _fPnLPartRate: PromiseOrValue<BigNumberish>,
       _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _referrerAddr: PromiseOrValue<string>,
+      _executorAddr: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -6532,12 +6561,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    brokerDepositToDefaultFund(
-      _poolId: PromiseOrValue<BigNumberish>,
-      _iLots: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     calculateBoundedSlippage(
       _ammVars: AMMPerpLogic.AMMVariablesStruct,
       _fTradeAmount: PromiseOrValue<BigNumberish>,
@@ -6623,6 +6646,12 @@ export interface IPerpetualManager extends BaseContract {
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    depositBrokerLots(
+      _poolId: PromiseOrValue<BigNumberish>,
+      _iLots: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     depositMarginForOpeningTrade(
@@ -7046,7 +7075,7 @@ export interface IPerpetualManager extends BaseContract {
       _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
       _fPnLPartRate: PromiseOrValue<BigNumberish>,
       _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _referrerAddr: PromiseOrValue<string>,
+      _executorAddr: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 

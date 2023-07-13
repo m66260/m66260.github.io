@@ -893,7 +893,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -1055,7 +1055,7 @@ const _abi = [
       {
         indexed: true,
         internalType: "address",
-        name: "referrer",
+        name: "executor",
         type: "address",
       },
       {
@@ -1065,7 +1065,7 @@ const _abi = [
         type: "int128",
       },
     ],
-    name: "TransferFeeToReferrer",
+    name: "TransferFeeToexecutor",
     type: "event",
   },
   {
@@ -1122,6 +1122,31 @@ const _abi = [
       },
     ],
     name: "UpdateBrokerAddedCash",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint8",
+        name: "poolId",
+        type: "uint8",
+      },
+      {
+        indexed: false,
+        internalType: "int128",
+        name: "fDeltaAmountCC",
+        type: "int128",
+      },
+      {
+        indexed: false,
+        internalType: "int128",
+        name: "fNewFundCash",
+        type: "int128",
+      },
+    ],
+    name: "UpdateBrokerFundCash",
     type: "event",
   },
   {
@@ -1404,24 +1429,6 @@ const _abi = [
       },
     ],
     name: "adjustSettlementPrice",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint8",
-        name: "_poolId",
-        type: "uint8",
-      },
-      {
-        internalType: "uint32",
-        name: "_iLots",
-        type: "uint32",
-      },
-    ],
-    name: "brokerDepositToDefaultFund",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1778,7 +1785,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -1962,6 +1969,24 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint8",
+        name: "_poolId",
+        type: "uint8",
+      },
+      {
+        internalType: "uint32",
+        name: "_iLots",
+        type: "uint32",
+      },
+    ],
+    name: "depositBrokerLots",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint24",
         name: "_iPerpetualId",
         type: "uint24",
@@ -2020,7 +2045,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -2129,7 +2154,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -2220,7 +2245,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -2824,9 +2849,9 @@ const _abi = [
             type: "uint64",
           },
           {
-            internalType: "int32",
+            internalType: "int128",
             name: "fRedemptionRate",
-            type: "int32",
+            type: "int128",
           },
           {
             internalType: "address",
@@ -2872,6 +2897,11 @@ const _abi = [
             internalType: "uint128",
             name: "totalSupplyShareToken",
             type: "uint128",
+          },
+          {
+            internalType: "int128",
+            name: "fBrokerFundCashCC",
+            type: "int128",
           },
         ],
         internalType: "struct PerpStorage.LiquidityPoolData",
@@ -2940,9 +2970,9 @@ const _abi = [
             type: "uint64",
           },
           {
-            internalType: "int32",
+            internalType: "int128",
             name: "fRedemptionRate",
-            type: "int32",
+            type: "int128",
           },
           {
             internalType: "address",
@@ -2988,6 +3018,11 @@ const _abi = [
             internalType: "uint128",
             name: "totalSupplyShareToken",
             type: "uint128",
+          },
+          {
+            internalType: "int128",
+            name: "fBrokerFundCashCC",
+            type: "int128",
           },
         ],
         internalType: "struct PerpStorage.LiquidityPoolData[]",
@@ -4552,7 +4587,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -4743,7 +4778,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {
@@ -4829,7 +4864,7 @@ const _abi = [
       },
       {
         internalType: "address",
-        name: "_referrerAddr",
+        name: "_executorAddr",
         type: "address",
       },
     ],
@@ -5378,7 +5413,7 @@ const _abi = [
           },
           {
             internalType: "address",
-            name: "referrerAddr",
+            name: "executorAddr",
             type: "address",
           },
           {

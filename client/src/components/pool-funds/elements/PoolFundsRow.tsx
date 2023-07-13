@@ -78,6 +78,11 @@ export const PoolFundsRow = (
             )
           )}`}</Typography>
         </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(pool.fBrokerFundCashCC)
+          )}`}</Typography>
+        </TableCell>
       </TableRow>
 
       <TableRow>
