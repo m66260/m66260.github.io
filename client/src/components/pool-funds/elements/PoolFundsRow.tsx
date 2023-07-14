@@ -26,7 +26,7 @@ export const PoolFundsRow = (
   const [isOpen, setOpen] = useState(false);
 
   const fDFTarget = useMemo(() => {
-    let fDFTarget = pool.fTargetDFSize;
+    let fDFTarget = pool.fTargetDFSize.sub(pool.fBrokerFundCashCC);
     if (pool.fPnLparticipantsCashCC.gt(pool.fTargetAMMFundSize)) {
       fDFTarget = fDFTarget.sub(
         pool.fPnLparticipantsCashCC.sub(pool.fTargetAMMFundSize)
