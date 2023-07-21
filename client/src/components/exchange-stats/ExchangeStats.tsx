@@ -36,7 +36,7 @@ export const ExchangeStats = () => {
       proxy
         .getLiquidityPools(1, 255)
         .then((pools) => {
-          setPools(pools);
+          setPools(pools.filter((pool) => pool.isRunning));
         })
         .then(() => {
           proxy.getPoolStaticInfo(1, 255).then((res) => {
@@ -56,7 +56,14 @@ export const ExchangeStats = () => {
           });
         });
     }
-  }, [traderAPI, setAMMAccounts, setPerpetuals, setMarginTokens, setPools]);
+  }, [
+    traderAPI,
+    setPoolStaticInfos,
+    setAMMAccounts,
+    setPerpetuals,
+    setMarginTokens,
+    setPools,
+  ]);
 
   return (
     <Box>

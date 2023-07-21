@@ -21,7 +21,7 @@ import { poolsAtom } from "store/states.store";
 export const PoolFunds = () => {
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
-      { label: "Pool", align: AlignE.Left },
+      { label: "Pool Id", align: AlignE.Left },
       { label: "Token", align: AlignE.Left },
       { label: "Target DF", align: AlignE.Right },
       { label: "Target AMM", align: AlignE.Right },

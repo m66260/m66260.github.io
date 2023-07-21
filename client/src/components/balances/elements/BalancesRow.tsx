@@ -25,14 +25,16 @@ export function BalancesRow({ idx, name, addr }: BalanceProp) {
       {/* <TableRow> */}
       {marginTokens &&
         tokenBalances &&
-        marginTokens.map((_token, jdx) => (
-          <TableCell align="right">
-            <Typography variant="cellSmall">
-              {" "}
-              {`${formatNumber(Number(tokenBalances[jdx][idx]), 3)}`}{" "}
-            </Typography>
-          </TableCell>
-        ))}
+        marginTokens
+          .filter((token) => token != "")
+          .map((_token, jdx) => (
+            <TableCell align="right">
+              <Typography variant="cellSmall">
+                {" "}
+                {`${formatNumber(Number(tokenBalances[jdx][idx]), 3)}`}{" "}
+              </Typography>
+            </TableCell>
+          ))}
       {/* </TableRow> */}
     </TableRow>
   );

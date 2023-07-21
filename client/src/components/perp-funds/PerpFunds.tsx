@@ -30,7 +30,7 @@ export const PerpFunds = ({ poolId }: PerpRowPropsI) => {
 
   const tableHeaders: TableHeaderI[] = useMemo(
     () => [
-      { label: "Perpetual", align: AlignE.Left },
+      { label: "Perpetual Id", align: AlignE.Left },
       // { label: "Collateral", align: AlignE.Left },
       { label: "Index", align: AlignE.Left },
       { label: "Target DF", align: AlignE.Right },

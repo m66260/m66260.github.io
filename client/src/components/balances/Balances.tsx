@@ -27,11 +27,10 @@ import { Services } from "assets/blockchain-services/services";
 
 export const Balances = () => {
   const [marginTokens] = useAtom(marginTokensAtom);
-  const [tokenSymbols] = useAtom(tokenSymbolsAtom);
+  const [tokenSymbols, setTokenSymbols] = useAtom(tokenSymbolsAtom);
   const [userAddress] = useAtom(userAddressAtom);
   const [allServices, setAllServices] = useAtom(allServicesAtom);
   const [, setTokenBalances] = useAtom(tokenBalancesAtom);
-  const [, setTokenSymbols] = useAtom(tokenSymbolsAtom);
 
   const tableHeaders: TableHeaderI[] = useMemo(
     () =>
@@ -39,9 +38,11 @@ export const Balances = () => {
         { label: "Name", align: AlignE.Left },
         { label: "Address", align: AlignE.Left },
       ].concat(
-        tokenSymbols?.map((token) => {
-          return { label: token, align: AlignE.Right };
-        }) || []
+        tokenSymbols
+          ?.filter((sym) => sym != "")
+          .map((token) => {
+            return { label: token, align: AlignE.Right };
+          }) || []
       ),
     [tokenSymbols]
   );
@@ -64,9 +65,11 @@ export const Balances = () => {
               return fetchBalance({
                 address: s.address as `0x${string}`,
                 token: token.length > 0 ? (token as `0x${string}`) : undefined,
-              }).then((balance) => {
-                return balance;
-              });
+              })
+                .then((balance) => {
+                  return balance;
+                })
+                .catch(() => undefined);
             })
           );
         })
@@ -77,8 +80,10 @@ export const Balances = () => {
   useEffect(() => {
     if (tokenBalances) {
       tokenBalances.then((balances) => {
-        setTokenBalances(balances.map((t) => t.map((ta) => ta.formatted)));
-        setTokenSymbols(balances.map((t) => t[0].symbol));
+        setTokenBalances(
+          balances.map((t) => t.map((ta) => ta?.formatted ?? ""))
+        );
+        setTokenSymbols(balances.map((t) => t[0]?.symbol ?? ""));
       });
     }
   }, [tokenBalances, setTokenBalances, setTokenSymbols]);
