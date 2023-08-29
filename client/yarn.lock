@@ -1295,10 +1295,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz#2cbcf822bf3764c9658c4d2e568bd0c0cb748016"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
-"@d8x/perpetuals-sdk@0.8.13":
-  version "0.8.13"
-  resolved "https://registry.yarnpkg.com/@d8x/perpetuals-sdk/-/perpetuals-sdk-0.8.13.tgz#32ae1818a44fdba4ca6a225e412d0a4c1e781ce8"
-  integrity sha512-v4Xw1iQcZSZlXUxJlUqXXaiap6zpT7CsEYfmf3BsBj+SI8XAFH5Vh/3wVeYebwDvuQLXmehtiAQ9LCwU6QrTzQ==
+"@d8x/perpetuals-sdk@0.8.38":
+  version "0.8.38"
+  resolved "https://registry.yarnpkg.com/@d8x/perpetuals-sdk/-/perpetuals-sdk-0.8.38.tgz#c0ce2d2d3568455e2a4cedcf5ab48fc67012d823"
+  integrity sha512-HItQS8pRVs/Ddt3HB7E1GVHugHPvFZSxK/ixBnZQJzrpZNlkXwLGUAM0ZSVWc8eOgBCtZnqz+1ZQ2fj3F8c7AQ==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/abstract-signer" "^5.7.0"
@@ -1310,8 +1310,9 @@
     "@ethersproject/strings" "^5.7.0"
     "@ethersproject/units" "^5.7.0"
     "@ethersproject/wallet" "^5.7.0"
-    "@typechain/ethers-v5" "^11.0.0"
+    "@typechain/ethers-v5" "^11.1.1"
     buffer "^6.0.3"
+    ethers "^5.7.2"
     process "^0.11.10"
     typechain "^8.2.0"
 
@@ -2962,10 +2963,10 @@
     lodash "^4.17.15"
     ts-essentials "^7.0.1"
 
-"@typechain/ethers-v5@^11.0.0":
-  version "11.0.0"
-  resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-11.0.0.tgz#8a11b34a386a30eed34375d05a09f893f7df838f"
-  integrity sha512-JDAvOjtzGuEQukgArIEseHznS2+v+vG3TpfODjNj4tu1kgmVu66G9gk7THOO04HJ5q+OJSLx9b46lc3GRGPIVA==
+"@typechain/ethers-v5@^11.1.1":
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/@typechain/ethers-v5/-/ethers-v5-11.1.1.tgz#23a358135a302140cf89a186592464dd6bbf1f98"
+  integrity sha512-D9WyUrCJ4Z5Gg8T00HWLpuqn1CqSDXlCiUOOpLaWoCbnZrE2jSIOUwR9blBZNo6LE5058e3niVu6xk205Et7tg==
   dependencies:
     lodash "^4.17.15"
     ts-essentials "^7.0.1"
