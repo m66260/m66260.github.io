@@ -1,6 +1,7 @@
 {
   "short_name": "D8X Risk",
   "name": "D8X Risk Monitoring",
+  "iconPath": "logo.svg",
   "icons": [
     {
       "src": "favicon.ico",
