@@ -1,6 +1,7 @@
 {
   "short_name": "D8X Risk",
   "name": "D8X Risk Monitoring",
+  "description": "Various risk measures on the state of the exchange",
   "iconPath": "logo.svg",
   "icons": [
     {
