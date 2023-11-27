@@ -242,7 +242,7 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
   }, [kuCoinOB, priceMoveCost]);
 
   return (
-    (numAccounts !== undefined && (
+    (
       <TableRow>
         <TableCell align="right">
           <Typography variant="cellSmall">{perpetual.id}</Typography>
@@ -306,7 +306,6 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
           </Typography>
         </TableCell> */}
       </TableRow>
-    )) ||
-    null
+    ) || null
   );
 };
