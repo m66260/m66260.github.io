@@ -1,4 +1,8 @@
-import { ABK64x64ToFloat, PERP_STATE_STR } from "@d8x/perpetuals-sdk";
+import {
+  ABK64x64ToFloat,
+  PERP_STATE_STR,
+  floatToABK64x64,
+} from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
 import { useMemo } from "react";
@@ -110,94 +114,88 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
   }, [lockedCash, poolCash]);
 
   return (
-    (account &&
-      OILong !== undefined &&
-      OIShort !== undefined &&
-      balance !== undefined &&
-      lockedCash !== undefined &&
-      poolUtilization !== undefined && (
-        <TableRow>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{perpetual.id}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">
-              {PERP_STATE_STR[perpetual.state]}
-            </Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              S2
-            )} (${formatNumber(S2OnChain)})`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(Sm)}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              S3
-            )} (${formatNumber(S3OnChain)})`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(account.fCashCC)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(account.fPositionBC)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(account.fLockedInValueQC)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              -(
-                ABK64x64ToFloat(
-                  perpetual.fUnitAccumulatedFunding.sub(
-                    account.fUnitAccumulatedFundingStart
-                  )
-                ) + accumulatedFunding
-              ) * ABK64x64ToFloat(account.fPositionBC)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              balance
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">
-              {`${formatNumber(lockedCash)} (${formatNumber(
-                poolUtilization * 100
-              )}%)`}
-            </Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(OILong)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(OIShort)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(perpetual.fkStar)
-            )}`}</Typography>
-          </TableCell>
-          <TableCell align="right">
-            <Typography variant="cellSmall">{`${formatNumber(
-              ABK64x64ToFloat(perpetual.fCurrentTraderExposureEMA)
-            )}`}</Typography>
-          </TableCell>
-        </TableRow>
-      )) ||
-    null
+    (
+      <TableRow>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{perpetual.id}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">
+            {PERP_STATE_STR[perpetual.state]}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(S2)} (${formatNumber(
+            S2OnChain
+          )})`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(Sm)}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(S3)} (${formatNumber(
+            S3OnChain
+          )})`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(account.fCashCC)
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(account.fPositionBC)
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(account.fLockedInValueQC)
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            -(
+              ABK64x64ToFloat(
+                perpetual.fUnitAccumulatedFunding.sub(
+                  account.fUnitAccumulatedFundingStart
+                )
+              ) + accumulatedFunding
+            ) * ABK64x64ToFloat(account.fPositionBC)
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            balance
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">
+            {`${formatNumber(lockedCash ?? 0)} (${formatNumber(
+              (poolUtilization ?? 0) * 100
+            )}%)`}
+          </Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(OILong ?? floatToABK64x64(0))
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(OIShort ?? floatToABK64x64(0))
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(perpetual.fkStar)
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(perpetual.fCurrentTraderExposureEMA)
+          )}`}</Typography>
+        </TableCell>
+      </TableRow>
+    ) || null
   );
 };
