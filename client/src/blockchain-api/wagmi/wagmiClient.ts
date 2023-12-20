@@ -1,31 +1,40 @@
-import { Chain, connectorsForWallets } from '@rainbow-me/rainbowkit';
-import { coinbaseWallet, injectedWallet, metaMaskWallet, walletConnectWallet } from '@rainbow-me/rainbowkit/wallets';
-import { configureChains, createClient } from 'wagmi';
-import { polygonMumbai, polygon, polygonZkEvm, polygonZkEvmTestnet } from 'wagmi/chains';
-import { publicProvider } from 'wagmi/providers/public';
+import { Chain, connectorsForWallets } from "@rainbow-me/rainbowkit";
+import {
+  coinbaseWallet,
+  injectedWallet,
+  metaMaskWallet,
+  walletConnectWallet,
+} from "@rainbow-me/rainbowkit/wallets";
+import { configureChains, createClient } from "wagmi";
+import { polygonZkEvm, polygonZkEvmTestnet } from "wagmi/chains";
+import { publicProvider } from "wagmi/providers/public";
 
-import polygonMainIcon from 'assets/networks/polygonMain.svg';
-import polygonTestIcon from 'assets/networks/polygonTest.svg';
-import zkMainIcon from 'assets/networks/zkEvmMain.svg';
-import zkTestIcon from 'assets/networks/zkEvmTest.svg';
+// import polygonMainIcon from "assets/networks/polygonMain.svg";
+// import polygonTestIcon from "assets/networks/polygonTest.svg";
+import zkMainIcon from "assets/networks/zkEvmMain.svg";
+import zkTestIcon from "assets/networks/zkEvmTest.svg";
 
 const defaultChains: Chain[] = [
-  { ...polygon, iconUrl: polygonMainIcon, iconBackground: 'transparent' },
-  { ...polygonMumbai, iconUrl: polygonTestIcon, iconBackground: 'transparent' },
-  { ...polygonZkEvm, iconUrl: zkMainIcon, iconBackground: 'transparent' },
-  { ...polygonZkEvmTestnet, iconUrl: zkTestIcon, iconBackground: 'transparent' },
+  // { ...polygon, iconUrl: polygonMainIcon, iconBackground: 'transparent' },
+  // { ...polygonMumbai, iconUrl: polygonTestIcon, iconBackground: 'transparent' },
+  { ...polygonZkEvm, iconUrl: zkMainIcon, iconBackground: "transparent" },
+  {
+    ...polygonZkEvmTestnet,
+    iconUrl: zkTestIcon,
+    iconBackground: "transparent",
+  },
 ];
 
 const { chains, provider } = configureChains(defaultChains, [publicProvider()]);
 
 const connectors = connectorsForWallets([
   {
-    groupName: 'Recommended',
+    groupName: "Recommended",
     wallets: [
       injectedWallet({ chains }),
       metaMaskWallet({ chains }),
       walletConnectWallet({ chains }),
-      coinbaseWallet({ chains, appName: 'D8X App' }),
+      coinbaseWallet({ chains, appName: "D8X App" }),
     ],
   },
 ]);
