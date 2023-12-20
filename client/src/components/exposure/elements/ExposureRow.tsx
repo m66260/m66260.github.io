@@ -8,7 +8,7 @@ import { useAtom } from "jotai";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { traderAPIAtom } from "store/states.store";
 
-import { IPerpetualManager, PerpStorage } from "types/IPerpetualManager";
+import { PerpStorage } from "types/IPerpetualManager";
 import { formatNumber } from "utils/formatNumber";
 import { getDepth as getBinanceDepth } from "cex-api/binance";
 import { getDepth as getKuCoinDepth } from "cex-api/kucoin";
@@ -34,7 +34,7 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
   useEffect(() => {
     if (traderAPI) {
       setNumAccounts(undefined);
-      const proxy = traderAPI.getReadOnlyProxyInstance() as IPerpetualManager;
+      const proxy = traderAPI.getReadOnlyProxyInstance();
       proxy
         .countActivePerpAccounts(perpetual.id)
         .then((num) => setNumAccounts(Number(num)));
@@ -45,7 +45,7 @@ export const ExposureRow = ({ perpetual, amm, pxS2S3 }: ExposurePropI) => {
     if (traderAPI) {
       setMaxLong(undefined);
       setMaxShort(undefined);
-      const proxy = traderAPI.getReadOnlyProxyInstance() as IPerpetualManager;
+      const proxy = traderAPI.getReadOnlyProxyInstance();
       proxy
         .getMaxSignedOpenTradeSizeForPos(perpetual.id, 0, true)
         .then((long) => setMaxLong(ABK64x64ToFloat(long)));

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@d8x/perpetuals-sdk": "0.9.20",
+    "@d8x/perpetuals-sdk": "1.0.5",
     "@emotion/react": "11.10.6",
     "@emotion/styled": "11.10.6",
     "@mui/material": "5.11.16",

@@ -39,7 +39,7 @@ export const Balances = () => {
         { label: "Address", align: AlignE.Left },
       ].concat(
         tokenSymbols
-          ?.filter((sym) => sym != "")
+          ?.filter((sym) => sym !== "")
           .map((token) => {
             return { label: token, align: AlignE.Right };
           }) || []

@@ -14,7 +14,6 @@ import {
   poolsAtom,
   traderAPIAtom,
 } from "store/states.store";
-import { IPerpetualManager } from "types";
 import { AMM } from "components/amm/AMM";
 // import { fetchBalance } from "@wagmi/core";
 import { Balances } from "components/balances/Balances";
@@ -30,7 +29,7 @@ export const ExchangeStats = () => {
   const refreshPools = useCallback(() => {
     console.log("Reading blockchain...");
     if (traderAPI) {
-      const proxy = traderAPI.getReadOnlyProxyInstance() as IPerpetualManager;
+      const proxy = traderAPI.getReadOnlyProxyInstance();
       const proxyAddr = traderAPI.getProxyAddress();
       console.log(`proxyAddr: ${proxyAddr}`);
       proxy

@@ -26,7 +26,7 @@ export function BalancesRow({ idx, name, addr }: BalanceProp) {
       {marginTokens &&
         tokenBalances &&
         marginTokens
-          .filter((token) => token != "")
+          .filter((token) => token !== "")
           .map((_token, jdx) => (
             <TableCell align="right">
               <Typography variant="cellSmall">
