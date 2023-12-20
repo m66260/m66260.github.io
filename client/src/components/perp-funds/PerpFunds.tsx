@@ -19,6 +19,7 @@ import styles from "./PerpFunds.module.scss";
 import { PerpFundsRow } from "./elements/PerpFundsRow";
 import { ammAccountAtom, perpetualsAtom } from "store/states.store";
 import { useAtom } from "jotai";
+import { PERP_STATE_STR } from "@d8x/perpetuals-sdk";
 
 interface PerpRowPropsI {
   poolId: number;
@@ -74,12 +75,16 @@ export const PerpFunds = ({ poolId }: PerpRowPropsI) => {
                   amms &&
                   perpetuals.length > 0 &&
                   perpetuals
-                    .filter((perp) => perp.poolId === poolId)
+                    .filter(
+                      (perp) =>
+                        perp.poolId === poolId &&
+                        PERP_STATE_STR[perp.state] === "NORMAL"
+                    )
                     .map((perp, idx) => (
                       <PerpFundsRow
                         key={perp.id}
                         perpetual={perp}
-                        account={amms[idx]}
+                        account={amms.get(perp.id)!}
                       />
                     ))}
                 {(!perpetuals || perpetuals.length === 0) && (

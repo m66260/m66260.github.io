@@ -25,6 +25,8 @@ import {
 } from "store/states.store";
 import { Services } from "assets/blockchain-services/services";
 
+const OLD_USDC_ADDRESS = "0xA8CE8aee21bC2A48a5EF670afCc9274C7bbbC035";
+
 export const Balances = () => {
   const [marginTokens] = useAtom(marginTokensAtom);
   const [tokenSymbols, setTokenSymbols] = useAtom(tokenSymbolsAtom);
@@ -67,9 +69,12 @@ export const Balances = () => {
                 token: token.length > 0 ? (token as `0x${string}`) : undefined,
               })
                 .then((balance) => {
+                  if (token === OLD_USDC_ADDRESS) {
+                    balance.symbol = "USDC.old";
+                  }
                   return balance;
                 })
-                .catch(() => undefined);
+                .catch(console.error);
             })
           );
         })

@@ -20,13 +20,13 @@ export function BalancesRow({ idx, name, addr }: BalanceProp) {
         <Typography variant="cellSmall">{name}</Typography>
       </TableCell>
       <TableCell align="left">
-        <Typography variant="cellSmall">{cutAddressName(addr)}</Typography>
+        <Typography variant="cellSmall">{addr}</Typography>
       </TableCell>
       {/* <TableRow> */}
       {marginTokens &&
         tokenBalances &&
         marginTokens
-          .filter((token) => token !== "")
+          // .filter((token) => token !== "")
           .map((_token, jdx) => (
             <TableCell align="right">
               <Typography variant="cellSmall">

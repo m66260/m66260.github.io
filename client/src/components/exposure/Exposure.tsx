@@ -19,6 +19,7 @@ import styles from "./Exposure.module.scss";
 import { ExposureRow } from "./elements/ExposureRow";
 import { ammAccountAtom, perpetualsAtom, pxS2S3Atom } from "store/states.store";
 import { useAtom } from "jotai";
+import { PERP_STATE_STR } from "@d8x/perpetuals-sdk";
 
 export const Exposure = () => {
   const [perpetuals] = useAtom(perpetualsAtom);
@@ -72,14 +73,16 @@ export const Exposure = () => {
                   amms &&
                   pxS2S3 &&
                   perpetuals.length > 0 &&
-                  perpetuals.map((perp, idx) => (
-                    <ExposureRow
-                      key={perp.id}
-                      perpetual={perp}
-                      amm={amms[idx]}
-                      pxS2S3={pxS2S3[idx]}
-                    />
-                  ))}
+                  perpetuals
+                    .filter(({ state }) => PERP_STATE_STR[state] === "NORMAL")
+                    .map((perp, idx) => (
+                      <ExposureRow
+                        key={perp.id}
+                        perpetual={perp}
+                        amm={amms.get(perp.id)!}
+                        pxS2S3={pxS2S3[idx]}
+                      />
+                    ))}
                 {(!perpetuals || perpetuals.length === 0) && (
                   <EmptyTableRow
                     colSpan={tableHeaders.length}

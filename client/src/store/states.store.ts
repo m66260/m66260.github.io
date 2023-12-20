@@ -14,9 +14,10 @@ export const perpetualsAtom = atom<
   PerpStorage.PerpetualDataStructOutput[] | null
 >(null);
 
-export const ammAccountAtom = atom<
-  PerpStorage.MarginAccountStructOutput[] | null
->(null);
+export const ammAccountAtom = atom<Map<
+  number,
+  PerpStorage.MarginAccountStructOutput
+> | null>(null);
 
 export const marginTokensAtom = atom<string[] | null>(null);
 

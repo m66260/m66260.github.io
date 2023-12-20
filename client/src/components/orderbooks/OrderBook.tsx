@@ -120,7 +120,7 @@ export const OrderBook = () => {
                     <OrderBookRow
                       key={perp.id}
                       perpetual={perp}
-                      account={amms[idx]}
+                      account={amms.get(perp.id)!}
                       pxS2S3={pxS2S3[idx]}
                     />
                   ))}

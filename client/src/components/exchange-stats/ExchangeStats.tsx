@@ -18,6 +18,7 @@ import { AMM } from "components/amm/AMM";
 // import { fetchBalance } from "@wagmi/core";
 import { Balances } from "components/balances/Balances";
 import { Exposure } from "components/exposure/Exposure";
+import { PerpStorage } from "types/IPerpetualManager";
 export const ExchangeStats = () => {
   const [traderAPI] = useAtom(traderAPIAtom);
   const [, setPools] = useAtom(poolsAtom);
@@ -35,7 +36,7 @@ export const ExchangeStats = () => {
       proxy
         .getLiquidityPools(1, 255)
         .then((pools) => {
-          setPools(pools.filter((pool) => pool.isRunning));
+          setPools(pools);
         })
         .then(() => {
           proxy.getPoolStaticInfo(1, 255).then((res) => {
@@ -45,12 +46,18 @@ export const ExchangeStats = () => {
               setPerpetuals(perps);
             });
             setMarginTokens([""].concat(res[2]));
+            const ammMap = new Map<
+              number,
+              PerpStorage.MarginAccountStructOutput
+            >();
             Promise.all(
               perpIds.map((perpId) => {
-                return proxy.getMarginAccount(perpId, proxyAddr);
+                return proxy
+                  .getMarginAccount(perpId, proxyAddr)
+                  .then((acc) => ammMap.set(perpId, acc));
               })
-            ).then((accounts) => {
-              setAMMAccounts(accounts);
+            ).then(() => {
+              setAMMAccounts(ammMap);
             });
           });
         });

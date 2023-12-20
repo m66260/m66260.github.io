@@ -27,6 +27,7 @@ import { useAtom } from "jotai";
 import {
   COLLATERAL_CURRENCY_BASE,
   COLLATERAL_CURRENCY_QUOTE,
+  PERP_STATE_STR,
 } from "@d8x/perpetuals-sdk";
 
 export const AMM = () => {
@@ -116,14 +117,16 @@ export const AMM = () => {
                   amms &&
                   pxS2S3 &&
                   perpetuals.length > 0 &&
-                  perpetuals.map((perp, idx) => (
-                    <AMMRow
-                      key={perp.id}
-                      perpetual={perp}
-                      account={amms[idx]}
-                      pxS2S3={pxS2S3[idx]}
-                    />
-                  ))}
+                  perpetuals
+                    .filter(({ state }) => PERP_STATE_STR[state] === "NORMAL")
+                    .map((perp, idx) => (
+                      <AMMRow
+                        key={perp.id}
+                        perpetual={perp}
+                        account={amms.get(perp.id)!}
+                        pxS2S3={pxS2S3[idx]}
+                      />
+                    ))}
                 {(!perpetuals || perpetuals.length === 0) && (
                   <EmptyTableRow
                     colSpan={tableHeaders.length}

@@ -66,7 +66,9 @@ export const PoolFunds = () => {
               <TableBody className={styles.tableBody}>
                 {pools &&
                   pools.length > 0 &&
-                  pools.map((pool) => <PoolFundsRow key={pool.id} {...pool} />)}
+                  pools
+                    .filter(({ isRunning }) => isRunning)
+                    .map((pool) => <PoolFundsRow key={pool.id} {...pool} />)}
                 {(!pools || pools.length === 0) && (
                   <EmptyTableRow
                     colSpan={tableHeaders.length}
