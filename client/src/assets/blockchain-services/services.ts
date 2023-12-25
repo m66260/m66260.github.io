@@ -11,6 +11,18 @@ export const Services = [
     service: "bot-2",
     address: "0xf7b9A8C7C471b3E0C56e554bE1069E388f86de52",
   },
+  {
+    service: "testnet-treasury",
+    address: "0xfdE7424cc926E723578f47359F8DC05533B0bb8C",
+  },
+  {
+    service: "bot-1",
+    address: "0x986Aed6176eF9839172DC7aFFf0CeE558eeCBd0a",
+  },
+  {
+    service: "bot-2",
+    address: "0xf38220997Fa879D1ACf297831AD717316cC4dc3D",
+  },
   // {
   //   service: "bot-3",
   //   address: "0xB58456E04Ff8a3da110fB58aAe1AFcA68ee0fe78",
