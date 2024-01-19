@@ -169,6 +169,11 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
+          <Typography variant="cellSmall">{`${formatNumber(
+            (ABK64x64ToFloat(account.fPositionBC.abs()) * Sm) / S3 / balance
+          )}`}</Typography>
+        </TableCell>
+        <TableCell align="right">
           <Typography variant="cellSmall">
             {`${formatNumber(lockedCash ?? 0)} (${formatNumber(
               (poolUtilization ?? 0) * 100
