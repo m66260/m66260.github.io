@@ -1,28 +1,25 @@
 export const Services = [
   {
-    service: "treasury",
+    service: "treasury-0",
     address: "0xf14Af9b2Bc43C37f78bD83b0fb954F2A3afC1D29",
   },
   {
-    service: "bot-1",
-    address: "0xd00c094509058E3caDe33a3CB0862FFC8f42b27f",
+    service: "treasury-btc",
+    address: "0xece8A4ea3B0136d14657A2659eE8A06C20e98B26",
   },
   {
-    service: "bot-2",
-    address: "0xf7b9A8C7C471b3E0C56e554bE1069E388f86de52",
+    service: "treasury-eth",
+    address: "0xEced5D4Bac67ED6EbEA1a232E433D5B0f6d7D501",
   },
   {
-    service: "testnet-treasury",
+    service: "treasury-eur",
+    address: "0xECEFB0d0D972311ae10A1Ea3f6f4D21894e92a47",
+  },
+  {
+    service: "testnet-treasury-0",
     address: "0xfdE7424cc926E723578f47359F8DC05533B0bb8C",
   },
-  {
-    service: "bot-1",
-    address: "0x986Aed6176eF9839172DC7aFFf0CeE558eeCBd0a",
-  },
-  {
-    service: "bot-2",
-    address: "0xf38220997Fa879D1ACf297831AD717316cC4dc3D",
-  },
+
   // {
   //   service: "bot-3",
   //   address: "0xB58456E04Ff8a3da110fB58aAe1AFcA68ee0fe78",
