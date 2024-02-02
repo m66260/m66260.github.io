@@ -41,23 +41,25 @@ export const AMM = () => {
       setPxS2S3(null);
       console.log("Fetching prices...");
       Promise.all(
-        perpetuals.map(({ id, eCollateralCurrency }) => {
-          const symbol = traderAPI.getSymbolFromPerpId(id)!;
-          return traderAPI
-            .fetchPriceSubmissionInfoForPerpetual(symbol)
-            .then(({ pxS2S3 }) => {
-              const S2 = pxS2S3[0];
-              let S3: number;
-              if (eCollateralCurrency === COLLATERAL_CURRENCY_QUOTE) {
-                S3 = 1;
-              } else if (eCollateralCurrency === COLLATERAL_CURRENCY_BASE) {
-                S3 = S2;
-              } else {
-                S3 = pxS2S3[1];
-              }
-              return [S2, S3] as [number, number];
-            });
-        })
+        perpetuals
+          .filter(({ state }) => PERP_STATE_STR[state] == "NORMAL")
+          .map(({ id, eCollateralCurrency }) => {
+            const symbol = traderAPI.getSymbolFromPerpId(id)!;
+            return traderAPI
+              .fetchPriceSubmissionInfoForPerpetual(symbol)
+              .then(({ pxS2S3 }) => {
+                const S2 = pxS2S3[0];
+                let S3: number;
+                if (eCollateralCurrency === COLLATERAL_CURRENCY_QUOTE) {
+                  S3 = 1;
+                } else if (eCollateralCurrency === COLLATERAL_CURRENCY_BASE) {
+                  S3 = S2;
+                } else {
+                  S3 = pxS2S3[1];
+                }
+                return [S2, S3] as [number, number];
+              });
+          })
       ).then((prices) => {
         setPxS2S3(prices);
       });
@@ -76,8 +78,8 @@ export const AMM = () => {
       { label: "Locked-In", align: AlignE.Left },
       { label: "Funding", align: AlignE.Left },
       { label: "Balance", align: AlignE.Left },
-      { label: "Leverage", align: AlignE.Left },
-      { label: "Locked liquidity", align: AlignE.Left },
+      { label: "Leverage (target)", align: AlignE.Left },
+      { label: "Locked liquidity (% of total)", align: AlignE.Left },
       { label: "Long OI", align: AlignE.Left },
       { label: "Short OI", align: AlignE.Left },
       { label: "k*", align: AlignE.Left },

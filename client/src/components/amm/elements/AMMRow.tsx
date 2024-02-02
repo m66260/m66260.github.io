@@ -1,7 +1,11 @@
 import {
   ABK64x64ToFloat,
+  COLLATERAL_CURRENCY_QUANTO,
+  COLLATERAL_CURRENCY_QUOTE,
   PERP_STATE_STR,
+  contractSymbolToSymbol,
   floatToABK64x64,
+  symbol4BToLongSymbol,
 } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
@@ -10,6 +14,8 @@ import { poolsAtom } from "store/states.store";
 
 import { PerpStorage } from "types/IPerpetualManager";
 import { formatNumber } from "utils/formatNumber";
+import { formatToCurrency } from "utils/formatToCurrency";
+import { hexToString } from "viem";
 
 interface AMMPropI {
   perpetual: PerpStorage.PerpetualDataStructOutput;
@@ -113,6 +119,26 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
     }
   }, [lockedCash, poolCash]);
 
+  const leverage = useMemo(() => {
+    return account.fPositionBC.eq(0)
+      ? 0
+      : (ABK64x64ToFloat(account.fPositionBC.abs()) * Sm) / S3 / balance;
+  }, [Sm, S3, balance]);
+
+  const targetLeverage = useMemo(() => {
+    return 1 / ABK64x64ToFloat(perpetual.fInitialMarginRate);
+  }, [perpetual]);
+
+  const collCcy = useMemo(() => {
+    return hexToString(
+      (perpetual.eCollateralCurrency === COLLATERAL_CURRENCY_QUANTO
+        ? perpetual.S3BaseCCY
+        : perpetual.eCollateralCurrency === COLLATERAL_CURRENCY_QUOTE
+        ? perpetual.S2QuoteCCY
+        : perpetual.S2BaseCCY) as `0x${string}`
+    );
+  }, [perpetual]);
+
   return (
     (
       <TableRow>
@@ -138,40 +164,48 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
           )})`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatNumber(
-            ABK64x64ToFloat(account.fCashCC)
+          <Typography variant="cellSmall">{`${formatToCurrency(
+            ABK64x64ToFloat(account.fCashCC),
+            collCcy
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatNumber(
-            ABK64x64ToFloat(account.fPositionBC)
+          <Typography variant="cellSmall">{`${formatToCurrency(
+            ABK64x64ToFloat(account.fPositionBC),
+            hexToString(
+              perpetual.S2BaseCCY.replace(/\s+/g, "") as `0x${string}`
+            )
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatNumber(
-            ABK64x64ToFloat(account.fLockedInValueQC)
+          <Typography variant="cellSmall">{`${formatToCurrency(
+            ABK64x64ToFloat(account.fLockedInValueQC),
+            hexToString(perpetual.S2QuoteCCY as `0x${string}`)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatNumber(
+          <Typography variant="cellSmall">{`${formatToCurrency(
             -(
               ABK64x64ToFloat(
                 perpetual.fUnitAccumulatedFunding.sub(
                   account.fUnitAccumulatedFundingStart
                 )
               ) + accumulatedFunding
-            ) * ABK64x64ToFloat(account.fPositionBC)
+            ) * ABK64x64ToFloat(account.fPositionBC),
+            collCcy
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatNumber(
-            balance
+          <Typography variant="cellSmall">{`${formatToCurrency(
+            balance,
+            hexToString(perpetual.S2QuoteCCY as `0x${string}`)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatNumber(
-            (ABK64x64ToFloat(account.fPositionBC.abs()) * Sm) / S3 / balance
-          )}`}</Typography>
+          <Typography variant="cellSmall">{`${formatToCurrency(
+            leverage,
+            "x"
+          )} (${formatToCurrency(targetLeverage, "x")})`}</Typography>
         </TableCell>
         <TableCell align="right">
           <Typography variant="cellSmall">
