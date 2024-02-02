@@ -164,41 +164,34 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
           )})`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatToCurrency(
-            ABK64x64ToFloat(account.fCashCC),
-            collCcy
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(account.fCashCC)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatToCurrency(
-            ABK64x64ToFloat(account.fPositionBC),
-            hexToString(
-              perpetual.S2BaseCCY.replace(/\s+/g, "") as `0x${string}`
-            )
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(account.fPositionBC)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatToCurrency(
-            ABK64x64ToFloat(account.fLockedInValueQC),
-            hexToString(perpetual.S2QuoteCCY as `0x${string}`)
+          <Typography variant="cellSmall">{`${formatNumber(
+            ABK64x64ToFloat(account.fLockedInValueQC)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatToCurrency(
+          <Typography variant="cellSmall">{`${formatNumber(
             -(
               ABK64x64ToFloat(
                 perpetual.fUnitAccumulatedFunding.sub(
                   account.fUnitAccumulatedFundingStart
                 )
               ) + accumulatedFunding
-            ) * ABK64x64ToFloat(account.fPositionBC),
-            collCcy
+            ) * ABK64x64ToFloat(account.fPositionBC)
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
-          <Typography variant="cellSmall">{`${formatToCurrency(
-            balance,
-            hexToString(perpetual.S2QuoteCCY as `0x${string}`)
+          <Typography variant="cellSmall">{`${formatNumber(
+            balance
           )}`}</Typography>
         </TableCell>
         <TableCell align="right">
