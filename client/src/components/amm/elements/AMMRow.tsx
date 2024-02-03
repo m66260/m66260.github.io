@@ -1,11 +1,7 @@
 import {
   ABK64x64ToFloat,
-  COLLATERAL_CURRENCY_QUANTO,
-  COLLATERAL_CURRENCY_QUOTE,
   PERP_STATE_STR,
-  contractSymbolToSymbol,
   floatToABK64x64,
-  symbol4BToLongSymbol,
 } from "@d8x/perpetuals-sdk";
 import { TableCell, TableRow, Typography } from "@mui/material";
 import { useAtom } from "jotai";
@@ -15,7 +11,6 @@ import { poolsAtom } from "store/states.store";
 import { PerpStorage } from "types/IPerpetualManager";
 import { formatNumber } from "utils/formatNumber";
 import { formatToCurrency } from "utils/formatToCurrency";
-import { hexToString } from "viem";
 
 interface AMMPropI {
   perpetual: PerpStorage.PerpetualDataStructOutput;
@@ -127,16 +122,6 @@ export const AMMRow = ({ perpetual, account, pxS2S3 }: AMMPropI) => {
 
   const targetLeverage = useMemo(() => {
     return 1 / ABK64x64ToFloat(perpetual.fInitialMarginRate);
-  }, [perpetual]);
-
-  const collCcy = useMemo(() => {
-    return hexToString(
-      (perpetual.eCollateralCurrency === COLLATERAL_CURRENCY_QUANTO
-        ? perpetual.S3BaseCCY
-        : perpetual.eCollateralCurrency === COLLATERAL_CURRENCY_QUOTE
-        ? perpetual.S2QuoteCCY
-        : perpetual.S2BaseCCY) as `0x${string}`
-    );
   }, [perpetual]);
 
   return (
