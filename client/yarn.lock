@@ -1295,10 +1295,10 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz#2cbcf822bf3764c9658c4d2e568bd0c0cb748016"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
-"@d8x/perpetuals-sdk@1.0.11":
-  version "1.0.11"
-  resolved "https://registry.yarnpkg.com/@d8x/perpetuals-sdk/-/perpetuals-sdk-1.0.11.tgz#86d032c6552c533e1a2059b128ade9c048288d2d"
-  integrity sha512-NCLfxl3X08RGj+R1DczrZiodnlG9nSAtayQHEbVZGRpSPMNbHVC7ZwAi6uRapU1BxilHfodTcdy3rZuIAL/gRA==
+"@d8x/perpetuals-sdk@1.0.17":
+  version "1.0.17"
+  resolved "https://registry.yarnpkg.com/@d8x/perpetuals-sdk/-/perpetuals-sdk-1.0.17.tgz#8af6174ea19ee670d7322a28ad0d17861e0d23e6"
+  integrity sha512-w1WPyXz9E4+s4XEHn0tKMgtY3di7vkBsMWy7tjxKBHvMMb2h0lpyrBirOPbRV4YH+ApJGb3f0lwLTpzgBMmS1g==
   dependencies:
     "@ethersproject/abi" "^5.7.0"
     "@ethersproject/abstract-signer" "^5.7.0"

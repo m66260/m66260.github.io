@@ -150,12 +150,6 @@ const _abi = [
         type: "address",
       },
       {
-        indexed: true,
-        internalType: "bytes16",
-        name: "positionId",
-        type: "bytes16",
-      },
-      {
         indexed: false,
         internalType: "int128",
         name: "amountLiquidatedBC",
@@ -194,9 +188,9 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "uint8",
         name: "poolId",
-        type: "uint64",
+        type: "uint8",
       },
       {
         indexed: true,
@@ -281,9 +275,9 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "uint8",
         name: "poolId",
-        type: "uint64",
+        type: "uint8",
       },
       {
         indexed: true,
@@ -312,9 +306,9 @@ const _abi = [
     inputs: [
       {
         indexed: true,
-        internalType: "uint64",
+        internalType: "uint8",
         name: "poolId",
-        type: "uint64",
+        type: "uint8",
       },
       {
         indexed: true,
@@ -488,6 +482,25 @@ const _abi = [
       },
     ],
     name: "SetClearedState",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: "address",
+        name: "trader",
+        type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "address",
+        name: "delegate",
+        type: "address",
+      },
+    ],
+    name: "SetDelegate",
     type: "event",
   },
   {
@@ -782,6 +795,19 @@ const _abi = [
         name: "perpetualId",
         type: "uint24",
       },
+    ],
+    name: "SettlementComplete",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "uint24",
+        name: "perpetualId",
+        type: "uint24",
+      },
       {
         indexed: true,
         internalType: "address",
@@ -837,12 +863,6 @@ const _abi = [
         internalType: "address",
         name: "trader",
         type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "bytes16",
-        name: "positionId",
-        type: "bytes16",
       },
       {
         components: [
@@ -991,118 +1011,6 @@ const _abi = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
-        internalType: "uint8",
-        name: "_poolId",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fEarnings",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "newDefaultFundSize",
-        type: "int128",
-      },
-    ],
-    name: "TransferEarningsToTreasury",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint24",
-        name: "perpetualId",
-        type: "uint24",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "broker",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "feeCC",
-        type: "int128",
-      },
-    ],
-    name: "TransferFeeToBroker",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint24",
-        name: "perpetualId",
-        type: "uint24",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "trader",
-        type: "address",
-      },
-      {
-        indexed: true,
-        internalType: "address",
-        name: "executor",
-        type: "address",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "referralRebate",
-        type: "int128",
-      },
-    ],
-    name: "TransferFeeToexecutor",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint24",
-        name: "perpetualId",
-        type: "uint24",
-      },
-      {
-        indexed: true,
-        internalType: "uint8",
-        name: "liquidityPoolId",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fTargetAMMFundSizeInPerpetual",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fTargetAMMFundSizeInPool",
-        type: "int128",
-      },
-    ],
-    name: "UpdateAMMFundTargetSize",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
         indexed: true,
         internalType: "uint8",
         name: "poolId",
@@ -1122,81 +1030,6 @@ const _abi = [
       },
     ],
     name: "UpdateBrokerAddedCash",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint8",
-        name: "poolId",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fDeltaAmountCC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fNewFundCash",
-        type: "int128",
-      },
-    ],
-    name: "UpdateBrokerFundCash",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint8",
-        name: "poolId",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fDeltaAmountCC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fNewFundCash",
-        type: "int128",
-      },
-    ],
-    name: "UpdateDefaultFundCash",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint8",
-        name: "liquidityPoolId",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fDefaultFundCashCC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fTargetDFSize",
-        type: "int128",
-      },
-    ],
-    name: "UpdateDefaultFundTargetSize",
     type: "event",
   },
   {
@@ -1234,39 +1067,9 @@ const _abi = [
         type: "address",
       },
       {
-        indexed: true,
-        internalType: "bytes16",
-        name: "positionId",
-        type: "bytes16",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fPositionBC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fCashCC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fLockedInValueQC",
-        type: "int128",
-      },
-      {
         indexed: false,
         internalType: "int128",
         name: "fFundingPaymentCC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fOpenInterestBC",
         type: "int128",
       },
     ],
@@ -1302,81 +1105,6 @@ const _abi = [
       },
     ],
     name: "UpdateMarkPrice",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint8",
-        name: "poolId",
-        type: "uint8",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fDeltaAmountCC",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fNewFundCash",
-        type: "int128",
-      },
-    ],
-    name: "UpdateParticipationFundCash",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint24",
-        name: "perpetualId",
-        type: "uint24",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fCurrentTraderExposureEMA",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fCurrentAMMExposureEMAShort",
-        type: "int128",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "fCurrentAMMExposureEMALong",
-        type: "int128",
-      },
-    ],
-    name: "UpdateReprTradeSizes",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: "uint24",
-        name: "perpetualId",
-        type: "uint24",
-      },
-      {
-        indexed: false,
-        internalType: "int128",
-        name: "unitAccumulativeFunding",
-        type: "int128",
-      },
-    ],
-    name: "UpdateUnitAccumulatedFunding",
     type: "event",
   },
   {
@@ -1431,62 +1159,6 @@ const _abi = [
     name: "adjustSettlementPrice",
     outputs: [],
     stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        components: [
-          {
-            internalType: "int128",
-            name: "fLockedValue1",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fPoolM1",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fPoolM2",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fPoolM3",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fAMM_K2",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fCurrentTraderExposureEMA",
-            type: "int128",
-          },
-        ],
-        internalType: "struct AMMPerpLogic.AMMVariables",
-        name: "_ammVars",
-        type: "tuple",
-      },
-      {
-        internalType: "int128",
-        name: "_fTradeAmount",
-        type: "int128",
-      },
-    ],
-    name: "calculateBoundedSlippage",
-    outputs: [
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-    ],
-    stateMutability: "view",
     type: "function",
   },
   {
@@ -1737,96 +1409,6 @@ const _abi = [
   {
     inputs: [
       {
-        components: [
-          {
-            internalType: "uint16",
-            name: "leverageTDR",
-            type: "uint16",
-          },
-          {
-            internalType: "uint16",
-            name: "brokerFeeTbps",
-            type: "uint16",
-          },
-          {
-            internalType: "uint24",
-            name: "iPerpetualId",
-            type: "uint24",
-          },
-          {
-            internalType: "address",
-            name: "traderAddr",
-            type: "address",
-          },
-          {
-            internalType: "uint32",
-            name: "executionTimestamp",
-            type: "uint32",
-          },
-          {
-            internalType: "address",
-            name: "brokerAddr",
-            type: "address",
-          },
-          {
-            internalType: "uint32",
-            name: "submittedTimestamp",
-            type: "uint32",
-          },
-          {
-            internalType: "uint32",
-            name: "flags",
-            type: "uint32",
-          },
-          {
-            internalType: "uint32",
-            name: "iDeadline",
-            type: "uint32",
-          },
-          {
-            internalType: "address",
-            name: "executorAddr",
-            type: "address",
-          },
-          {
-            internalType: "int128",
-            name: "fAmount",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fLimitPrice",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fTriggerPrice",
-            type: "int128",
-          },
-          {
-            internalType: "bytes",
-            name: "brokerSignature",
-            type: "bytes",
-          },
-        ],
-        internalType: "struct IPerpetualOrder.Order",
-        name: "_order",
-        type: "tuple",
-      },
-      {
-        internalType: "uint16",
-        name: "_feeTbps",
-        type: "uint16",
-      },
-    ],
-    name: "chargePostingFee",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint24",
         name: "_perpetualId",
         type: "uint24",
@@ -1923,6 +1505,19 @@ const _abi = [
   {
     inputs: [
       {
+        internalType: "uint24",
+        name: "_perpetualId",
+        type: "uint24",
+      },
+    ],
+    name: "deactivatePerp",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "uint8",
         name: "_iPoolIdx",
         type: "uint8",
@@ -1944,6 +1539,11 @@ const _abi = [
         internalType: "uint24",
         name: "_iPerpetualId",
         type: "uint24",
+      },
+      {
+        internalType: "address",
+        name: "_traderAddr",
+        type: "address",
       },
       {
         internalType: "int128",
@@ -2274,6 +1874,16 @@ const _abi = [
         type: "tuple",
       },
       {
+        internalType: "uint16",
+        name: "_brkrFeeTbps",
+        type: "uint16",
+      },
+      {
+        internalType: "uint16",
+        name: "_protocolFeeTbps",
+        type: "uint16",
+      },
+      {
         internalType: "bool",
         name: "_hasOpened",
         type: "bool",
@@ -2306,6 +1916,11 @@ const _abi = [
         internalType: "int128",
         name: "_fDeltaPositionBC",
         type: "int128",
+      },
+      {
+        internalType: "uint16",
+        name: "_protocolFeeTbps",
+        type: "uint16",
       },
     ],
     name: "distributeFeesLiquidation",
@@ -2634,6 +2249,11 @@ const _abi = [
       {
         internalType: "int128",
         name: "_fS3",
+        type: "int128",
+      },
+      {
+        internalType: "int128",
+        name: "_fS2",
         type: "int128",
       },
     ],
@@ -3072,22 +2692,22 @@ const _abi = [
           },
           {
             internalType: "uint64",
-            name: "iLastOpenTimestamp",
+            name: "slot2",
             type: "uint64",
           },
           {
             internalType: "uint16",
-            name: "feeTbps",
+            name: "slot3",
             type: "uint16",
           },
           {
             internalType: "uint16",
-            name: "brokerFeeTbps",
+            name: "slot4",
             type: "uint16",
           },
           {
             internalType: "bytes16",
-            name: "positionId",
+            name: "slot",
             type: "bytes16",
           },
         ],
@@ -3192,6 +2812,25 @@ const _abi = [
         type: "uint24",
       },
     ],
+    name: "getOracleUpdateTime",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint24",
+        name: "_perpetualId",
+        type: "uint24",
+      },
+    ],
     name: "getOrderBookAddress",
     outputs: [
       {
@@ -3255,12 +2894,12 @@ const _abi = [
           },
           {
             internalType: "uint32",
-            name: "iLastSettlementPriceUpdateTimestamp",
+            name: "slot0",
             type: "uint32",
           },
           {
             internalType: "uint32",
-            name: "iLastPriceJumpTimestamp",
+            name: "slot1",
             type: "uint32",
           },
           {
@@ -3300,7 +2939,7 @@ const _abi = [
           },
           {
             internalType: "uint16",
-            name: "jumpSpreadTbps",
+            name: "slot2",
             type: "uint16",
           },
           {
@@ -3610,7 +3249,7 @@ const _abi = [
             type: "bool[]",
           },
         ],
-        internalType: "struct IPerpetualGetter.PerpetualStaticInfo[]",
+        internalType: "struct IPerpetualInfo.PerpetualStaticInfo[]",
         name: "",
         type: "tuple[]",
       },
@@ -3657,12 +3296,12 @@ const _abi = [
           },
           {
             internalType: "uint32",
-            name: "iLastSettlementPriceUpdateTimestamp",
+            name: "slot0",
             type: "uint32",
           },
           {
             internalType: "uint32",
-            name: "iLastPriceJumpTimestamp",
+            name: "slot1",
             type: "uint32",
           },
           {
@@ -3702,7 +3341,7 @@ const _abi = [
           },
           {
             internalType: "uint16",
-            name: "jumpSpreadTbps",
+            name: "slot2",
             type: "uint16",
           },
           {
@@ -3976,6 +3615,35 @@ const _abi = [
         internalType: "bool[]",
         name: "",
         type: "bool[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint24",
+        name: "_perpetualId",
+        type: "uint24",
+      },
+      {
+        internalType: "uint256",
+        name: "start",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "count",
+        type: "uint256",
+      },
+    ],
+    name: "getSettleableAccounts",
+    outputs: [
+      {
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
       },
     ],
     stateMutability: "view",
@@ -4311,30 +3979,6 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint256",
-        name: "_numBlockSinceLastOpen",
-        type: "uint256",
-      },
-      {
-        internalType: "int128",
-        name: "_fLambda",
-        type: "int128",
-      },
-    ],
-    name: "holdingPeriodPenalty",
-    outputs: [
-      {
-        internalType: "uint16",
-        name: "",
-        type: "uint16",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint8",
         name: "_iPoolIdx",
         type: "uint8",
@@ -4364,6 +4008,30 @@ const _abi = [
       },
     ],
     name: "isActiveAccount",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_trader",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_delegate",
+        type: "address",
+      },
+    ],
+    name: "isDelegate",
     outputs: [
       {
         internalType: "bool",
@@ -4449,30 +4117,6 @@ const _abi = [
       {
         internalType: "bool",
         name: "isClosed",
-        type: "bool",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint24",
-        name: "_perpetualId",
-        type: "uint24",
-      },
-      {
-        internalType: "address",
-        name: "_traderAddress",
-        type: "address",
-      },
-    ],
-    name: "isTraderMaintenanceMarginSafe",
-    outputs: [
-      {
-        internalType: "bool",
-        name: "",
         type: "bool",
       },
     ],
@@ -4730,96 +4374,6 @@ const _abi = [
   {
     inputs: [
       {
-        components: [
-          {
-            internalType: "uint16",
-            name: "leverageTDR",
-            type: "uint16",
-          },
-          {
-            internalType: "uint16",
-            name: "brokerFeeTbps",
-            type: "uint16",
-          },
-          {
-            internalType: "uint24",
-            name: "iPerpetualId",
-            type: "uint24",
-          },
-          {
-            internalType: "address",
-            name: "traderAddr",
-            type: "address",
-          },
-          {
-            internalType: "uint32",
-            name: "executionTimestamp",
-            type: "uint32",
-          },
-          {
-            internalType: "address",
-            name: "brokerAddr",
-            type: "address",
-          },
-          {
-            internalType: "uint32",
-            name: "submittedTimestamp",
-            type: "uint32",
-          },
-          {
-            internalType: "uint32",
-            name: "flags",
-            type: "uint32",
-          },
-          {
-            internalType: "uint32",
-            name: "iDeadline",
-            type: "uint32",
-          },
-          {
-            internalType: "address",
-            name: "executorAddr",
-            type: "address",
-          },
-          {
-            internalType: "int128",
-            name: "fAmount",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fLimitPrice",
-            type: "int128",
-          },
-          {
-            internalType: "int128",
-            name: "fTriggerPrice",
-            type: "int128",
-          },
-          {
-            internalType: "bytes",
-            name: "brokerSignature",
-            type: "bytes",
-          },
-        ],
-        internalType: "struct IPerpetualOrder.Order",
-        name: "_order",
-        type: "tuple",
-      },
-      {
-        internalType: "uint16",
-        name: "_feeTbps",
-        type: "uint16",
-      },
-    ],
-    name: "rebatePostingFee",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint24",
         name: "_iPerpetualId",
         type: "uint24",
@@ -4841,52 +4395,10 @@ const _abi = [
     type: "function",
   },
   {
-    inputs: [
-      {
-        internalType: "int128",
-        name: "_fDeltaPos",
-        type: "int128",
-      },
-      {
-        internalType: "int128",
-        name: "_fTreasuryFeeRate",
-        type: "int128",
-      },
-      {
-        internalType: "int128",
-        name: "_fPnLPartRate",
-        type: "int128",
-      },
-      {
-        internalType: "int128",
-        name: "_fReferralRebate",
-        type: "int128",
-      },
-      {
-        internalType: "address",
-        name: "_executorAddr",
-        type: "address",
-      },
-    ],
-    name: "relativeFeeToCCAmount",
-    outputs: [
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-    ],
-    stateMutability: "pure",
+    inputs: [],
+    name: "removeDelegate",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -4960,6 +4472,19 @@ const _abi = [
       },
     ],
     name: "setBrokerVolumeTiers",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "delegate",
+        type: "address",
+      },
+    ],
+    name: "setDelegate",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -5441,11 +4966,6 @@ const _abi = [
         name: "_order",
         type: "tuple",
       },
-      {
-        internalType: "bool",
-        name: "_isApprovedExecutor",
-        type: "bool",
-      },
     ],
     name: "tradeViaOrderBook",
     outputs: [
@@ -5573,12 +5093,7 @@ const _abi = [
     inputs: [
       {
         internalType: "uint24",
-        name: "_iPerpetualId0",
-        type: "uint24",
-      },
-      {
-        internalType: "uint24",
-        name: "_iPerpetualId1",
+        name: "_iPerpetualId",
         type: "uint24",
       },
     ],
@@ -5591,13 +5106,13 @@ const _abi = [
     inputs: [
       {
         internalType: "uint24",
-        name: "_iPerpetualId0",
+        name: "_iPerpetualId",
         type: "uint24",
       },
       {
-        internalType: "uint24",
-        name: "_iPerpetualId1",
-        type: "uint24",
+        internalType: "bool",
+        name: "_revertIfClosed",
+        type: "bool",
       },
     ],
     name: "updateFundingAndPricesBefore",
@@ -5687,43 +5202,14 @@ const _abi = [
   {
     inputs: [
       {
-        internalType: "uint16",
-        name: "_jumpTbps",
-        type: "uint16",
-      },
-      {
-        internalType: "uint16",
-        name: "_MinimalSpreadTbps",
-        type: "uint16",
-      },
-      {
-        internalType: "uint256",
-        name: "_numBlockSinceJump",
-        type: "uint256",
-      },
-      {
-        internalType: "int128",
-        name: "_fLambda",
-        type: "int128",
-      },
-    ],
-    name: "volatilitySpread",
-    outputs: [
-      {
-        internalType: "int128",
-        name: "",
-        type: "int128",
-      },
-    ],
-    stateMutability: "pure",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
         internalType: "uint24",
         name: "_iPerpetualId",
         type: "uint24",
+      },
+      {
+        internalType: "address",
+        name: "_traderAddr",
+        type: "address",
       },
       {
         internalType: "int128",
@@ -5752,6 +5238,11 @@ const _abi = [
         internalType: "uint24",
         name: "_iPerpetualId",
         type: "uint24",
+      },
+      {
+        internalType: "address",
+        name: "_traderAddr",
+        type: "address",
       },
       {
         internalType: "bytes[]",

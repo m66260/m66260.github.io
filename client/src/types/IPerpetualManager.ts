@@ -198,10 +198,10 @@ export declare namespace PerpStorage {
     fCashCC: PromiseOrValue<BigNumberish>;
     fPositionBC: PromiseOrValue<BigNumberish>;
     fUnitAccumulatedFundingStart: PromiseOrValue<BigNumberish>;
-    iLastOpenTimestamp: PromiseOrValue<BigNumberish>;
-    feeTbps: PromiseOrValue<BigNumberish>;
-    brokerFeeTbps: PromiseOrValue<BigNumberish>;
-    positionId: PromiseOrValue<BytesLike>;
+    slot2: PromiseOrValue<BigNumberish>;
+    slot3: PromiseOrValue<BigNumberish>;
+    slot4: PromiseOrValue<BigNumberish>;
+    slot: PromiseOrValue<BytesLike>;
   };
 
   export type MarginAccountStructOutput = [
@@ -218,10 +218,10 @@ export declare namespace PerpStorage {
     fCashCC: BigNumber;
     fPositionBC: BigNumber;
     fUnitAccumulatedFundingStart: BigNumber;
-    iLastOpenTimestamp: BigNumber;
-    feeTbps: number;
-    brokerFeeTbps: number;
-    positionId: string;
+    slot2: BigNumber;
+    slot3: number;
+    slot4: number;
+    slot: string;
   };
 
   export type PriceTimeDataStruct = {
@@ -240,8 +240,8 @@ export declare namespace PerpStorage {
     fInitialMarginRate: PromiseOrValue<BigNumberish>;
     fSigma2: PromiseOrValue<BigNumberish>;
     iLastFundingTime: PromiseOrValue<BigNumberish>;
-    iLastSettlementPriceUpdateTimestamp: PromiseOrValue<BigNumberish>;
-    iLastPriceJumpTimestamp: PromiseOrValue<BigNumberish>;
+    slot0: PromiseOrValue<BigNumberish>;
+    slot1: PromiseOrValue<BigNumberish>;
     fMaintenanceMarginRate: PromiseOrValue<BigNumberish>;
     state: PromiseOrValue<BigNumberish>;
     eCollateralCurrency: PromiseOrValue<BigNumberish>;
@@ -249,7 +249,7 @@ export declare namespace PerpStorage {
     S2BaseCCY: PromiseOrValue<BytesLike>;
     S2QuoteCCY: PromiseOrValue<BytesLike>;
     incentiveSpreadTbps: PromiseOrValue<BigNumberish>;
-    jumpSpreadTbps: PromiseOrValue<BigNumberish>;
+    slot2: PromiseOrValue<BigNumberish>;
     S3BaseCCY: PromiseOrValue<BytesLike>;
     S3QuoteCCY: PromiseOrValue<BytesLike>;
     fSigma3: PromiseOrValue<BigNumberish>;
@@ -347,8 +347,8 @@ export declare namespace PerpStorage {
     fInitialMarginRate: number;
     fSigma2: number;
     iLastFundingTime: number;
-    iLastSettlementPriceUpdateTimestamp: number;
-    iLastPriceJumpTimestamp: number;
+    slot0: number;
+    slot1: number;
     fMaintenanceMarginRate: number;
     state: number;
     eCollateralCurrency: number;
@@ -356,7 +356,7 @@ export declare namespace PerpStorage {
     S2BaseCCY: string;
     S2QuoteCCY: string;
     incentiveSpreadTbps: number;
-    jumpSpreadTbps: number;
+    slot2: number;
     S3BaseCCY: string;
     S3QuoteCCY: string;
     fSigma3: number;
@@ -392,7 +392,7 @@ export declare namespace PerpStorage {
   };
 }
 
-export declare namespace IPerpetualGetter {
+export declare namespace IPerpetualInfo {
   export type PerpetualStaticInfoStruct = {
     id: PromiseOrValue<BigNumberish>;
     limitOrderBookAddr: PromiseOrValue<string>;
@@ -462,22 +462,21 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "activatePerpetual(uint24)": FunctionFragment;
     "addLiquidity(uint8,uint256)": FunctionFragment;
     "adjustSettlementPrice(uint24,int128,int128)": FunctionFragment;
-    "calculateBoundedSlippage((int128,int128,int128,int128,int128,int128),int128)": FunctionFragment;
     "calculateDefaultFundSize(int128[2],int128,int128,int128[2],int128[2],int128[2],uint8)": FunctionFragment;
     "calculatePerpetualPrice((int128,int128,int128,int128,int128,int128),(int128,int128,int128,int128,int128),int128,int128,int128)": FunctionFragment;
     "calculateRiskNeutralPD((int128,int128,int128,int128,int128,int128),(int128,int128,int128,int128,int128),int128,bool)": FunctionFragment;
-    "chargePostingFee((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),uint16)": FunctionFragment;
     "countActivePerpAccounts(uint24)": FunctionFragment;
     "createLiquidityPool(address,uint16,int128,int128)": FunctionFragment;
     "createPerpetual(uint8,bytes4[2],bytes4[2],int128[7],int128[5],int128[12],uint256)": FunctionFragment;
+    "deactivatePerp(uint24)": FunctionFragment;
     "decreasePoolCash(uint8,int128)": FunctionFragment;
-    "deposit(uint24,int128,bytes[],uint64[])": FunctionFragment;
+    "deposit(uint24,address,int128,bytes[],uint64[])": FunctionFragment;
     "depositBrokerLots(uint8,uint32)": FunctionFragment;
     "depositMarginForOpeningTrade(uint24,int128,(uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
     "depositToDefaultFund(uint8,int128)": FunctionFragment;
     "determineExchangeFee((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
-    "distributeFees((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),bool)": FunctionFragment;
-    "distributeFeesLiquidation(uint24,address,int128)": FunctionFragment;
+    "distributeFees((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),uint16,uint16,bool)": FunctionFragment;
+    "distributeFeesLiquidation(uint24,address,int128,uint16)": FunctionFragment;
     "executeCancelOrder(uint24,bytes32)": FunctionFragment;
     "executeLiquidityWithdrawal(uint8,address)": FunctionFragment;
     "executeTrade(uint24,address,int128,int128,int128,bool)": FunctionFragment;
@@ -490,7 +489,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "getCollateralTokenAmountForPricing(uint8)": FunctionFragment;
     "getCurrentBrokerVolume(uint8,address)": FunctionFragment;
     "getCurrentTraderVolume(uint8,address)": FunctionFragment;
-    "getDepositAmountForLvgPosition(int128,int128,int128,int128,int128,int128,int128)": FunctionFragment;
+    "getDepositAmountForLvgPosition(int128,int128,int128,int128,int128,int128,int128,int128)": FunctionFragment;
     "getFeeForBrokerDesignation(uint32)": FunctionFragment;
     "getFeeForBrokerStake(address)": FunctionFragment;
     "getFeeForBrokerVolume(uint8,address)": FunctionFragment;
@@ -505,6 +504,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "getNextLiquidatableTrader(uint24,int128[2])": FunctionFragment;
     "getOracleFactory()": FunctionFragment;
     "getOraclePrice(bytes4[2])": FunctionFragment;
+    "getOracleUpdateTime(uint24)": FunctionFragment;
     "getOrderBookAddress(uint24)": FunctionFragment;
     "getOrderBookFactoryAddress()": FunctionFragment;
     "getPerpetual(uint24)": FunctionFragment;
@@ -516,6 +516,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "getPoolIdByPerpetualId(uint24)": FunctionFragment;
     "getPoolStaticInfo(uint8,uint8)": FunctionFragment;
     "getPriceInfo(uint24)": FunctionFragment;
+    "getSettleableAccounts(uint24,uint256,uint256)": FunctionFragment;
     "getShareTokenFactory()": FunctionFragment;
     "getShareTokenPriceD18(uint8)": FunctionFragment;
     "getTargetCollateralM1(int128,int128,(int128,int128,int128,int128,int128),int128)": FunctionFragment;
@@ -525,14 +526,13 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "getTraderState(uint24,address,int128[2])": FunctionFragment;
     "getTreasuryAddress()": FunctionFragment;
     "getWithdrawRequests(uint8,uint256,uint256)": FunctionFragment;
-    "holdingPeriodPenalty(uint256,int128)": FunctionFragment;
     "increasePoolCash(uint8,int128)": FunctionFragment;
     "isActiveAccount(uint24,address)": FunctionFragment;
+    "isDelegate(address,address)": FunctionFragment;
     "isMarketClosed(bytes4,bytes4)": FunctionFragment;
     "isOrderCanceled(bytes32)": FunctionFragment;
     "isOrderExecuted(bytes32)": FunctionFragment;
     "isPerpMarketClosed(uint24)": FunctionFragment;
-    "isTraderMaintenanceMarginSafe(uint24,address)": FunctionFragment;
     "liquidateByAMM(uint24,address,address,bytes[],uint64[])": FunctionFragment;
     "pauseLiquidityProvision(uint8,bool)": FunctionFragment;
     "preTrade((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
@@ -540,14 +540,14 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "queryMidPrices(uint24[],int128[])": FunctionFragment;
     "queryPerpetualPrice(uint24,int128,int128[2])": FunctionFragment;
     "rebalance(uint24)": FunctionFragment;
-    "rebatePostingFee((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),uint16)": FunctionFragment;
     "reduceMarginCollateral(uint24,address,int128)": FunctionFragment;
-    "relativeFeeToCCAmount(int128,int128,int128,int128,address)": FunctionFragment;
+    "removeDelegate()": FunctionFragment;
     "runLiquidityPool(uint8)": FunctionFragment;
     "setAMMPerpLogic(address)": FunctionFragment;
     "setBlockDelay(uint8)": FunctionFragment;
     "setBrokerTiers(uint256[],uint16[])": FunctionFragment;
     "setBrokerVolumeTiers(uint256[],uint16[])": FunctionFragment;
+    "setDelegate(address)": FunctionFragment;
     "setEmergencyState(uint24)": FunctionFragment;
     "setFeesForDesignation(uint32[],uint16[])": FunctionFragment;
     "setInitialVolumeForFee(uint8,address,uint16)": FunctionFragment;
@@ -570,7 +570,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "settleNextTraderInPool(uint8)": FunctionFragment;
     "splitProtocolFee(uint16)": FunctionFragment;
     "togglePerpEmergencyState(uint24)": FunctionFragment;
-    "tradeViaOrderBook((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes),bool)": FunctionFragment;
+    "tradeViaOrderBook((uint16,uint16,uint24,address,uint32,address,uint32,uint32,uint32,address,int128,int128,int128,bytes))": FunctionFragment;
     "transferBrokerLots(uint8,address,uint32)": FunctionFragment;
     "transferBrokerOwnership(uint8,address)": FunctionFragment;
     "transferEarningsToTreasury(uint8,int128)": FunctionFragment;
@@ -578,14 +578,13 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "updateAMMTargetFundSize(uint24)": FunctionFragment;
     "updateDefaultFundTargetSize(uint24)": FunctionFragment;
     "updateDefaultFundTargetSizeRandom(uint8)": FunctionFragment;
-    "updateFundingAndPricesAfter(uint24,uint24)": FunctionFragment;
-    "updateFundingAndPricesBefore(uint24,uint24)": FunctionFragment;
+    "updateFundingAndPricesAfter(uint24)": FunctionFragment;
+    "updateFundingAndPricesBefore(uint24,bool)": FunctionFragment;
     "updatePriceFeeds(uint24,bytes[],uint64[],uint256)": FunctionFragment;
     "updateVolumeEMAOnNewTrade(uint24,address,address,int128)": FunctionFragment;
     "validateStopPrice(bool,int128,int128)": FunctionFragment;
-    "volatilitySpread(uint16,uint16,uint256,int128)": FunctionFragment;
-    "withdraw(uint24,int128,bytes[],uint64[])": FunctionFragment;
-    "withdrawAll(uint24,bytes[],uint64[])": FunctionFragment;
+    "withdraw(uint24,address,int128,bytes[],uint64[])": FunctionFragment;
+    "withdrawAll(uint24,address,bytes[],uint64[])": FunctionFragment;
     "withdrawDepositFromMarginAccount(uint24,address)": FunctionFragment;
     "withdrawFromDefaultFund(uint8,int128)": FunctionFragment;
     "withdrawLiquidity(uint8,uint256)": FunctionFragment;
@@ -596,14 +595,13 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "activatePerpetual"
       | "addLiquidity"
       | "adjustSettlementPrice"
-      | "calculateBoundedSlippage"
       | "calculateDefaultFundSize"
       | "calculatePerpetualPrice"
       | "calculateRiskNeutralPD"
-      | "chargePostingFee"
       | "countActivePerpAccounts"
       | "createLiquidityPool"
       | "createPerpetual"
+      | "deactivatePerp"
       | "decreasePoolCash"
       | "deposit"
       | "depositBrokerLots"
@@ -639,6 +637,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "getNextLiquidatableTrader"
       | "getOracleFactory"
       | "getOraclePrice"
+      | "getOracleUpdateTime"
       | "getOrderBookAddress"
       | "getOrderBookFactoryAddress"
       | "getPerpetual"
@@ -650,6 +649,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "getPoolIdByPerpetualId"
       | "getPoolStaticInfo"
       | "getPriceInfo"
+      | "getSettleableAccounts"
       | "getShareTokenFactory"
       | "getShareTokenPriceD18"
       | "getTargetCollateralM1"
@@ -659,14 +659,13 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "getTraderState"
       | "getTreasuryAddress"
       | "getWithdrawRequests"
-      | "holdingPeriodPenalty"
       | "increasePoolCash"
       | "isActiveAccount"
+      | "isDelegate"
       | "isMarketClosed"
       | "isOrderCanceled"
       | "isOrderExecuted"
       | "isPerpMarketClosed"
-      | "isTraderMaintenanceMarginSafe"
       | "liquidateByAMM"
       | "pauseLiquidityProvision"
       | "preTrade"
@@ -674,14 +673,14 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "queryMidPrices"
       | "queryPerpetualPrice"
       | "rebalance"
-      | "rebatePostingFee"
       | "reduceMarginCollateral"
-      | "relativeFeeToCCAmount"
+      | "removeDelegate"
       | "runLiquidityPool"
       | "setAMMPerpLogic"
       | "setBlockDelay"
       | "setBrokerTiers"
       | "setBrokerVolumeTiers"
+      | "setDelegate"
       | "setEmergencyState"
       | "setFeesForDesignation"
       | "setInitialVolumeForFee"
@@ -717,7 +716,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       | "updatePriceFeeds"
       | "updateVolumeEMAOnNewTrade"
       | "validateStopPrice"
-      | "volatilitySpread"
       | "withdraw"
       | "withdrawAll"
       | "withdrawDepositFromMarginAccount"
@@ -740,10 +738,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "calculateBoundedSlippage",
-    values: [AMMPerpLogic.AMMVariablesStruct, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "calculateDefaultFundSize",
@@ -777,10 +771,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "chargePostingFee",
-    values: [IPerpetualOrder.OrderStruct, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "countActivePerpAccounts",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -812,6 +802,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "deactivatePerp",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "decreasePoolCash",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
@@ -819,6 +813,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     functionFragment: "deposit",
     values: [
       PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>[],
       PromiseOrValue<BigNumberish>[]
@@ -846,13 +841,19 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "distributeFees",
-    values: [IPerpetualOrder.OrderStruct, PromiseOrValue<boolean>]
+    values: [
+      IPerpetualOrder.OrderStruct,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<boolean>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "distributeFeesLiquidation",
     values: [
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<string>,
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>
     ]
   ): string;
@@ -921,6 +922,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getDepositAmountForLvgPosition",
     values: [
+      PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BigNumberish>,
@@ -997,6 +999,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     values: [[PromiseOrValue<BytesLike>, PromiseOrValue<BytesLike>]]
   ): string;
   encodeFunctionData(
+    functionFragment: "getOracleUpdateTime",
+    values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
     functionFragment: "getOrderBookAddress",
     values: [PromiseOrValue<BigNumberish>]
   ): string;
@@ -1039,6 +1045,14 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "getPriceInfo",
     values: [PromiseOrValue<BigNumberish>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getSettleableAccounts",
+    values: [
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>,
+      PromiseOrValue<BigNumberish>
+    ]
   ): string;
   encodeFunctionData(
     functionFragment: "getShareTokenFactory",
@@ -1100,16 +1114,16 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "holdingPeriodPenalty",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "increasePoolCash",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "isActiveAccount",
     values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "isDelegate",
+    values: [PromiseOrValue<string>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "isMarketClosed",
@@ -1126,10 +1140,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "isPerpMarketClosed",
     values: [PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "isTraderMaintenanceMarginSafe",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "liquidateByAMM",
@@ -1174,10 +1184,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
-    functionFragment: "rebatePostingFee",
-    values: [IPerpetualOrder.OrderStruct, PromiseOrValue<BigNumberish>]
-  ): string;
-  encodeFunctionData(
     functionFragment: "reduceMarginCollateral",
     values: [
       PromiseOrValue<BigNumberish>,
@@ -1186,14 +1192,8 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "relativeFeeToCCAmount",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<string>
-    ]
+    functionFragment: "removeDelegate",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "runLiquidityPool",
@@ -1214,6 +1214,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "setBrokerVolumeTiers",
     values: [PromiseOrValue<BigNumberish>[], PromiseOrValue<BigNumberish>[]]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "setDelegate",
+    values: [PromiseOrValue<string>]
   ): string;
   encodeFunctionData(
     functionFragment: "setEmergencyState",
@@ -1336,7 +1340,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "tradeViaOrderBook",
-    values: [IPerpetualOrder.OrderStruct, PromiseOrValue<boolean>]
+    values: [IPerpetualOrder.OrderStruct]
   ): string;
   encodeFunctionData(
     functionFragment: "transferBrokerLots",
@@ -1372,11 +1376,11 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "updateFundingAndPricesAfter",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>]
   ): string;
   encodeFunctionData(
     functionFragment: "updateFundingAndPricesBefore",
-    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>]
+    values: [PromiseOrValue<BigNumberish>, PromiseOrValue<boolean>]
   ): string;
   encodeFunctionData(
     functionFragment: "updatePriceFeeds",
@@ -1405,18 +1409,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     ]
   ): string;
   encodeFunctionData(
-    functionFragment: "volatilitySpread",
-    values: [
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>,
-      PromiseOrValue<BigNumberish>
-    ]
-  ): string;
-  encodeFunctionData(
     functionFragment: "withdraw",
     values: [
       PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
       PromiseOrValue<BigNumberish>,
       PromiseOrValue<BytesLike>[],
       PromiseOrValue<BigNumberish>[]
@@ -1426,6 +1422,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     functionFragment: "withdrawAll",
     values: [
       PromiseOrValue<BigNumberish>,
+      PromiseOrValue<string>,
       PromiseOrValue<BytesLike>[],
       PromiseOrValue<BigNumberish>[]
     ]
@@ -1456,10 +1453,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "calculateBoundedSlippage",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "calculateDefaultFundSize",
     data: BytesLike
   ): Result;
@@ -1472,10 +1465,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "chargePostingFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "countActivePerpAccounts",
     data: BytesLike
   ): Result;
@@ -1485,6 +1474,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "createPerpetual",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "deactivatePerp",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1625,6 +1618,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getOracleUpdateTime",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getOrderBookAddress",
     data: BytesLike
   ): Result;
@@ -1669,6 +1666,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "getSettleableAccounts",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "getShareTokenFactory",
     data: BytesLike
   ): Result;
@@ -1705,10 +1706,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "holdingPeriodPenalty",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "increasePoolCash",
     data: BytesLike
   ): Result;
@@ -1716,6 +1713,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     functionFragment: "isActiveAccount",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "isDelegate", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "isMarketClosed",
     data: BytesLike
@@ -1730,10 +1728,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "isPerpMarketClosed",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "isTraderMaintenanceMarginSafe",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1759,15 +1753,11 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(functionFragment: "rebalance", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "rebatePostingFee",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "reduceMarginCollateral",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "relativeFeeToCCAmount",
+    functionFragment: "removeDelegate",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1788,6 +1778,10 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "setBrokerVolumeTiers",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "setDelegate",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -1927,10 +1921,6 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     functionFragment: "validateStopPrice",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "volatilitySpread",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "withdrawAll",
@@ -1954,12 +1944,12 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "BrokerVolumeTransferred(uint8,address,address,int128)": EventFragment;
     "Clear(uint24,address)": EventFragment;
     "DistributeFees(uint8,uint24,address,int128,int128)": EventFragment;
-    "Liquidate(uint24,address,address,bytes16,int128,int128,int128,int128,int128)": EventFragment;
-    "LiquidityAdded(uint64,address,uint256,uint256)": EventFragment;
+    "Liquidate(uint24,address,address,int128,int128,int128,int128,int128)": EventFragment;
+    "LiquidityAdded(uint8,address,uint256,uint256)": EventFragment;
     "LiquidityPoolCreated(uint8,address,address,uint16,int128)": EventFragment;
     "LiquidityProvisionPaused(bool,uint8)": EventFragment;
-    "LiquidityRemoved(uint64,address,uint256,uint256)": EventFragment;
-    "LiquidityWithdrawalInitiated(uint64,address,uint256)": EventFragment;
+    "LiquidityRemoved(uint8,address,uint256,uint256)": EventFragment;
+    "LiquidityWithdrawalInitiated(uint8,address,uint256)": EventFragment;
     "PerpetualCreated(uint8,uint24,int128[7],int128[5],int128[12],uint256)": EventFragment;
     "PerpetualLimitOrderCancelled(uint24,bytes32)": EventFragment;
     "RunLiquidityPool(uint8)": EventFragment;
@@ -1968,6 +1958,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "SetBrokerTiers(uint256[],uint16[])": EventFragment;
     "SetBrokerVolumeTiers(uint256[],uint16[])": EventFragment;
     "SetClearedState(uint24)": EventFragment;
+    "SetDelegate(address,address)": EventFragment;
     "SetEmergencyState(uint24,int128,int128,int128)": EventFragment;
     "SetNormalState(uint24)": EventFragment;
     "SetOracles(uint24,bytes4[2],bytes4[2])": EventFragment;
@@ -1981,24 +1972,15 @@ export interface IPerpetualManagerInterface extends utils.Interface {
     "SetUtilityToken(address)": EventFragment;
     "Settle(uint24,address,int256)": EventFragment;
     "SettleState(uint24)": EventFragment;
+    "SettlementComplete(uint24)": EventFragment;
     "TokensDeposited(uint24,address,int128)": EventFragment;
     "TokensWithdrawn(uint24,address,int128)": EventFragment;
-    "Trade(uint24,address,bytes16,tuple,bytes32,int128,int128,int128,int128,int128)": EventFragment;
+    "Trade(uint24,address,tuple,bytes32,int128,int128,int128,int128,int128)": EventFragment;
     "TransferAddressTo(string,address,address)": EventFragment;
-    "TransferEarningsToTreasury(uint8,int128,int128)": EventFragment;
-    "TransferFeeToBroker(uint24,address,int128)": EventFragment;
-    "TransferFeeToexecutor(uint24,address,address,int128)": EventFragment;
-    "UpdateAMMFundTargetSize(uint24,uint8,int128,int128)": EventFragment;
     "UpdateBrokerAddedCash(uint8,uint32,uint32)": EventFragment;
-    "UpdateBrokerFundCash(uint8,int128,int128)": EventFragment;
-    "UpdateDefaultFundCash(uint8,int128,int128)": EventFragment;
-    "UpdateDefaultFundTargetSize(uint8,int128,int128)": EventFragment;
     "UpdateFundingRate(uint24,int128)": EventFragment;
-    "UpdateMarginAccount(uint24,address,bytes16,int128,int128,int128,int128,int128)": EventFragment;
+    "UpdateMarginAccount(uint24,address,int128)": EventFragment;
     "UpdateMarkPrice(uint24,int128,int128,int128)": EventFragment;
-    "UpdateParticipationFundCash(uint8,int128,int128)": EventFragment;
-    "UpdateReprTradeSizes(uint24,int128,int128,int128)": EventFragment;
-    "UpdateUnitAccumulatedFunding(uint24,int128)": EventFragment;
   };
 
   getEvent(nameOrSignatureOrTopic: "BrokerLotsTransferred"): EventFragment;
@@ -2023,6 +2005,7 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "SetBrokerTiers"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SetBrokerVolumeTiers"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SetClearedState"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SetDelegate"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SetEmergencyState"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SetNormalState"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SetOracles"): EventFragment;
@@ -2036,30 +2019,15 @@ export interface IPerpetualManagerInterface extends utils.Interface {
   getEvent(nameOrSignatureOrTopic: "SetUtilityToken"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Settle"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "SettleState"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: "SettlementComplete"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TokensDeposited"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TokensWithdrawn"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "Trade"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "TransferAddressTo"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TransferEarningsToTreasury"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TransferFeeToBroker"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "TransferFeeToexecutor"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateAMMFundTargetSize"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateBrokerAddedCash"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateBrokerFundCash"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateDefaultFundCash"): EventFragment;
-  getEvent(
-    nameOrSignatureOrTopic: "UpdateDefaultFundTargetSize"
-  ): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateFundingRate"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateMarginAccount"): EventFragment;
   getEvent(nameOrSignatureOrTopic: "UpdateMarkPrice"): EventFragment;
-  getEvent(
-    nameOrSignatureOrTopic: "UpdateParticipationFundCash"
-  ): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "UpdateReprTradeSizes"): EventFragment;
-  getEvent(
-    nameOrSignatureOrTopic: "UpdateUnitAccumulatedFunding"
-  ): EventFragment;
 }
 
 export interface BrokerLotsTransferredEventObject {
@@ -2116,7 +2084,6 @@ export interface LiquidateEventObject {
   perpetualId: number;
   liquidator: string;
   trader: string;
-  positionId: string;
   amountLiquidatedBC: BigNumber;
   liquidationPrice: BigNumber;
   newPositionSizeBC: BigNumber;
@@ -2126,7 +2093,6 @@ export interface LiquidateEventObject {
 export type LiquidateEvent = TypedEvent<
   [
     number,
-    string,
     string,
     string,
     BigNumber,
@@ -2141,13 +2107,13 @@ export type LiquidateEvent = TypedEvent<
 export type LiquidateEventFilter = TypedEventFilter<LiquidateEvent>;
 
 export interface LiquidityAddedEventObject {
-  poolId: BigNumber;
+  poolId: number;
   user: string;
   tokenAmount: BigNumber;
   shareAmount: BigNumber;
 }
 export type LiquidityAddedEvent = TypedEvent<
-  [BigNumber, string, BigNumber, BigNumber],
+  [number, string, BigNumber, BigNumber],
   LiquidityAddedEventObject
 >;
 
@@ -2181,13 +2147,13 @@ export type LiquidityProvisionPausedEventFilter =
   TypedEventFilter<LiquidityProvisionPausedEvent>;
 
 export interface LiquidityRemovedEventObject {
-  poolId: BigNumber;
+  poolId: number;
   user: string;
   tokenAmount: BigNumber;
   shareAmount: BigNumber;
 }
 export type LiquidityRemovedEvent = TypedEvent<
-  [BigNumber, string, BigNumber, BigNumber],
+  [number, string, BigNumber, BigNumber],
   LiquidityRemovedEventObject
 >;
 
@@ -2195,12 +2161,12 @@ export type LiquidityRemovedEventFilter =
   TypedEventFilter<LiquidityRemovedEvent>;
 
 export interface LiquidityWithdrawalInitiatedEventObject {
-  poolId: BigNumber;
+  poolId: number;
   user: string;
   shareAmount: BigNumber;
 }
 export type LiquidityWithdrawalInitiatedEvent = TypedEvent<
-  [BigNumber, string, BigNumber],
+  [number, string, BigNumber],
   LiquidityWithdrawalInitiatedEventObject
 >;
 
@@ -2304,6 +2270,17 @@ export type SetClearedStateEvent = TypedEvent<
 >;
 
 export type SetClearedStateEventFilter = TypedEventFilter<SetClearedStateEvent>;
+
+export interface SetDelegateEventObject {
+  trader: string;
+  delegate: string;
+}
+export type SetDelegateEvent = TypedEvent<
+  [string, string],
+  SetDelegateEventObject
+>;
+
+export type SetDelegateEventFilter = TypedEventFilter<SetDelegateEvent>;
 
 export interface SetEmergencyStateEventObject {
   perpetualId: number;
@@ -2461,6 +2438,17 @@ export type SettleStateEvent = TypedEvent<[number], SettleStateEventObject>;
 
 export type SettleStateEventFilter = TypedEventFilter<SettleStateEvent>;
 
+export interface SettlementCompleteEventObject {
+  perpetualId: number;
+}
+export type SettlementCompleteEvent = TypedEvent<
+  [number],
+  SettlementCompleteEventObject
+>;
+
+export type SettlementCompleteEventFilter =
+  TypedEventFilter<SettlementCompleteEvent>;
+
 export interface TokensDepositedEventObject {
   perpetualId: number;
   trader: string;
@@ -2488,7 +2476,6 @@ export type TokensWithdrawnEventFilter = TypedEventFilter<TokensWithdrawnEvent>;
 export interface TradeEventObject {
   perpetualId: number;
   trader: string;
-  positionId: string;
   order: IPerpetualOrder.OrderStructOutput;
   orderDigest: string;
   newPositionSizeBC: BigNumber;
@@ -2500,7 +2487,6 @@ export interface TradeEventObject {
 export type TradeEvent = TypedEvent<
   [
     number,
-    string,
     string,
     IPerpetualOrder.OrderStructOutput,
     string,
@@ -2528,60 +2514,6 @@ export type TransferAddressToEvent = TypedEvent<
 export type TransferAddressToEventFilter =
   TypedEventFilter<TransferAddressToEvent>;
 
-export interface TransferEarningsToTreasuryEventObject {
-  _poolId: number;
-  fEarnings: BigNumber;
-  newDefaultFundSize: BigNumber;
-}
-export type TransferEarningsToTreasuryEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
-  TransferEarningsToTreasuryEventObject
->;
-
-export type TransferEarningsToTreasuryEventFilter =
-  TypedEventFilter<TransferEarningsToTreasuryEvent>;
-
-export interface TransferFeeToBrokerEventObject {
-  perpetualId: number;
-  broker: string;
-  feeCC: BigNumber;
-}
-export type TransferFeeToBrokerEvent = TypedEvent<
-  [number, string, BigNumber],
-  TransferFeeToBrokerEventObject
->;
-
-export type TransferFeeToBrokerEventFilter =
-  TypedEventFilter<TransferFeeToBrokerEvent>;
-
-export interface TransferFeeToexecutorEventObject {
-  perpetualId: number;
-  trader: string;
-  executor: string;
-  referralRebate: BigNumber;
-}
-export type TransferFeeToexecutorEvent = TypedEvent<
-  [number, string, string, BigNumber],
-  TransferFeeToexecutorEventObject
->;
-
-export type TransferFeeToexecutorEventFilter =
-  TypedEventFilter<TransferFeeToexecutorEvent>;
-
-export interface UpdateAMMFundTargetSizeEventObject {
-  perpetualId: number;
-  liquidityPoolId: number;
-  fTargetAMMFundSizeInPerpetual: BigNumber;
-  fTargetAMMFundSizeInPool: BigNumber;
-}
-export type UpdateAMMFundTargetSizeEvent = TypedEvent<
-  [number, number, BigNumber, BigNumber],
-  UpdateAMMFundTargetSizeEventObject
->;
-
-export type UpdateAMMFundTargetSizeEventFilter =
-  TypedEventFilter<UpdateAMMFundTargetSizeEvent>;
-
 export interface UpdateBrokerAddedCashEventObject {
   poolId: number;
   iLots: number;
@@ -2594,45 +2526,6 @@ export type UpdateBrokerAddedCashEvent = TypedEvent<
 
 export type UpdateBrokerAddedCashEventFilter =
   TypedEventFilter<UpdateBrokerAddedCashEvent>;
-
-export interface UpdateBrokerFundCashEventObject {
-  poolId: number;
-  fDeltaAmountCC: BigNumber;
-  fNewFundCash: BigNumber;
-}
-export type UpdateBrokerFundCashEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
-  UpdateBrokerFundCashEventObject
->;
-
-export type UpdateBrokerFundCashEventFilter =
-  TypedEventFilter<UpdateBrokerFundCashEvent>;
-
-export interface UpdateDefaultFundCashEventObject {
-  poolId: number;
-  fDeltaAmountCC: BigNumber;
-  fNewFundCash: BigNumber;
-}
-export type UpdateDefaultFundCashEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
-  UpdateDefaultFundCashEventObject
->;
-
-export type UpdateDefaultFundCashEventFilter =
-  TypedEventFilter<UpdateDefaultFundCashEvent>;
-
-export interface UpdateDefaultFundTargetSizeEventObject {
-  liquidityPoolId: number;
-  fDefaultFundCashCC: BigNumber;
-  fTargetDFSize: BigNumber;
-}
-export type UpdateDefaultFundTargetSizeEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
-  UpdateDefaultFundTargetSizeEventObject
->;
-
-export type UpdateDefaultFundTargetSizeEventFilter =
-  TypedEventFilter<UpdateDefaultFundTargetSizeEvent>;
 
 export interface UpdateFundingRateEventObject {
   perpetualId: number;
@@ -2649,24 +2542,10 @@ export type UpdateFundingRateEventFilter =
 export interface UpdateMarginAccountEventObject {
   perpetualId: number;
   trader: string;
-  positionId: string;
-  fPositionBC: BigNumber;
-  fCashCC: BigNumber;
-  fLockedInValueQC: BigNumber;
   fFundingPaymentCC: BigNumber;
-  fOpenInterestBC: BigNumber;
 }
 export type UpdateMarginAccountEvent = TypedEvent<
-  [
-    number,
-    string,
-    string,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber,
-    BigNumber
-  ],
+  [number, string, BigNumber],
   UpdateMarginAccountEventObject
 >;
 
@@ -2685,45 +2564,6 @@ export type UpdateMarkPriceEvent = TypedEvent<
 >;
 
 export type UpdateMarkPriceEventFilter = TypedEventFilter<UpdateMarkPriceEvent>;
-
-export interface UpdateParticipationFundCashEventObject {
-  poolId: number;
-  fDeltaAmountCC: BigNumber;
-  fNewFundCash: BigNumber;
-}
-export type UpdateParticipationFundCashEvent = TypedEvent<
-  [number, BigNumber, BigNumber],
-  UpdateParticipationFundCashEventObject
->;
-
-export type UpdateParticipationFundCashEventFilter =
-  TypedEventFilter<UpdateParticipationFundCashEvent>;
-
-export interface UpdateReprTradeSizesEventObject {
-  perpetualId: number;
-  fCurrentTraderExposureEMA: BigNumber;
-  fCurrentAMMExposureEMAShort: BigNumber;
-  fCurrentAMMExposureEMALong: BigNumber;
-}
-export type UpdateReprTradeSizesEvent = TypedEvent<
-  [number, BigNumber, BigNumber, BigNumber],
-  UpdateReprTradeSizesEventObject
->;
-
-export type UpdateReprTradeSizesEventFilter =
-  TypedEventFilter<UpdateReprTradeSizesEvent>;
-
-export interface UpdateUnitAccumulatedFundingEventObject {
-  perpetualId: number;
-  unitAccumulativeFunding: BigNumber;
-}
-export type UpdateUnitAccumulatedFundingEvent = TypedEvent<
-  [number, BigNumber],
-  UpdateUnitAccumulatedFundingEventObject
->;
-
-export type UpdateUnitAccumulatedFundingEventFilter =
-  TypedEventFilter<UpdateUnitAccumulatedFundingEvent>;
 
 export interface IPerpetualManager extends BaseContract {
   connect(signerOrProvider: Signer | Provider | string): this;
@@ -2770,12 +2610,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    calculateBoundedSlippage(
-      _ammVars: AMMPerpLogic.AMMVariablesStruct,
-      _fTradeAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     calculateDefaultFundSize(
       _fK2AMM: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       _fk2Trader: PromiseOrValue<BigNumberish>,
@@ -2807,12 +2641,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
 
-    chargePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     countActivePerpAccounts(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -2843,6 +2671,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
+    deactivatePerp(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
     decreasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -2851,6 +2684,7 @@ export interface IPerpetualManager extends BaseContract {
 
     deposit(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -2883,6 +2717,8 @@ export interface IPerpetualManager extends BaseContract {
 
     distributeFees(
       _order: IPerpetualOrder.OrderStruct,
+      _brkrFeeTbps: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       _hasOpened: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
@@ -2891,6 +2727,7 @@ export interface IPerpetualManager extends BaseContract {
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
       _fDeltaPositionBC: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -2976,6 +2813,7 @@ export interface IPerpetualManager extends BaseContract {
       _fPrice: PromiseOrValue<BigNumberish>,
       _fS2Mark: PromiseOrValue<BigNumberish>,
       _fS3: PromiseOrValue<BigNumberish>,
+      _fS2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[BigNumber]>;
 
@@ -3060,6 +2898,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber] & { fPrice: BigNumber }>;
 
+    getOracleUpdateTime(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
+
     getOrderBookAddress(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -3086,7 +2929,7 @@ export interface IPerpetualManager extends BaseContract {
     getPerpetualStaticInfo(
       perpetualIds: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<[IPerpetualGetter.PerpetualStaticInfoStructOutput[]]>;
+    ): Promise<[IPerpetualInfo.PerpetualStaticInfoStructOutput[]]>;
 
     getPerpetuals(
       perpetualIds: PromiseOrValue<BigNumberish>[],
@@ -3114,6 +2957,13 @@ export interface IPerpetualManager extends BaseContract {
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string[], boolean[]]>;
+
+    getSettleableAccounts(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      start: PromiseOrValue<BigNumberish>,
+      count: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
 
     getShareTokenFactory(overrides?: CallOverrides): Promise<[string]>;
 
@@ -3171,12 +3021,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[IPerpetualTreasury.WithdrawRequestStructOutput[]]>;
 
-    holdingPeriodPenalty(
-      _numBlockSinceLastOpen: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[number]>;
-
     increasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -3186,6 +3030,12 @@ export interface IPerpetualManager extends BaseContract {
     isActiveAccount(
       _perpetualId: PromiseOrValue<BigNumberish>,
       _traderAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    isDelegate(
+      _trader: PromiseOrValue<string>,
+      _delegate: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
 
@@ -3209,12 +3059,6 @@ export interface IPerpetualManager extends BaseContract {
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[boolean] & { isClosed: boolean }>;
-
-    isTraderMaintenanceMarginSafe(
-      _perpetualId: PromiseOrValue<BigNumberish>,
-      _traderAddress: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
 
     liquidateByAMM(
       _perpetualIndex: PromiseOrValue<BigNumberish>,
@@ -3264,12 +3108,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    rebatePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<ContractTransaction>;
-
     reduceMarginCollateral(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
@@ -3277,14 +3115,9 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
-    relativeFeeToCCAmount(
-      _fDeltaPos: PromiseOrValue<BigNumberish>,
-      _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
-      _fPnLPartRate: PromiseOrValue<BigNumberish>,
-      _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _executorAddr: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber, BigNumber]>;
+    removeDelegate(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
 
     runLiquidityPool(
       _liqPoolID: PromiseOrValue<BigNumberish>,
@@ -3310,6 +3143,11 @@ export interface IPerpetualManager extends BaseContract {
     setBrokerVolumeTiers(
       _tiers: PromiseOrValue<BigNumberish>[],
       _feesTbps: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<ContractTransaction>;
+
+    setDelegate(
+      delegate: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -3450,7 +3288,6 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
-      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -3493,14 +3330,13 @@ export interface IPerpetualManager extends BaseContract {
     ): Promise<ContractTransaction>;
 
     updateFundingAndPricesAfter(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
     updateFundingAndPricesBefore(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _revertIfClosed: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<ContractTransaction>;
 
@@ -3527,16 +3363,9 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[void]>;
 
-    volatilitySpread(
-      _jumpTbps: PromiseOrValue<BigNumberish>,
-      _MinimalSpreadTbps: PromiseOrValue<BigNumberish>,
-      _numBlockSinceJump: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     withdraw(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -3545,6 +3374,7 @@ export interface IPerpetualManager extends BaseContract {
 
     withdrawAll(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -3587,12 +3417,6 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  calculateBoundedSlippage(
-    _ammVars: AMMPerpLogic.AMMVariablesStruct,
-    _fTradeAmount: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   calculateDefaultFundSize(
     _fK2AMM: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
     _fk2Trader: PromiseOrValue<BigNumberish>,
@@ -3620,12 +3444,6 @@ export interface IPerpetualManager extends BaseContract {
     _withCDF: PromiseOrValue<boolean>,
     overrides?: CallOverrides
   ): Promise<[BigNumber, BigNumber]>;
-
-  chargePostingFee(
-    _order: IPerpetualOrder.OrderStruct,
-    _feeTbps: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
 
   countActivePerpAccounts(
     _perpetualId: PromiseOrValue<BigNumberish>,
@@ -3657,6 +3475,11 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
+  deactivatePerp(
+    _perpetualId: PromiseOrValue<BigNumberish>,
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
   decreasePoolCash(
     _iPoolIdx: PromiseOrValue<BigNumberish>,
     _fAmount: PromiseOrValue<BigNumberish>,
@@ -3665,6 +3488,7 @@ export interface IPerpetualManager extends BaseContract {
 
   deposit(
     _iPerpetualId: PromiseOrValue<BigNumberish>,
+    _traderAddr: PromiseOrValue<string>,
     _fAmount: PromiseOrValue<BigNumberish>,
     _updateData: PromiseOrValue<BytesLike>[],
     _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -3697,6 +3521,8 @@ export interface IPerpetualManager extends BaseContract {
 
   distributeFees(
     _order: IPerpetualOrder.OrderStruct,
+    _brkrFeeTbps: PromiseOrValue<BigNumberish>,
+    _protocolFeeTbps: PromiseOrValue<BigNumberish>,
     _hasOpened: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
@@ -3705,6 +3531,7 @@ export interface IPerpetualManager extends BaseContract {
     _iPerpetualId: PromiseOrValue<BigNumberish>,
     _traderAddr: PromiseOrValue<string>,
     _fDeltaPositionBC: PromiseOrValue<BigNumberish>,
+    _protocolFeeTbps: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -3787,6 +3614,7 @@ export interface IPerpetualManager extends BaseContract {
     _fPrice: PromiseOrValue<BigNumberish>,
     _fS2Mark: PromiseOrValue<BigNumberish>,
     _fS3: PromiseOrValue<BigNumberish>,
+    _fS2: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
@@ -3865,6 +3693,11 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: CallOverrides
   ): Promise<BigNumber>;
 
+  getOracleUpdateTime(
+    _perpetualId: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
+
   getOrderBookAddress(
     _perpetualId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
@@ -3891,7 +3724,7 @@ export interface IPerpetualManager extends BaseContract {
   getPerpetualStaticInfo(
     perpetualIds: PromiseOrValue<BigNumberish>[],
     overrides?: CallOverrides
-  ): Promise<IPerpetualGetter.PerpetualStaticInfoStructOutput[]>;
+  ): Promise<IPerpetualInfo.PerpetualStaticInfoStructOutput[]>;
 
   getPerpetuals(
     perpetualIds: PromiseOrValue<BigNumberish>[],
@@ -3917,6 +3750,13 @@ export interface IPerpetualManager extends BaseContract {
     _perpetualId: PromiseOrValue<BigNumberish>,
     overrides?: CallOverrides
   ): Promise<[string[], boolean[]]>;
+
+  getSettleableAccounts(
+    _perpetualId: PromiseOrValue<BigNumberish>,
+    start: PromiseOrValue<BigNumberish>,
+    count: PromiseOrValue<BigNumberish>,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
 
   getShareTokenFactory(overrides?: CallOverrides): Promise<string>;
 
@@ -3971,12 +3811,6 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: CallOverrides
   ): Promise<IPerpetualTreasury.WithdrawRequestStructOutput[]>;
 
-  holdingPeriodPenalty(
-    _numBlockSinceLastOpen: PromiseOrValue<BigNumberish>,
-    _fLambda: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<number>;
-
   increasePoolCash(
     _iPoolIdx: PromiseOrValue<BigNumberish>,
     _fAmount: PromiseOrValue<BigNumberish>,
@@ -3986,6 +3820,12 @@ export interface IPerpetualManager extends BaseContract {
   isActiveAccount(
     _perpetualId: PromiseOrValue<BigNumberish>,
     _traderAddress: PromiseOrValue<string>,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  isDelegate(
+    _trader: PromiseOrValue<string>,
+    _delegate: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -4007,12 +3847,6 @@ export interface IPerpetualManager extends BaseContract {
 
   isPerpMarketClosed(
     _perpetualId: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
-  isTraderMaintenanceMarginSafe(
-    _perpetualId: PromiseOrValue<BigNumberish>,
-    _traderAddress: PromiseOrValue<string>,
     overrides?: CallOverrides
   ): Promise<boolean>;
 
@@ -4061,12 +3895,6 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  rebatePostingFee(
-    _order: IPerpetualOrder.OrderStruct,
-    _feeTbps: PromiseOrValue<BigNumberish>,
-    overrides?: Overrides & { from?: PromiseOrValue<string> }
-  ): Promise<ContractTransaction>;
-
   reduceMarginCollateral(
     _iPerpetualId: PromiseOrValue<BigNumberish>,
     _traderAddr: PromiseOrValue<string>,
@@ -4074,14 +3902,9 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
-  relativeFeeToCCAmount(
-    _fDeltaPos: PromiseOrValue<BigNumberish>,
-    _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
-    _fPnLPartRate: PromiseOrValue<BigNumberish>,
-    _fReferralRebate: PromiseOrValue<BigNumberish>,
-    _executorAddr: PromiseOrValue<string>,
-    overrides?: CallOverrides
-  ): Promise<[BigNumber, BigNumber, BigNumber]>;
+  removeDelegate(
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
 
   runLiquidityPool(
     _liqPoolID: PromiseOrValue<BigNumberish>,
@@ -4107,6 +3930,11 @@ export interface IPerpetualManager extends BaseContract {
   setBrokerVolumeTiers(
     _tiers: PromiseOrValue<BigNumberish>[],
     _feesTbps: PromiseOrValue<BigNumberish>[],
+    overrides?: Overrides & { from?: PromiseOrValue<string> }
+  ): Promise<ContractTransaction>;
+
+  setDelegate(
+    delegate: PromiseOrValue<string>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -4247,7 +4075,6 @@ export interface IPerpetualManager extends BaseContract {
 
   tradeViaOrderBook(
     _order: IPerpetualOrder.OrderStruct,
-    _isApprovedExecutor: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -4290,14 +4117,13 @@ export interface IPerpetualManager extends BaseContract {
   ): Promise<ContractTransaction>;
 
   updateFundingAndPricesAfter(
-    _iPerpetualId0: PromiseOrValue<BigNumberish>,
-    _iPerpetualId1: PromiseOrValue<BigNumberish>,
+    _iPerpetualId: PromiseOrValue<BigNumberish>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
   updateFundingAndPricesBefore(
-    _iPerpetualId0: PromiseOrValue<BigNumberish>,
-    _iPerpetualId1: PromiseOrValue<BigNumberish>,
+    _iPerpetualId: PromiseOrValue<BigNumberish>,
+    _revertIfClosed: PromiseOrValue<boolean>,
     overrides?: Overrides & { from?: PromiseOrValue<string> }
   ): Promise<ContractTransaction>;
 
@@ -4324,16 +4150,9 @@ export interface IPerpetualManager extends BaseContract {
     overrides?: CallOverrides
   ): Promise<void>;
 
-  volatilitySpread(
-    _jumpTbps: PromiseOrValue<BigNumberish>,
-    _MinimalSpreadTbps: PromiseOrValue<BigNumberish>,
-    _numBlockSinceJump: PromiseOrValue<BigNumberish>,
-    _fLambda: PromiseOrValue<BigNumberish>,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   withdraw(
     _iPerpetualId: PromiseOrValue<BigNumberish>,
+    _traderAddr: PromiseOrValue<string>,
     _fAmount: PromiseOrValue<BigNumberish>,
     _updateData: PromiseOrValue<BytesLike>[],
     _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -4342,6 +4161,7 @@ export interface IPerpetualManager extends BaseContract {
 
   withdrawAll(
     _iPerpetualId: PromiseOrValue<BigNumberish>,
+    _traderAddr: PromiseOrValue<string>,
     _updateData: PromiseOrValue<BytesLike>[],
     _publishTimes: PromiseOrValue<BigNumberish>[],
     overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -4384,12 +4204,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    calculateBoundedSlippage(
-      _ammVars: AMMPerpLogic.AMMVariablesStruct,
-      _fTradeAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     calculateDefaultFundSize(
       _fK2AMM: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       _fk2Trader: PromiseOrValue<BigNumberish>,
@@ -4421,12 +4235,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[BigNumber, BigNumber]>;
 
-    chargePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     countActivePerpAccounts(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -4457,6 +4265,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    deactivatePerp(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<void>;
+
     decreasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -4465,6 +4278,7 @@ export interface IPerpetualManager extends BaseContract {
 
     deposit(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -4497,6 +4311,8 @@ export interface IPerpetualManager extends BaseContract {
 
     distributeFees(
       _order: IPerpetualOrder.OrderStruct,
+      _brkrFeeTbps: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       _hasOpened: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
@@ -4505,6 +4321,7 @@ export interface IPerpetualManager extends BaseContract {
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
       _fDeltaPositionBC: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -4590,6 +4407,7 @@ export interface IPerpetualManager extends BaseContract {
       _fPrice: PromiseOrValue<BigNumberish>,
       _fS2Mark: PromiseOrValue<BigNumberish>,
       _fS3: PromiseOrValue<BigNumberish>,
+      _fS2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -4674,6 +4492,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getOracleUpdateTime(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getOrderBookAddress(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -4700,7 +4523,7 @@ export interface IPerpetualManager extends BaseContract {
     getPerpetualStaticInfo(
       perpetualIds: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
-    ): Promise<IPerpetualGetter.PerpetualStaticInfoStructOutput[]>;
+    ): Promise<IPerpetualInfo.PerpetualStaticInfoStructOutput[]>;
 
     getPerpetuals(
       perpetualIds: PromiseOrValue<BigNumberish>[],
@@ -4728,6 +4551,13 @@ export interface IPerpetualManager extends BaseContract {
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<[string[], boolean[]]>;
+
+    getSettleableAccounts(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      start: PromiseOrValue<BigNumberish>,
+      count: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
 
     getShareTokenFactory(overrides?: CallOverrides): Promise<string>;
 
@@ -4785,12 +4615,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<IPerpetualTreasury.WithdrawRequestStructOutput[]>;
 
-    holdingPeriodPenalty(
-      _numBlockSinceLastOpen: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<number>;
-
     increasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -4800,6 +4624,12 @@ export interface IPerpetualManager extends BaseContract {
     isActiveAccount(
       _perpetualId: PromiseOrValue<BigNumberish>,
       _traderAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    isDelegate(
+      _trader: PromiseOrValue<string>,
+      _delegate: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -4821,12 +4651,6 @@ export interface IPerpetualManager extends BaseContract {
 
     isPerpMarketClosed(
       _perpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
-    isTraderMaintenanceMarginSafe(
-      _perpetualId: PromiseOrValue<BigNumberish>,
-      _traderAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -4878,12 +4702,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    rebatePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<void>;
-
     reduceMarginCollateral(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
@@ -4891,14 +4709,7 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    relativeFeeToCCAmount(
-      _fDeltaPos: PromiseOrValue<BigNumberish>,
-      _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
-      _fPnLPartRate: PromiseOrValue<BigNumberish>,
-      _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _executorAddr: PromiseOrValue<string>,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber, BigNumber, BigNumber]>;
+    removeDelegate(overrides?: CallOverrides): Promise<void>;
 
     runLiquidityPool(
       _liqPoolID: PromiseOrValue<BigNumberish>,
@@ -4924,6 +4735,11 @@ export interface IPerpetualManager extends BaseContract {
     setBrokerVolumeTiers(
       _tiers: PromiseOrValue<BigNumberish>[],
       _feesTbps: PromiseOrValue<BigNumberish>[],
+      overrides?: CallOverrides
+    ): Promise<void>;
+
+    setDelegate(
+      delegate: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -5064,7 +4880,6 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
-      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<boolean>;
 
@@ -5105,14 +4920,13 @@ export interface IPerpetualManager extends BaseContract {
     ): Promise<void>;
 
     updateFundingAndPricesAfter(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<void>;
 
     updateFundingAndPricesBefore(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _revertIfClosed: PromiseOrValue<boolean>,
       overrides?: CallOverrides
     ): Promise<void>;
 
@@ -5139,16 +4953,9 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
-    volatilitySpread(
-      _jumpTbps: PromiseOrValue<BigNumberish>,
-      _MinimalSpreadTbps: PromiseOrValue<BigNumberish>,
-      _numBlockSinceJump: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     withdraw(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -5157,6 +4964,7 @@ export interface IPerpetualManager extends BaseContract {
 
     withdrawAll(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: CallOverrides
@@ -5232,11 +5040,10 @@ export interface IPerpetualManager extends BaseContract {
       participationFundFeeCC?: null
     ): DistributeFeesEventFilter;
 
-    "Liquidate(uint24,address,address,bytes16,int128,int128,int128,int128,int128)"(
+    "Liquidate(uint24,address,address,int128,int128,int128,int128,int128)"(
       perpetualId?: null,
       liquidator?: PromiseOrValue<string> | null,
       trader?: PromiseOrValue<string> | null,
-      positionId?: PromiseOrValue<BytesLike> | null,
       amountLiquidatedBC?: null,
       liquidationPrice?: null,
       newPositionSizeBC?: null,
@@ -5247,7 +5054,6 @@ export interface IPerpetualManager extends BaseContract {
       perpetualId?: null,
       liquidator?: PromiseOrValue<string> | null,
       trader?: PromiseOrValue<string> | null,
-      positionId?: PromiseOrValue<BytesLike> | null,
       amountLiquidatedBC?: null,
       liquidationPrice?: null,
       newPositionSizeBC?: null,
@@ -5255,7 +5061,7 @@ export interface IPerpetualManager extends BaseContract {
       fPnlCC?: null
     ): LiquidateEventFilter;
 
-    "LiquidityAdded(uint64,address,uint256,uint256)"(
+    "LiquidityAdded(uint8,address,uint256,uint256)"(
       poolId?: PromiseOrValue<BigNumberish> | null,
       user?: PromiseOrValue<string> | null,
       tokenAmount?: null,
@@ -5292,7 +5098,7 @@ export interface IPerpetualManager extends BaseContract {
       poolId?: null
     ): LiquidityProvisionPausedEventFilter;
 
-    "LiquidityRemoved(uint64,address,uint256,uint256)"(
+    "LiquidityRemoved(uint8,address,uint256,uint256)"(
       poolId?: PromiseOrValue<BigNumberish> | null,
       user?: PromiseOrValue<string> | null,
       tokenAmount?: null,
@@ -5305,7 +5111,7 @@ export interface IPerpetualManager extends BaseContract {
       shareAmount?: null
     ): LiquidityRemovedEventFilter;
 
-    "LiquidityWithdrawalInitiated(uint64,address,uint256)"(
+    "LiquidityWithdrawalInitiated(uint8,address,uint256)"(
       poolId?: PromiseOrValue<BigNumberish> | null,
       user?: PromiseOrValue<string> | null,
       shareAmount?: null
@@ -5378,6 +5184,12 @@ export interface IPerpetualManager extends BaseContract {
     SetClearedState(
       perpetualId?: PromiseOrValue<BigNumberish> | null
     ): SetClearedStateEventFilter;
+
+    "SetDelegate(address,address)"(
+      trader?: null,
+      delegate?: null
+    ): SetDelegateEventFilter;
+    SetDelegate(trader?: null, delegate?: null): SetDelegateEventFilter;
 
     "SetEmergencyState(uint24,int128,int128,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
@@ -5501,6 +5313,13 @@ export interface IPerpetualManager extends BaseContract {
       perpetualId?: PromiseOrValue<BigNumberish> | null
     ): SettleStateEventFilter;
 
+    "SettlementComplete(uint24)"(
+      perpetualId?: PromiseOrValue<BigNumberish> | null
+    ): SettlementCompleteEventFilter;
+    SettlementComplete(
+      perpetualId?: PromiseOrValue<BigNumberish> | null
+    ): SettlementCompleteEventFilter;
+
     "TokensDeposited(uint24,address,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
@@ -5523,10 +5342,9 @@ export interface IPerpetualManager extends BaseContract {
       amount?: null
     ): TokensWithdrawnEventFilter;
 
-    "Trade(uint24,address,bytes16,tuple,bytes32,int128,int128,int128,int128,int128)"(
+    "Trade(uint24,address,tuple,bytes32,int128,int128,int128,int128,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
-      positionId?: PromiseOrValue<BytesLike> | null,
       order?: null,
       orderDigest?: null,
       newPositionSizeBC?: null,
@@ -5538,7 +5356,6 @@ export interface IPerpetualManager extends BaseContract {
     Trade(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
-      positionId?: PromiseOrValue<BytesLike> | null,
       order?: null,
       orderDigest?: null,
       newPositionSizeBC?: null,
@@ -5559,54 +5376,6 @@ export interface IPerpetualManager extends BaseContract {
       newOBFactory?: null
     ): TransferAddressToEventFilter;
 
-    "TransferEarningsToTreasury(uint8,int128,int128)"(
-      _poolId?: null,
-      fEarnings?: null,
-      newDefaultFundSize?: null
-    ): TransferEarningsToTreasuryEventFilter;
-    TransferEarningsToTreasury(
-      _poolId?: null,
-      fEarnings?: null,
-      newDefaultFundSize?: null
-    ): TransferEarningsToTreasuryEventFilter;
-
-    "TransferFeeToBroker(uint24,address,int128)"(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      broker?: PromiseOrValue<string> | null,
-      feeCC?: null
-    ): TransferFeeToBrokerEventFilter;
-    TransferFeeToBroker(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      broker?: PromiseOrValue<string> | null,
-      feeCC?: null
-    ): TransferFeeToBrokerEventFilter;
-
-    "TransferFeeToexecutor(uint24,address,address,int128)"(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      trader?: PromiseOrValue<string> | null,
-      executor?: PromiseOrValue<string> | null,
-      referralRebate?: null
-    ): TransferFeeToexecutorEventFilter;
-    TransferFeeToexecutor(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      trader?: PromiseOrValue<string> | null,
-      executor?: PromiseOrValue<string> | null,
-      referralRebate?: null
-    ): TransferFeeToexecutorEventFilter;
-
-    "UpdateAMMFundTargetSize(uint24,uint8,int128,int128)"(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      liquidityPoolId?: PromiseOrValue<BigNumberish> | null,
-      fTargetAMMFundSizeInPerpetual?: null,
-      fTargetAMMFundSizeInPool?: null
-    ): UpdateAMMFundTargetSizeEventFilter;
-    UpdateAMMFundTargetSize(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      liquidityPoolId?: PromiseOrValue<BigNumberish> | null,
-      fTargetAMMFundSizeInPerpetual?: null,
-      fTargetAMMFundSizeInPool?: null
-    ): UpdateAMMFundTargetSizeEventFilter;
-
     "UpdateBrokerAddedCash(uint8,uint32,uint32)"(
       poolId?: PromiseOrValue<BigNumberish> | null,
       iLots?: null,
@@ -5618,39 +5387,6 @@ export interface IPerpetualManager extends BaseContract {
       iNewBrokerLots?: null
     ): UpdateBrokerAddedCashEventFilter;
 
-    "UpdateBrokerFundCash(uint8,int128,int128)"(
-      poolId?: PromiseOrValue<BigNumberish> | null,
-      fDeltaAmountCC?: null,
-      fNewFundCash?: null
-    ): UpdateBrokerFundCashEventFilter;
-    UpdateBrokerFundCash(
-      poolId?: PromiseOrValue<BigNumberish> | null,
-      fDeltaAmountCC?: null,
-      fNewFundCash?: null
-    ): UpdateBrokerFundCashEventFilter;
-
-    "UpdateDefaultFundCash(uint8,int128,int128)"(
-      poolId?: PromiseOrValue<BigNumberish> | null,
-      fDeltaAmountCC?: null,
-      fNewFundCash?: null
-    ): UpdateDefaultFundCashEventFilter;
-    UpdateDefaultFundCash(
-      poolId?: PromiseOrValue<BigNumberish> | null,
-      fDeltaAmountCC?: null,
-      fNewFundCash?: null
-    ): UpdateDefaultFundCashEventFilter;
-
-    "UpdateDefaultFundTargetSize(uint8,int128,int128)"(
-      liquidityPoolId?: PromiseOrValue<BigNumberish> | null,
-      fDefaultFundCashCC?: null,
-      fTargetDFSize?: null
-    ): UpdateDefaultFundTargetSizeEventFilter;
-    UpdateDefaultFundTargetSize(
-      liquidityPoolId?: PromiseOrValue<BigNumberish> | null,
-      fDefaultFundCashCC?: null,
-      fTargetDFSize?: null
-    ): UpdateDefaultFundTargetSizeEventFilter;
-
     "UpdateFundingRate(uint24,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       fFundingRate?: null
@@ -5660,25 +5396,15 @@ export interface IPerpetualManager extends BaseContract {
       fFundingRate?: null
     ): UpdateFundingRateEventFilter;
 
-    "UpdateMarginAccount(uint24,address,bytes16,int128,int128,int128,int128,int128)"(
+    "UpdateMarginAccount(uint24,address,int128)"(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
-      positionId?: PromiseOrValue<BytesLike> | null,
-      fPositionBC?: null,
-      fCashCC?: null,
-      fLockedInValueQC?: null,
-      fFundingPaymentCC?: null,
-      fOpenInterestBC?: null
+      fFundingPaymentCC?: null
     ): UpdateMarginAccountEventFilter;
     UpdateMarginAccount(
       perpetualId?: PromiseOrValue<BigNumberish> | null,
       trader?: PromiseOrValue<string> | null,
-      positionId?: PromiseOrValue<BytesLike> | null,
-      fPositionBC?: null,
-      fCashCC?: null,
-      fLockedInValueQC?: null,
-      fFundingPaymentCC?: null,
-      fOpenInterestBC?: null
+      fFundingPaymentCC?: null
     ): UpdateMarginAccountEventFilter;
 
     "UpdateMarkPrice(uint24,int128,int128,int128)"(
@@ -5693,39 +5419,6 @@ export interface IPerpetualManager extends BaseContract {
       fMarkPricePremium?: null,
       fSpotIndexPrice?: null
     ): UpdateMarkPriceEventFilter;
-
-    "UpdateParticipationFundCash(uint8,int128,int128)"(
-      poolId?: PromiseOrValue<BigNumberish> | null,
-      fDeltaAmountCC?: null,
-      fNewFundCash?: null
-    ): UpdateParticipationFundCashEventFilter;
-    UpdateParticipationFundCash(
-      poolId?: PromiseOrValue<BigNumberish> | null,
-      fDeltaAmountCC?: null,
-      fNewFundCash?: null
-    ): UpdateParticipationFundCashEventFilter;
-
-    "UpdateReprTradeSizes(uint24,int128,int128,int128)"(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      fCurrentTraderExposureEMA?: null,
-      fCurrentAMMExposureEMAShort?: null,
-      fCurrentAMMExposureEMALong?: null
-    ): UpdateReprTradeSizesEventFilter;
-    UpdateReprTradeSizes(
-      perpetualId?: PromiseOrValue<BigNumberish> | null,
-      fCurrentTraderExposureEMA?: null,
-      fCurrentAMMExposureEMAShort?: null,
-      fCurrentAMMExposureEMALong?: null
-    ): UpdateReprTradeSizesEventFilter;
-
-    "UpdateUnitAccumulatedFunding(uint24,int128)"(
-      perpetualId?: null,
-      unitAccumulativeFunding?: null
-    ): UpdateUnitAccumulatedFundingEventFilter;
-    UpdateUnitAccumulatedFunding(
-      perpetualId?: null,
-      unitAccumulativeFunding?: null
-    ): UpdateUnitAccumulatedFundingEventFilter;
   };
 
   estimateGas: {
@@ -5745,12 +5438,6 @@ export interface IPerpetualManager extends BaseContract {
       _fSettlementS2: PromiseOrValue<BigNumberish>,
       _fSettlementS3: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
-    calculateBoundedSlippage(
-      _ammVars: AMMPerpLogic.AMMVariablesStruct,
-      _fTradeAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
     ): Promise<BigNumber>;
 
     calculateDefaultFundSize(
@@ -5784,12 +5471,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    chargePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     countActivePerpAccounts(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -5820,6 +5501,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
+    deactivatePerp(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
     decreasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -5828,6 +5514,7 @@ export interface IPerpetualManager extends BaseContract {
 
     deposit(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -5860,6 +5547,8 @@ export interface IPerpetualManager extends BaseContract {
 
     distributeFees(
       _order: IPerpetualOrder.OrderStruct,
+      _brkrFeeTbps: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       _hasOpened: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
@@ -5868,6 +5557,7 @@ export interface IPerpetualManager extends BaseContract {
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
       _fDeltaPositionBC: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -5953,6 +5643,7 @@ export interface IPerpetualManager extends BaseContract {
       _fPrice: PromiseOrValue<BigNumberish>,
       _fS2Mark: PromiseOrValue<BigNumberish>,
       _fS3: PromiseOrValue<BigNumberish>,
+      _fS2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -6037,6 +5728,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    getOracleUpdateTime(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     getOrderBookAddress(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -6085,6 +5781,13 @@ export interface IPerpetualManager extends BaseContract {
 
     getPriceInfo(
       _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getSettleableAccounts(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      start: PromiseOrValue<BigNumberish>,
+      count: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -6144,12 +5847,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    holdingPeriodPenalty(
-      _numBlockSinceLastOpen: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     increasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -6159,6 +5856,12 @@ export interface IPerpetualManager extends BaseContract {
     isActiveAccount(
       _perpetualId: PromiseOrValue<BigNumberish>,
       _traderAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    isDelegate(
+      _trader: PromiseOrValue<string>,
+      _delegate: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -6180,12 +5883,6 @@ export interface IPerpetualManager extends BaseContract {
 
     isPerpMarketClosed(
       _perpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
-    isTraderMaintenanceMarginSafe(
-      _perpetualId: PromiseOrValue<BigNumberish>,
-      _traderAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -6237,12 +5934,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    rebatePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<BigNumber>;
-
     reduceMarginCollateral(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
@@ -6250,13 +5941,8 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
-    relativeFeeToCCAmount(
-      _fDeltaPos: PromiseOrValue<BigNumberish>,
-      _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
-      _fPnLPartRate: PromiseOrValue<BigNumberish>,
-      _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _executorAddr: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    removeDelegate(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     runLiquidityPool(
@@ -6283,6 +5969,11 @@ export interface IPerpetualManager extends BaseContract {
     setBrokerVolumeTiers(
       _tiers: PromiseOrValue<BigNumberish>[],
       _feesTbps: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<BigNumber>;
+
+    setDelegate(
+      delegate: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -6423,7 +6114,6 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
-      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -6466,14 +6156,13 @@ export interface IPerpetualManager extends BaseContract {
     ): Promise<BigNumber>;
 
     updateFundingAndPricesAfter(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
     updateFundingAndPricesBefore(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _revertIfClosed: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<BigNumber>;
 
@@ -6500,16 +6189,9 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    volatilitySpread(
-      _jumpTbps: PromiseOrValue<BigNumberish>,
-      _MinimalSpreadTbps: PromiseOrValue<BigNumberish>,
-      _numBlockSinceJump: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     withdraw(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -6518,6 +6200,7 @@ export interface IPerpetualManager extends BaseContract {
 
     withdrawAll(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
@@ -6561,12 +6244,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    calculateBoundedSlippage(
-      _ammVars: AMMPerpLogic.AMMVariablesStruct,
-      _fTradeAmount: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     calculateDefaultFundSize(
       _fK2AMM: [PromiseOrValue<BigNumberish>, PromiseOrValue<BigNumberish>],
       _fk2Trader: PromiseOrValue<BigNumberish>,
@@ -6596,12 +6273,6 @@ export interface IPerpetualManager extends BaseContract {
       _fTradeAmount: PromiseOrValue<BigNumberish>,
       _withCDF: PromiseOrValue<boolean>,
       overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    chargePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     countActivePerpAccounts(
@@ -6634,6 +6305,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
+    deactivatePerp(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
     decreasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -6642,6 +6318,7 @@ export interface IPerpetualManager extends BaseContract {
 
     deposit(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -6674,6 +6351,8 @@ export interface IPerpetualManager extends BaseContract {
 
     distributeFees(
       _order: IPerpetualOrder.OrderStruct,
+      _brkrFeeTbps: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       _hasOpened: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
@@ -6682,6 +6361,7 @@ export interface IPerpetualManager extends BaseContract {
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
       _fDeltaPositionBC: PromiseOrValue<BigNumberish>,
+      _protocolFeeTbps: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -6767,6 +6447,7 @@ export interface IPerpetualManager extends BaseContract {
       _fPrice: PromiseOrValue<BigNumberish>,
       _fS2Mark: PromiseOrValue<BigNumberish>,
       _fS3: PromiseOrValue<BigNumberish>,
+      _fS2: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -6851,6 +6532,11 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    getOracleUpdateTime(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     getOrderBookAddress(
       _perpetualId: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
@@ -6901,6 +6587,13 @@ export interface IPerpetualManager extends BaseContract {
 
     getPriceInfo(
       _perpetualId: PromiseOrValue<BigNumberish>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getSettleableAccounts(
+      _perpetualId: PromiseOrValue<BigNumberish>,
+      start: PromiseOrValue<BigNumberish>,
+      count: PromiseOrValue<BigNumberish>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -6964,12 +6657,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    holdingPeriodPenalty(
-      _numBlockSinceLastOpen: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     increasePoolCash(
       _iPoolIdx: PromiseOrValue<BigNumberish>,
       _fAmount: PromiseOrValue<BigNumberish>,
@@ -6979,6 +6666,12 @@ export interface IPerpetualManager extends BaseContract {
     isActiveAccount(
       _perpetualId: PromiseOrValue<BigNumberish>,
       _traderAddress: PromiseOrValue<string>,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    isDelegate(
+      _trader: PromiseOrValue<string>,
+      _delegate: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -7000,12 +6693,6 @@ export interface IPerpetualManager extends BaseContract {
 
     isPerpMarketClosed(
       _perpetualId: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    isTraderMaintenanceMarginSafe(
-      _perpetualId: PromiseOrValue<BigNumberish>,
-      _traderAddress: PromiseOrValue<string>,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -7057,12 +6744,6 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    rebatePostingFee(
-      _order: IPerpetualOrder.OrderStruct,
-      _feeTbps: PromiseOrValue<BigNumberish>,
-      overrides?: Overrides & { from?: PromiseOrValue<string> }
-    ): Promise<PopulatedTransaction>;
-
     reduceMarginCollateral(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
       _traderAddr: PromiseOrValue<string>,
@@ -7070,13 +6751,8 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
-    relativeFeeToCCAmount(
-      _fDeltaPos: PromiseOrValue<BigNumberish>,
-      _fTreasuryFeeRate: PromiseOrValue<BigNumberish>,
-      _fPnLPartRate: PromiseOrValue<BigNumberish>,
-      _fReferralRebate: PromiseOrValue<BigNumberish>,
-      _executorAddr: PromiseOrValue<string>,
-      overrides?: CallOverrides
+    removeDelegate(
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     runLiquidityPool(
@@ -7103,6 +6779,11 @@ export interface IPerpetualManager extends BaseContract {
     setBrokerVolumeTiers(
       _tiers: PromiseOrValue<BigNumberish>[],
       _feesTbps: PromiseOrValue<BigNumberish>[],
+      overrides?: Overrides & { from?: PromiseOrValue<string> }
+    ): Promise<PopulatedTransaction>;
+
+    setDelegate(
+      delegate: PromiseOrValue<string>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -7243,7 +6924,6 @@ export interface IPerpetualManager extends BaseContract {
 
     tradeViaOrderBook(
       _order: IPerpetualOrder.OrderStruct,
-      _isApprovedExecutor: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -7286,14 +6966,13 @@ export interface IPerpetualManager extends BaseContract {
     ): Promise<PopulatedTransaction>;
 
     updateFundingAndPricesAfter(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
     updateFundingAndPricesBefore(
-      _iPerpetualId0: PromiseOrValue<BigNumberish>,
-      _iPerpetualId1: PromiseOrValue<BigNumberish>,
+      _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _revertIfClosed: PromiseOrValue<boolean>,
       overrides?: Overrides & { from?: PromiseOrValue<string> }
     ): Promise<PopulatedTransaction>;
 
@@ -7320,16 +6999,9 @@ export interface IPerpetualManager extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    volatilitySpread(
-      _jumpTbps: PromiseOrValue<BigNumberish>,
-      _MinimalSpreadTbps: PromiseOrValue<BigNumberish>,
-      _numBlockSinceJump: PromiseOrValue<BigNumberish>,
-      _fLambda: PromiseOrValue<BigNumberish>,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     withdraw(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _fAmount: PromiseOrValue<BigNumberish>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
@@ -7338,6 +7010,7 @@ export interface IPerpetualManager extends BaseContract {
 
     withdrawAll(
       _iPerpetualId: PromiseOrValue<BigNumberish>,
+      _traderAddr: PromiseOrValue<string>,
       _updateData: PromiseOrValue<BytesLike>[],
       _publishTimes: PromiseOrValue<BigNumberish>[],
       overrides?: PayableOverrides & { from?: PromiseOrValue<string> }
