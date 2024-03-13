@@ -13,7 +13,7 @@ import { publicProvider } from "wagmi/providers/public";
 // import polygonTestIcon from "assets/networks/polygonTest.svg";
 import zkMainIcon from "assets/networks/zkEvmMain.svg";
 import zkTestIcon from "assets/networks/zkEvmTest.svg";
-import { x1 } from "utils/chains";
+import { arbitrumSepolia, x1 } from "utils/chains";
 
 const defaultChains: Chain[] = [
   // { ...polygon, iconUrl: polygonMainIcon, iconBackground: 'transparent' },
@@ -25,6 +25,7 @@ const defaultChains: Chain[] = [
     iconBackground: "transparent",
   },
   x1,
+  arbitrumSepolia,
 ];
 
 const { chains, provider } = configureChains(defaultChains, [publicProvider()]);
