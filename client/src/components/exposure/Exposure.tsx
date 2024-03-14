@@ -34,8 +34,11 @@ export const Exposure = () => {
       { label: "Avg Position", align: AlignE.Left },
       { label: "Stale Oracle PnL", align: AlignE.Left },
       { label: "Price move: ±1%", align: AlignE.Left },
-      { label: "Cost Binance", align: AlignE.Left },
-      { label: "Cost KuCoin", align: AlignE.Left },
+      { label: "Plausible loss", align: AlignE.Left },
+      { label: "Max exposure increase", align: AlignE.Left },
+      { label: "Trades to 90% of target", align: AlignE.Left },
+      // { label: "Cost Binance", align: AlignE.Left },
+      // { label: "Cost KuCoin", align: AlignE.Left },
       // { label: "Price move: ±10%", align: AlignE.Left },
     ],
     []
